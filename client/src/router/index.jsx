@@ -21,6 +21,7 @@ import AdminServicesPage from "../pages/admin/AdminServicesPage";
 import AdminGalleryPage from "../pages/admin/AdminGalleryPage";
 import AdminRequestsPage from "../pages/admin/AdminRequestsPage";
 import AdminOffersPage from "../pages/admin/AdminOffersPage";
+import AdminAccountPage from "../pages/admin/AdminAccountPage";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
           { path: "galerie", element: <AdminGalleryPage /> },
           { path: "demandes", element: <AdminRequestsPage /> },
           { path: "offres", element: <AdminOffersPage /> },
+          { path: "compte", element: <AdminAccountPage /> },
         ],
       },
     ],

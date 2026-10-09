@@ -145,7 +145,7 @@ Un lien vers le fichier de log (souvent « Passenger log file ») est générale
 1. cPanel → **SSL/TLS Status** (ou **AutoSSL**) → active le certificat gratuit pour ton domaine, si ce n'est pas déjà fait. **C'est indispensable** : les cookies de session admin sont marqués `Secure` en production, donc ils ne fonctionnent qu'en HTTPS. Sans SSL, la connexion admin échouera silencieusement.
 2. Visite `https://ton-domaine.com` — le site public doit s'afficher (catalogue, galerie, etc. avec les données de démo).
 3. Va sur `https://ton-domaine.com/admin/connexion`, connecte-toi avec `admin` / `akili2026`.
-4. **Change immédiatement ce mot de passe** : pour l'instant il n'y a pas d'interface pour ça dans l'admin (à prévoir si besoin) — le plus simple est de repasser par phpMyAdmin et de remplacer la valeur `passwordHash` de la ligne `admin` dans la table `admins` par un nouveau hash bcrypt. Si tu veux, je peux ajouter une vraie page « changer le mot de passe » dans l'admin plus tard.
+4. **Change immédiatement ce mot de passe** : va dans l'admin sur **Mon compte** (`/admin/compte`), saisis le mot de passe actuel (`akili2026`) et le nouveau. Pas besoin de repasser par phpMyAdmin.
 5. Teste l'ajout d'un produit avec upload d'image depuis l'admin, pour confirmer que `server/uploads/` est bien accessible en écriture (ça devrait l'être par défaut).
 
 ---

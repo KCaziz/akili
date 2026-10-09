@@ -45,3 +45,27 @@ export function logout(req, res) {
 export function me(req, res) {
   res.json({ username: req.admin.username });
 }
+
+export async function changePassword(req, res, next) {
+  try {
+    const { currentPassword, newPassword } = req.body ?? {};
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: "Mot de passe actuel et nouveau mot de passe requis" });
+    }
+    if (newPassword.length < 8) {
+      return res.status(400).json({ error: "Le nouveau mot de passe doit faire au moins 8 caractères" });
+    }
+
+    const admin = await prisma.admin.findUnique({ where: { id: req.admin.sub } });
+    const valid = admin && (await bcrypt.compare(currentPassword, admin.passwordHash));
+    if (!valid) {
+      return res.status(401).json({ error: "Mot de passe actuel incorrect" });
+    }
+
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+    await prisma.admin.update({ where: { id: admin.id }, data: { passwordHash } });
+    res.status(204).end();
+  } catch (err) {
+    next(err);
+  }
+}

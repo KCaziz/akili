@@ -295,18 +295,18 @@ Tâches prévues :
 Réalisé (2026-10-09) :
 - Le client n'a pas de texte final à fournir, mais a demandé de s'inspirer du contenu de sites d'agences existants (ex. bessapromotion.com) sans copier, et d'écrire du contenu logique en l'absence d'original — consigne explicite, donc ce n'est pas du contenu inventé hors mandat.
 - Texte réécrit (ton chaleureux et orienté bénéfice client, inspiré du registre observé sur des sites d'agences immobilières, jamais copié mot pour mot) : accroche et section « Qui sommes-nous » de `HomePage.jsx`, les 4 cartes de services de la page d'accueil.
-- **Services** : contenu définitif rédigé et **seedé en base** (`server/prisma/seed.js`, idempotent — relançable sans dupliquer), puis `ServicesPage.jsx` entièrement câblée sur `GET /api/services` (`client/src/lib/api.js`) à la place du tableau statique — gère les états chargement/erreur. C'est la première page du site branchée réellement sur le backend.
-- `client/.env.example` ajouté (`VITE_API_URL`, défaut `http://localhost:4000/api`).
+- **Services** : contenu définitif rédigé et seedé en base (`server/prisma/seed.js`, idempotent), `ServicesPage.jsx` câblée sur `GET /api/services`.
+- **Mise à jour (même jour, après le pivot « V1 complète » demandé par l'utilisateur)** : le client a explicitement autorisé l'usage de photos génériques pour juger une V1 complète plutôt que d'attendre du contenu réel (voir section « Étape en cours »). En conséquence, **le catalogue Produits a finalement été rempli** (6 biens plausibles mais inventés, images Unsplash) et **câblé réellement** : `ProductsPage.jsx`/`ProductDetailPage.jsx` appellent `GET /api/products`/`GET /api/products/:id`, `mockProducts.js` a été supprimé (plus aucune donnée statique codée en dur côté frontend). Idem pour la Galerie (`GalleryPage.jsx` → `GET /api/gallery`). Ce qui était noté ci-dessous comme « volontairement non traité » a donc été traité suite à ce changement de consigne explicite — conservé ici à titre d'historique de la décision initiale.
+- `client/.env.example` + `client/.env.production` ajoutés (`VITE_API_URL` — absolu en dev, relatif `/api` en prod, voir P4-01).
 
-Volontairement non traité à ce stade :
-- **Catalogue Produits** : toujours sur `mockProducts.js`, pas câblé sur `GET /api/products`. Contrairement aux services (texte générique sur l'activité de l'agence), un catalogue de biens est une donnée métier concrète (adresses, prix, surfaces réels) — en inventer pour remplir la base serait fabriquer de fausses annonces immobilières, ce que la consigne du client ne couvre pas. La base `products` reste vide jusqu'à ce que le client fournisse de vrais biens à lister.
-- **Photos/vidéos réelles** (Galerie + catalogue) : toujours en attente. Le client a autorisé à écrire du texte de substitution, pas à fabriquer de fausses photos de ses locaux/équipe ni de fausses vidéos — ça resterait trompeur même avec son accord verbal, donc aucun changement sur ce point tant que les vrais fichiers ne sont pas fournis.
+Historique — ce qui était volontairement non traité avant le pivot du 2026-10-09 (dépassé depuis, voir ci-dessus) :
+- ~~Catalogue Produits toujours sur données factices~~ → traité (6 produits réels en base).
+- ~~Photos/vidéos réelles en attente~~ → photos génériques intégrées avec l'accord explicite du client pour la V1 ; les vraies photos/vidéos de l'agence restent à fournir (section 4, toujours ouvert).
 
 Tests effectués :
 - `npm run build` et `npm run lint` (client) : OK, aucune erreur.
-- Serveur backend relancé après le seed : `GET /api/services` → `200`, 4 services réels renvoyés (vérifié via `curl`).
-- CORS vérifié en conditions réelles : `curl -H "Origin: http://localhost:5173" http://localhost:4000/api/services` → `Access-Control-Allow-Origin: http://localhost:5173` présent, confirmant que l'appel fonctionnera bien depuis le navigateur.
-- Limite de vérification : toujours aucun navigateur réel disponible dans cette session pour confirmer visuellement l'état de chargement/erreur de `ServicesPage`. À vérifier manuellement (`docker compose up -d`, `node server/src/server.js`, `npm run dev` dans `client/`).
+- Tous les endpoints publics vérifiés en conditions réelles (`/api/health`, `/api/products`, `/api/services`, `/api/gallery`) : réponses `200` avec données réelles.
+- CORS vérifié en conditions réelles : `curl -H "Origin: http://localhost:5173" ...` → `Access-Control-Allow-Origin` présent.
 
 ---
 
@@ -366,6 +366,7 @@ Réalisé (2026-10-09) :
 - **Upload réel de fichiers** (2026-10-09, suite au retour « l'admin doit pouvoir ajouter des produits avec images ») : `POST /api/uploads` (protégé, `multer`), stockage sur disque local (`server/uploads/`, servi statiquement via `/uploads/...`), limite 25 Mo, types acceptés : images (jpeg/png/webp/gif) et vidéos (mp4/webm). Composant `MediaUploadField.jsx` réutilisé dans `AdminProductsPage` (image du bien) et `AdminGalleryPage` (photo/vidéo) : sélection de fichier → upload immédiat → aperçu. Le champ URL manuel reste disponible en parallèle pour coller un lien externe si besoin.
 - Front : `resolveMediaUrl()` (`lib/api.js`) transforme les URLs relatives (`/uploads/...`) en URLs absolues vers le serveur ; les URLs externes (Unsplash) ne sont pas touchées. Utilisé partout où une image/vidéo est affichée (catalogue public, fiche produit, galerie publique, tableaux admin).
 - Backend : `crossOriginResourcePolicy: "cross-origin"` ajouté à la config `helmet` — sans ça, le navigateur bloque le chargement des images par le frontend (port 5173) depuis l'API (port 4000).
+- **Changer le mot de passe admin** (2026-10-09, suite à un point explicitement laissé en suspens dans `DEPLOYMENT.md`) : `POST /api/auth/change-password` (protégé), vérifie le mot de passe actuel via bcrypt avant d'accepter le changement, exige au moins 8 caractères pour le nouveau. Page `AdminAccountPage.jsx` (`/admin/compte`, lien « Mon compte » dans le menu admin) avec formulaire mot de passe actuel + nouveau + confirmation. Ça évite d'avoir à passer par phpMyAdmin pour cette tâche basique.
 
 Décisions techniques / signalements :
 - **Stockage sur disque local, pas un vrai object storage** : les fichiers uploadés vivent dans `server/uploads/` sur la machine qui fait tourner le serveur. Fonctionne très bien en local/démo, mais ne survivra pas à un déploiement sur une plateforme avec filesystem éphémère (Heroku, etc.) ni ne scale à plusieurs instances. Migration vers S3/Cloudinary ou équivalent nécessaire avant une mise en production réelle (Phase 4) — le code est structuré pour que ce changement reste localisé (`middleware/upload.js` + `routes/uploads.js`).
@@ -377,6 +378,7 @@ Tests effectués :
 - Flux complet simulé par scripts Node (`fetch`) : login échoué (mauvais mot de passe) → `401` ; login valide → cookie posé ; `GET /api/auth/me` avec cookie → `200` ; `GET /api/requests` sans cookie → `401`, avec cookie → `200`.
 - Cycle CRUD produit complet (create → update → delete) vérifié contre la vraie base, plus vérification qu'une création sans authentification échoue bien (`401`).
 - Upload de fichier testé de bout en bout : upload sans auth → `401` ; upload avec auth → `201` + URL renvoyée ; fichier re-téléchargé depuis cette URL → `200`, header `Cross-Origin-Resource-Policy: cross-origin` et `Content-Type: image/png` corrects ; produit créé avec cette image, puis nettoyage (produit et fichier supprimés).
+- Changement de mot de passe testé de bout en bout : mauvais mot de passe actuel → `401` ; nouveau mot de passe trop court → `400` ; changement valide → `204` ; connexion avec l'ancien mot de passe → `401` (rejeté) ; connexion avec le nouveau → `200` ; remis à `akili2026` après coup pour ne pas casser les identifiants de démo documentés.
 - `npm run build`/`npm run lint` (client) : OK, aucune erreur (quelques avertissements de style non bloquants sur les appels `setState` dans des effets — non corrigés, sans impact fonctionnel).
 - Limite de vérification : toujours aucun navigateur réel disponible dans cette session — le rendu visuel des formulaires admin (notamment l'aperçu d'image après upload) n'a pas été confirmé à l'œil. À vérifier manuellement (`docker compose up -d`, `node server/src/server.js`, `npm run dev` dans `client/`, connexion avec `admin`/`akili2026`).
 

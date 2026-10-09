@@ -8,6 +8,7 @@ const links = [
   { to: "/admin/galerie", label: "Galerie" },
   { to: "/admin/demandes", label: "Demandes clients" },
   { to: "/admin/offres", label: "Offres de vente" },
+  { to: "/admin/compte", label: "Mon compte" },
 ];
 
 export default function AdminLayout() {

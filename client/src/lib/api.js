@@ -66,6 +66,8 @@ export const deleteGalleryMedia = (id) => request(`/gallery/${id}`, { method: "D
 export const login = (username, password) => request("/auth/login", { method: "POST", body: { username, password } });
 export const logout = () => request("/auth/logout", { method: "POST" });
 export const fetchMe = () => request("/auth/me");
+export const changePassword = (currentPassword, newPassword) =>
+  request("/auth/change-password", { method: "POST", body: { currentPassword, newPassword } });
 
 // ---- Upload de fichiers (photos/vidéos) ----
 export async function uploadFile(file) {

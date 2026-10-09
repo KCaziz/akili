@@ -1,14 +1,32 @@
 import { useState } from "react";
 import Container from "../components/ui/Container";
 import Button from "../components/ui/Button";
+import { createSellOffer } from "../lib/api";
+
+const initialState = { name: "", phone: "", propertyType: "", city: "", surface: "", price: "", description: "" };
 
 export default function SellPage() {
-  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState(initialState);
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState(null);
 
-  function handleSubmit(event) {
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
-    // Squelette uniquement : aucune sauvegarde réelle pour le moment (Phase 2).
-    setSubmitted(true);
+    setStatus("loading");
+    setError(null);
+    try {
+      await createSellOffer(form);
+      setStatus("success");
+      setForm(initialState);
+    } catch (err) {
+      setStatus("error");
+      setError(err.message);
+    }
   }
 
   return (
@@ -23,54 +41,52 @@ export default function SellPage() {
         <div className="form-row">
           <label>
             Nom complet
-            <input type="text" name="name" required />
+            <input type="text" name="name" value={form.name} onChange={handleChange} required />
           </label>
           <label>
             Téléphone
-            <input type="tel" name="phone" required />
+            <input type="tel" name="phone" value={form.phone} onChange={handleChange} required />
           </label>
         </div>
 
         <label>
           Type de bien
-          <select name="type" defaultValue="">
+          <select name="propertyType" value={form.propertyType} onChange={handleChange} required>
             <option value="" disabled>Choisir un type</option>
-            <option value="appartement">Appartement</option>
-            <option value="villa">Villa</option>
-            <option value="terrain">Terrain</option>
-            <option value="local">Local commercial</option>
+            <option value="Appartement">Appartement</option>
+            <option value="Villa">Villa</option>
+            <option value="Terrain">Terrain</option>
+            <option value="Local commercial">Local commercial</option>
           </select>
         </label>
 
         <div className="form-row">
           <label>
             Ville
-            <input type="text" name="city" required />
+            <input type="text" name="city" value={form.city} onChange={handleChange} required />
           </label>
           <label>
             Surface (m²)
-            <input type="number" name="surface" min="0" />
+            <input type="text" name="surface" value={form.surface} onChange={handleChange} />
           </label>
         </div>
 
         <label>
           Prix souhaité
-          <input type="text" name="price" placeholder="Ex : 12 000 000 DZD" />
+          <input type="text" name="price" value={form.price} onChange={handleChange} placeholder="Ex : 12 000 000 DZD" />
         </label>
 
         <label>
           Description du bien
-          <textarea name="description" rows={5} />
+          <textarea name="description" rows={5} value={form.description} onChange={handleChange} />
         </label>
 
-        <Button type="submit">Envoyer mon offre</Button>
+        <Button type="submit">{status === "loading" ? "Envoi…" : "Envoyer mon offre"}</Button>
 
-        {submitted && (
-          <p className="notice">
-            Ceci est un squelette de démonstration : l'offre n'est pas encore enregistrée
-            réellement. L'enregistrement en base sera activé en Phase 2.
-          </p>
+        {status === "success" && (
+          <p className="notice">Votre offre a bien été envoyée. Un conseiller Akili vous recontactera prochainement.</p>
         )}
+        {status === "error" && <p className="error">{error}</p>}
       </form>
     </Container>
   );

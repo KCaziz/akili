@@ -1,0 +1,22 @@
+services:
+  mariadb:
+    image: mariadb:11
+    container_name: akili_mariadb_dev
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: root_dev_password
+      MARIADB_USER: akili
+      MARIADB_PASSWORD: akili_dev_password
+      MARIADB_DATABASE: akili_dev
+    ports:
+      - "3307:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mariadb_data:

@@ -1,17 +1,37 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import Container from "../../components/ui/Container";
 import Button from "../../components/ui/Button";
+import { useAdminAuth } from "../../contexts/AdminAuthContext";
 
 export default function AdminLoginPage() {
   const navigate = useNavigate();
+  const { login, status } = useAdminAuth();
+  const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(event) {
+  if (status === "authenticated") {
+    return <Navigate to="/admin" replace />;
+  }
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
-    // Squelette uniquement : pas d'authentification réelle pour le moment (Phase 3).
+    setLoading(true);
     setError(null);
-    navigate("/admin");
+    try {
+      await login(form.username, form.password);
+      navigate("/admin");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -23,20 +43,21 @@ export default function AdminLoginPage() {
         <form className="form" onSubmit={handleSubmit}>
           <label>
             Identifiant
-            <input type="text" name="username" required />
+            <input type="text" name="username" value={form.username} onChange={handleChange} required />
           </label>
           <label>
             Mot de passe
-            <input type="password" name="password" required />
+            <input type="password" name="password" value={form.password} onChange={handleChange} required />
           </label>
-          <Button type="submit">Se connecter</Button>
+          <Button type="submit">{loading ? "Connexion…" : "Se connecter"}</Button>
         </form>
 
-        <p className="notice">
-          Ceci est un squelette de démonstration : aucune authentification réelle n'est
-          vérifiée pour le moment. La sécurisation sera mise en place en Phase 3.
-        </p>
         {error && <p className="error">{error}</p>}
+
+        <p className="notice">
+          Démonstration : identifiant <code>admin</code>, mot de passe <code>akili2026</code>
+          — à changer avant toute mise en production réelle.
+        </p>
       </Container>
     </div>
   );

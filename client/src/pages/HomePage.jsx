@@ -14,10 +14,10 @@ export default function HomePage() {
         <div className="hero-overlay" />
         <Container className="hero-inner">
           <span className="eyebrow">Agence immobilière</span>
-          <h1>Trouvez le bien qui vous ressemble</h1>
+          <h1>Votre projet immobilier, entre de bonnes mains</h1>
           <p className="lead">
-            Akili vous accompagne pour acheter, vendre ou louer en toute confiance,
-            avec une sélection de biens de qualité et un suivi personnalisé.
+            Que vous achetiez, vendiez ou louiez, Akili vous accompagne à chaque étape avec
+            un suivi personnalisé et une parfaite connaissance du marché local.
           </p>
           <div className="hero-actions">
             <Link to="/produits"><Button>Voir les produits</Button></Link>
@@ -38,9 +38,14 @@ export default function HomePage() {
             <h2>Un accompagnement de confiance, à chaque étape</h2>
             <p>
               Akili est une agence immobilière qui accompagne particuliers et professionnels
-              dans leurs projets d'achat, de vente et de location. Notre équipe met son
-              expérience du marché local au service de vos projets, avec un suivi personnalisé
-              à chaque étape.
+              dans leurs projets d'achat, de vente et de location. Nous connaissons le terrain :
+              chaque quartier, chaque type de bien, chaque étape administrative. Cette
+              connaissance, nous la mettons au service de votre projet, avec des conseils
+              clairs et un interlocuteur disponible du premier contact jusqu'à la signature.
+            </p>
+            <p>
+              Notre approche est simple : vous écouter, comprendre votre besoin réel, et vous
+              proposer des solutions adaptées plutôt qu'une liste de biens génériques.
             </p>
           </div>
         </Container>
@@ -54,22 +59,22 @@ export default function HomePage() {
             <div className="feature">
               <div className="feature-icon">01</div>
               <h3>Vente &amp; achat</h3>
-              <p>Accompagnement complet pour vendre ou acquérir un bien au meilleur prix.</p>
+              <p>Vendez ou achetez en toute sérénité, avec un accompagnement complet jusqu'à la signature.</p>
             </div>
             <div className="feature">
               <div className="feature-icon">02</div>
               <h3>Location</h3>
-              <p>Recherche et gestion locative pour propriétaires et locataires.</p>
+              <p>Un bon locataire, un bon logement : nous nous occupons de la mise en relation et du suivi.</p>
             </div>
             <div className="feature">
               <div className="feature-icon">03</div>
               <h3>Estimation</h3>
-              <p>Évaluation précise de la valeur de votre bien selon le marché actuel.</p>
+              <p>La juste valeur de votre bien, basée sur une connaissance fine du marché local.</p>
             </div>
             <div className="feature">
               <div className="feature-icon">04</div>
               <h3>Conseil</h3>
-              <p>Un accompagnement sur-mesure, de la recherche jusqu'à la signature.</p>
+              <p>Des démarches simplifiées et des conseils clairs, de la recherche à la signature.</p>
             </div>
           </div>
         </Container>

@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  @@map("admins")
+}
+
+enum PropertyType {
+  VENTE
+  LOCATION
+}
+
+model Product {
+  id          String       @id @default(cuid())
+  title       String
+  description String?      @db.Text
+  type        PropertyType
+  city        String
+  price       String
+  surface     String?
+  rooms       Int?
+  image       String?      @db.Text
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("products")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
+enum RequestStatus {
+  EN_ATTENTE
+  TRAITE
+}
+
+enum RequestType {
+  PRODUIT
+  SERVICE
+}
+
+model ClientRequest {
+  id        String        @id @default(cuid())
+  name      String
+  contact   String
+  type      RequestType
+  details   String        @db.Text
+  status    RequestStatus @default(EN_ATTENTE)
+  createdAt DateTime      @default(now())
+
+  @@map("client_requests")
+}
+
+model SellOffer {
+  id           String        @id @default(cuid())
+  name         String
+  phone        String
+  propertyType String
+  city         String
+  surface      String?
+  price        String?
+  description  String?       @db.Text
+  status       RequestStatus @default(EN_ATTENTE)
+  createdAt    DateTime      @default(now())
+
+  @@map("sell_offers")
+}
+
+enum MediaType {
+  PHOTO
+  VIDEO
+}
+
+model GalleryMedia {
+  id        String    @id @default(cuid())
+  type      MediaType
+  url       String    @db.Text
+  caption   String?
+  createdAt DateTime  @default(now())
+
+  @@map("gallery_media")
+}

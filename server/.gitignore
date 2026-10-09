@@ -1,0 +1,12 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/src/generated/prisma
+
+# Fichiers uploadés localement (dev) — un vrai stockage objet sera utilisé en production
+/uploads/*
+!/uploads/.gitkeep
+
+# Build du frontend copié ici par scripts/build-for-cpanel.sh — généré, pas une source
+/public

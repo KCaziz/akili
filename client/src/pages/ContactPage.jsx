@@ -1,16 +1,39 @@
 import { useState } from "react";
 import Container from "../components/ui/Container";
 import Button from "../components/ui/Button";
+import { createClientRequest } from "../lib/api";
 
-const WHATSAPP_NUMBER = "213000000000"; // placeholder — à remplacer par le vrai numéro de l'agence
+const WHATSAPP_NUMBER = "213783940376";
+
+const initialState = { name: "", email: "", message: "" };
 
 export default function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState(initialState);
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState(null);
 
-  function handleSubmit(event) {
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
-    // Squelette uniquement : aucun envoi réel n'est fait pour le moment (Phase 2).
-    setSubmitted(true);
+    setStatus("loading");
+    setError(null);
+    try {
+      await createClientRequest({
+        name: form.name,
+        contact: form.email,
+        type: "SERVICE",
+        details: `[Message de contact] ${form.message}`,
+      });
+      setStatus("success");
+      setForm(initialState);
+    } catch (err) {
+      setStatus("error");
+      setError(err.message);
+    }
   }
 
   return (
@@ -22,23 +45,24 @@ export default function ContactPage() {
         <form className="form" onSubmit={handleSubmit}>
           <label>
             Nom complet
-            <input type="text" name="name" required />
+            <input type="text" name="name" value={form.name} onChange={handleChange} required />
           </label>
           <label>
             E-mail
-            <input type="email" name="email" required />
+            <input type="email" name="email" value={form.email} onChange={handleChange} required />
           </label>
           <label>
             Message
-            <textarea name="message" rows={5} required />
+            <textarea name="message" rows={5} value={form.message} onChange={handleChange} required />
           </label>
-          <Button type="submit">Envoyer</Button>
-          {submitted && (
+          <Button type="submit">{status === "loading" ? "Envoi…" : "Envoyer"}</Button>
+          {status === "success" && (
             <p className="notice">
-              Ceci est un squelette de démonstration : le message n'est pas encore envoyé réellement.
-              L'envoi par e-mail sera activé en Phase 2.
+              Votre message a bien été envoyé et sera traité par un conseiller Akili. (Notification
+              par e-mail à l'équipe non encore activée — un fournisseur d'envoi reste à choisir.)
             </p>
           )}
+          {status === "error" && <p className="error">{error}</p>}
         </form>
 
         <div className="whatsapp-box">

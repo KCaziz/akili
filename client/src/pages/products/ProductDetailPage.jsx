@@ -1,13 +1,39 @@
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Container from "../../components/ui/Container";
 import Button from "../../components/ui/Button";
-import { mockProducts } from "../../data/mockProducts";
+import { fetchProduct, resolveMediaUrl } from "../../lib/api";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
-  const product = mockProducts.find((item) => String(item.id) === id);
+  const [product, setProduct] = useState(null);
+  const [status, setStatus] = useState("loading");
 
-  if (!product) {
+  useEffect(() => {
+    let cancelled = false;
+    setStatus("loading");
+    fetchProduct(id)
+      .then((data) => {
+        if (!cancelled) {
+          setProduct(data);
+          setStatus("ready");
+        }
+      })
+      .catch(() => !cancelled && setStatus("error"));
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
+
+  if (status === "loading") {
+    return (
+      <Container className="section">
+        <p className="muted">Chargement…</p>
+      </Container>
+    );
+  }
+
+  if (status === "error" || !product) {
     return (
       <Container className="section">
         <h1>Bien introuvable</h1>
@@ -22,16 +48,17 @@ export default function ProductDetailPage() {
       <Link to="/produits" className="back-link">&larr; Retour au catalogue</Link>
 
       <div className="product-detail">
-        <img className="card-image large" src={product.image} alt={product.title} />
+        <img className="card-image large" src={resolveMediaUrl(product.image)} alt={product.title} />
         <div>
           <h1>{product.title}</h1>
           <p className="price">{product.price}</p>
           <ul className="product-meta">
-            <li><strong>Type :</strong> {product.type}</li>
+            <li><strong>Type :</strong> {product.type === "VENTE" ? "Vente" : "Location"}</li>
             <li><strong>Ville :</strong> {product.city}</li>
             {product.rooms && <li><strong>Pièces :</strong> {product.rooms}</li>}
-            <li><strong>Surface :</strong> {product.surface}</li>
+            {product.surface && <li><strong>Surface :</strong> {product.surface}</li>}
           </ul>
+          {product.description && <p>{product.description}</p>}
           <Link to="/demande"><Button>Faire une demande sur ce bien</Button></Link>
         </div>
       </div>

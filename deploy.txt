@@ -1,0 +1,9 @@
+À faire côté serveur cPanel (c'est maintenant détaillé dans DEPLOYMENT.md, identique à la procédure larbi qui fonctionne déjà) :
+
+Créer la base MySQL + utilisateur dans cPanel, puis importer akili-en-ligne/base-de-donnees.sql via phpMyAdmin.
+Remplir akili-en-ligne/akili-app/.env (DATABASE_URL, CORS_ORIGIN, JWT_SECRET) — ou laisser le .env tel quel et mettre ces 3 variables directement dans l'UI cPanel.
+Uploader akili-app.zip via File Manager, l'extraire.
+Setup Node.js App → Create Application → Application startup file : app.cjs (point important, différent de l'ancienne doc).
+Run NPM Install (déclenche prisma generate via le postinstall).
+Restart, activer SSL, tester.
+Rien n'a été commité — tout est en attente dans l'arbre de travail (git status montre akili-en-ligne/ et server/app.cjs en untracked, DEPLOYMENT.md/scripts/build-for-cpanel.sh modifiés). Dis-moi si tu veux que je commite.

@@ -63,16 +63,15 @@ Depuis la racine du projet, en local :
 bash scripts/build-for-cpanel.sh
 ```
 
-Ce script :
+Ce script assemble tout le paquet prêt à l'emploi dans `akili-en-ligne/akili-app/` :
 - build le frontend React (`client/` → `client/dist/`)
-- copie le résultat dans `server/public/` (c'est ce dossier que Express servira en production)
+- copie `server/src/`, `server/prisma/`, `server/app.cjs`, `server/package.json` et le build du frontend dans `akili-en-ligne/akili-app/`
 
-Ensuite, **zippe le dossier `server/`**, en excluant :
-- `node_modules/` (sera réinstallé sur le serveur)
-- `.env` (tu vas configurer les variables directement dans l'UI cPanel)
-- le contenu de `uploads/` sauf `.gitkeep` (pas de fichiers de test à envoyer)
+C'est exactement le même principe que `larbi-en-ligne/larbi-app/` : un dossier unique, autonome, qui contient tout ce qu'il faut (backend Express + frontend buildé), prêt à être zippé.
 
-Sous Windows, le plus simple : copie le dossier `server/` ailleurs, supprime-y `node_modules` et `.env` si présents, vide `uploads/` (garde `.gitkeep`), puis fais clic droit → « Envoyer vers » → « Dossier compressé » sur ce dossier nettoyé. Tu obtiens un fichier `server.zip`.
+Avant de zipper, ouvre `akili-en-ligne/akili-app/.env` et remplace les valeurs `A REMPLIR` par les vraies (base de données, domaine, secret JWT) — ou laisse-le tel quel et configure plutôt les variables directement dans l'UI cPanel (section 6), puis supprime ce fichier `.env` du paquet avant de zipper.
+
+Sous Windows, le plus simple : clic droit sur `akili-en-ligne/akili-app` → « Envoyer vers » → « Dossier compressé ». Tu obtiens un fichier `akili-app.zip`. `node_modules/` n'existe pas dans ce dossier (il sera réinstallé sur le serveur), pas besoin de l'exclure.
 
 ---
 
@@ -81,7 +80,7 @@ Sous Windows, le plus simple : copie le dossier `server/` ailleurs, supprime-y `
 1. cPanel → **File Manager**.
 2. Va dans ton répertoire personnel (pas forcément `public_html` — voir section 5).
 3. Crée un dossier, ex. `akili-app`.
-4. Upload `server.zip` dedans, puis clic droit → **Extract**.
+4. Upload `akili-app.zip` dedans, puis clic droit → **Extract**.
 5. Une fois extrait, tu dois voir `akili-app/src/`, `akili-app/prisma/`, `akili-app/public/`, `akili-app/package.json`, etc.
 
 ---
@@ -94,7 +93,12 @@ cPanel → **Setup Node.js App** → **Create Application**.
 - **Application mode** : Production.
 - **Application root** : le dossier créé en section 4, ex. `akili-app` (chemin relatif à ta racine, cPanel te montre généralement `/home/monpseudo/akili-app`).
 - **Application URL** : le domaine ou sous-domaine où le site doit être visible (ex. `akili-immo.com` ou `app.akili-immo.com`).
-- **Application startup file** : `src/server.js`
+- **Application startup file** : `app.cjs`
+
+  (pas `src/server.js` : Passenger charge le fichier de démarrage avec `require()`,
+  incompatible avec les modules ES de ce projet (`"type": "module"`). `app.cjs` est
+  un petit fichier CommonJS qui importe `src/server.js` dynamiquement — c'est la
+  même technique que sur `larbi-app`, déjà en production.)
 
 Clique **Create**. cPanel crée l'environnement virtuel Node et configure automatiquement le proxy (Apache/LiteSpeed) vers ton app — tu n'as rien à écrire toi-même (pas de `.htaccess` à créer à la main).
 
@@ -146,7 +150,7 @@ Un lien vers le fichier de log (souvent « Passenger log file ») est générale
 2. Visite `https://ton-domaine.com` — le site public doit s'afficher (catalogue, galerie, etc. avec les données de démo).
 3. Va sur `https://ton-domaine.com/admin/connexion`, connecte-toi avec `admin` / `akili2026`.
 4. **Change immédiatement ce mot de passe** : va dans l'admin sur **Mon compte** (`/admin/compte`), saisis le mot de passe actuel (`akili2026`) et le nouveau. Pas besoin de repasser par phpMyAdmin.
-5. Teste l'ajout d'un produit avec upload d'image depuis l'admin, pour confirmer que `server/uploads/` est bien accessible en écriture (ça devrait l'être par défaut).
+5. Teste l'ajout d'un produit avec upload d'image depuis l'admin, pour confirmer que `uploads/` est bien accessible en écriture (ça devrait l'être par défaut).
 
 ---
 
@@ -154,8 +158,8 @@ Un lien vers le fichier de log (souvent « Passenger log file ») est générale
 
 À chaque fois que tu modifies le code (front ou back) :
 
-1. En local : `bash scripts/build-for-cpanel.sh` (rebuild le frontend dans `server/public/`).
-2. Si tu as touché au `server/`, re-zippe le dossier (toujours en excluant `node_modules`, `.env`, le contenu de `uploads/`).
+1. En local : `bash scripts/build-for-cpanel.sh` (rebuild le frontend et réassemble `akili-en-ligne/akili-app/`).
+2. Re-zippe `akili-en-ligne/akili-app/` (le `.env` qu'il contient n'est qu'un modèle à valeurs `A REMPLIR` — vérifie avant d'écraser que tu n'envoies pas par-dessus un `.env` de prod déjà configuré côté serveur si tu gères les variables via un fichier plutôt que l'UI cPanel).
 3. Dans File Manager : remplace les fichiers modifiés (ou ré-uploade et extrais par-dessus — cPanel demande confirmation avant d'écraser).
 4. Si tu as modifié `server/package.json` (nouvelle dépendance) : reclique **Run NPM Install** dans Setup Node.js App.
 5. Si tu as modifié `prisma/schema.prisma` (nouveau champ, nouvelle table) : il faut adapter la base MySQL manuellement via phpMyAdmin (`ALTER TABLE ...` ou `CREATE TABLE ...`), puisqu'il n'y a pas de terminal pour lancer `prisma migrate`. Dis-moi quand tu en es là, je te génère le SQL correspondant à chaque changement de schéma, comme pour `cpanel-setup.sql`.

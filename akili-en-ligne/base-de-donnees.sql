@@ -56,6 +56,7 @@ CREATE TABLE `services` (
 CREATE TABLE `client_requests` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
+    `nationalId` VARCHAR(18) NOT NULL,
     `contact` VARCHAR(191) NOT NULL,
     `type` ENUM('PRODUIT', 'SERVICE') NOT NULL,
     `details` TEXT NOT NULL,
@@ -68,6 +69,7 @@ CREATE TABLE `client_requests` (
 CREATE TABLE `sell_offers` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
+    `nationalId` VARCHAR(18) NOT NULL,
     `phone` VARCHAR(191) NOT NULL,
     `propertyType` VARCHAR(191) NOT NULL,
     `city` VARCHAR(191) NOT NULL,

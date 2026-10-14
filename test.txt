@@ -1,0 +1,2 @@
+- dans l'admin tu vois les collones details elles sont trop petites si un contenu est grands alors elle ne fait que grandir en hauteur avec 3 mots par lignes ce n'est pas pratique pour la lecture (ici je sais pas rendre la lecture de description pratique mais il faut la changer)
+- dans la collones actions enléves les trais en bas car sa porte a confusion (trait de demarcation entre les lignes)

@@ -1,0 +1,151 @@
+{
+  "nav": {
+    "presentation": "Présentation",
+    "services": "Services",
+    "products": "Produits",
+    "gallery": "Galerie",
+    "sell": "Vendre",
+    "request": "Demande",
+    "contact": "Contact"
+  },
+  "header": {
+    "brand": "Akili",
+    "brandSub": "Immobilier",
+    "openMenu": "Ouvrir le menu"
+  },
+  "footer": {
+    "rights": "© {{year}} Akili Immobilier — Tous droits réservés.",
+    "contact": "Contact",
+    "adminSpace": "Espace Admin"
+  },
+  "language": {
+    "label": "Langue"
+  },
+  "home": {
+    "eyebrow": "Agence immobilière",
+    "title": "Votre projet immobilier, entre de bonnes mains",
+    "lead": "Que vous achetiez, vendiez ou louiez, Akili vous accompagne à chaque étape avec un suivi personnalisé et une parfaite connaissance du marché local.",
+    "viewProducts": "Voir les produits",
+    "proposeProperty": "Proposer un bien",
+    "aboutEyebrow": "Qui sommes-nous",
+    "aboutTitle": "Un accompagnement de confiance, à chaque étape",
+    "aboutP1": "Akili est une agence immobilière qui accompagne particuliers et professionnels dans leurs projets d'achat, de vente et de location. Nous connaissons le terrain : chaque quartier, chaque type de bien, chaque étape administrative. Cette connaissance, nous la mettons au service de votre projet, avec des conseils clairs et un interlocuteur disponible du premier contact jusqu'à la signature.",
+    "aboutP2": "Notre approche est simple : vous écouter, comprendre votre besoin réel, et vous proposer des solutions adaptées plutôt qu'une liste de biens génériques.",
+    "domainsEyebrow": "Nos domaines",
+    "domainsTitle": "Ce que nous proposons",
+    "featureSaleTitle": "Vente & achat",
+    "featureSaleText": "Vendez ou achetez en toute sérénité, avec un accompagnement complet jusqu'à la signature.",
+    "featureRentTitle": "Location",
+    "featureRentText": "Un bon locataire, un bon logement : nous nous occupons de la mise en relation et du suivi.",
+    "featureEstimateTitle": "Estimation",
+    "featureEstimateText": "La juste valeur de votre bien, basée sur une connaissance fine du marché local.",
+    "featureAdviceTitle": "Conseil",
+    "featureAdviceText": "Des démarches simplifiées et des conseils clairs, de la recherche à la signature.",
+    "ctaTitle": "Un projet immobilier en tête ?",
+    "ctaText": "Parlons-en. Notre équipe vous répond rapidement.",
+    "ctaButton": "Nous contacter"
+  },
+  "services": {
+    "title": "Nos services",
+    "lead": "Akili vous accompagne à chaque étape de votre projet immobilier.",
+    "loading": "Chargement des services…",
+    "error": "Impossible de charger les services pour le moment. Le serveur est-il démarré ?"
+  },
+  "products": {
+    "title": "Nos produits",
+    "lead": "Découvrez notre sélection de biens à la vente et à la location.",
+    "loading": "Chargement des produits…",
+    "error": "Impossible de charger les produits. Le serveur est-il démarré ?",
+    "empty": "Aucun produit n'est disponible pour le moment.",
+    "sale": "Vente",
+    "rent": "Location"
+  },
+  "productDetail": {
+    "loading": "Chargement…",
+    "notFoundTitle": "Bien introuvable",
+    "notFoundText": "Ce bien n'existe pas ou n'est plus disponible.",
+    "backToCatalog": "Retour au catalogue",
+    "type": "Type :",
+    "city": "Ville :",
+    "rooms": "Pièces :",
+    "surface": "Surface :",
+    "requestOnThis": "Faire une demande sur ce bien"
+  },
+  "gallery": {
+    "eyebrow": "Galerie",
+    "title": "Photos & vidéos de l'agence",
+    "lead": "Découvrez nos locaux, notre équipe et nos événements en images.",
+    "demoNotice": "Photos illustratives pour cette version de démonstration — à remplacer par les vraies photos et vidéos de l'agence Akili.",
+    "loading": "Chargement…",
+    "error": "Impossible de charger la galerie.",
+    "videosTitle": "Vidéos",
+    "noVideos": "Aucune vidéo n'a encore été fournie par l'agence. Cette section affichera les vidéos de présentation d'Akili dès qu'elles seront disponibles.",
+    "photoAlt": "Photo de l'agence"
+  },
+  "sell": {
+    "title": "Vendre un bien",
+    "lead": "Vous souhaitez proposer un bien à la vente ? Remplissez ce formulaire, un conseiller Akili vous recontactera.",
+    "fullName": "Nom complet",
+    "nationalId": "Numéro d'identification national (NIN)",
+    "nationalIdPlaceholder": "18 chiffres",
+    "phone": "Téléphone",
+    "propertyType": "Type de bien",
+    "choosePropertyType": "Choisir un type",
+    "propertyApartment": "Appartement",
+    "propertyVilla": "Villa",
+    "propertyLand": "Terrain",
+    "propertyCommercial": "Local commercial",
+    "city": "Ville",
+    "surface": "Surface (m²)",
+    "price": "Prix souhaité",
+    "pricePlaceholder": "Ex : 12 000 000 DZD",
+    "description": "Description du bien",
+    "submit": "Envoyer mon offre",
+    "submitting": "Envoi…",
+    "success": "Votre offre a bien été envoyée. Un conseiller Akili vous recontactera prochainement."
+  },
+  "request": {
+    "title": "Formuler une demande",
+    "lead": "Vous recherchez un bien ou un service particulier ? Décrivez votre besoin, un conseiller Akili vous recontactera.",
+    "fullName": "Nom complet",
+    "nationalId": "Numéro d'identification national (NIN)",
+    "nationalIdPlaceholder": "18 chiffres",
+    "contact": "Téléphone ou e-mail",
+    "type": "Type de demande",
+    "chooseType": "Choisir un type",
+    "typeProduct": "Un produit (bien immobilier)",
+    "typeService": "Un service de l'agence",
+    "details": "Détail de la demande",
+    "detailsPlaceholder": "Ex : je recherche un F3 à Alger, budget max 20 000 000 DZD",
+    "submit": "Envoyer ma demande",
+    "submitting": "Envoi…",
+    "success": "Votre demande a bien été envoyée. Un conseiller Akili vous recontactera prochainement."
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "lead": "Une question ? Écrivez-nous ou contactez-nous directement sur WhatsApp.",
+    "fullName": "Nom complet",
+    "nationalId": "Numéro d'identification national (NIN)",
+    "nationalIdPlaceholder": "18 chiffres",
+    "email": "E-mail",
+    "message": "Message",
+    "submit": "Envoyer",
+    "submitting": "Envoi…",
+    "success": "Votre message a bien été envoyé et sera traité par un conseiller Akili. (Notification par e-mail à l'équipe non encore activée — un fournisseur d'envoi reste à choisir.)",
+    "whatsappTitle": "Discuter sur WhatsApp",
+    "whatsappText": "Contactez directement un conseiller Akili.",
+    "whatsappButton": "Ouvrir WhatsApp"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "text": "La page que vous recherchez n'existe pas.",
+    "backHome": "Retour à l'accueil"
+  },
+  "validation": {
+    "required": "Ce champ est requis",
+    "invalidNationalId": "Doit comporter exactement 18 chiffres",
+    "invalidPhone": "Numéro invalide (ex. 0551234567)",
+    "invalidEmail": "Adresse e-mail invalide",
+    "invalidContact": "Numéro algérien (ex. 0551234567) ou e-mail valide requis"
+  }
+}

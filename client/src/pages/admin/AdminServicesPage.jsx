@@ -106,7 +106,7 @@ export default function AdminServicesPage() {
             {services.map((service) => (
               <tr key={service.id}>
                 <td>{service.title}</td>
-                <td>{service.description}</td>
+                <td className="admin-description-cell">{service.description}</td>
                 <td className="admin-actions">
                   <button className="link-btn" onClick={() => openEditForm(service)}>Modifier</button>
                   <button className="link-btn danger" onClick={() => handleDelete(service.id)}>Supprimer</button>

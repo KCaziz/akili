@@ -1,13 +1,32 @@
 import { prisma } from "../config/prisma.js";
+import { isNonEmptyString, isValidNationalId, isValidAlgerianPhone } from "../utils/validators.js";
 
 export async function createSellOffer(req, res, next) {
   try {
-    const { name, phone, propertyType, city, surface, price, description } = req.body ?? {};
-    if (!name || !phone || !propertyType || !city) {
-      return res.status(400).json({ error: "Nom, téléphone, type de bien et ville sont requis" });
+    const { name, nationalId, phone, propertyType, city, surface, price, description } = req.body ?? {};
+    if (!isNonEmptyString(name, { maxLength: 191 })) {
+      return res.status(400).json({ error: "Le nom complet est requis" });
+    }
+    if (!isValidNationalId(nationalId)) {
+      return res.status(400).json({ error: "Le numéro d'identification national doit comporter exactement 18 chiffres" });
+    }
+    if (!isValidAlgerianPhone(phone)) {
+      return res.status(400).json({ error: "Le téléphone doit être un numéro algérien valide (ex. 0551234567)" });
+    }
+    if (!isNonEmptyString(propertyType, { maxLength: 191 }) || !isNonEmptyString(city, { maxLength: 191 })) {
+      return res.status(400).json({ error: "Le type de bien et la ville sont requis" });
     }
     const offer = await prisma.sellOffer.create({
-      data: { name, phone, propertyType, city, surface, price, description },
+      data: {
+        name: name.trim(),
+        nationalId: nationalId.trim(),
+        phone: phone.trim(),
+        propertyType,
+        city: city.trim(),
+        surface: surface || null,
+        price: price || null,
+        description: description || null,
+      },
     });
     res.status(201).json(offer);
   } catch (err) {

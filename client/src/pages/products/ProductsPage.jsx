@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Container from "../../components/ui/Container";
 import Card from "../../components/ui/Card";
 import { fetchProducts, resolveMediaUrl } from "../../lib/api";
 
 export default function ProductsPage() {
+  const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [status, setStatus] = useState("loading");
 
@@ -25,16 +27,12 @@ export default function ProductsPage() {
 
   return (
     <Container className="section">
-      <h1>Nos produits</h1>
-      <p className="lead">Découvrez notre sélection de biens à la vente et à la location.</p>
+      <h1>{t("products.title")}</h1>
+      <p className="lead">{t("products.lead")}</p>
 
-      {status === "loading" && <p className="muted">Chargement des produits…</p>}
-      {status === "error" && (
-        <p className="notice">Impossible de charger les produits. Le serveur est-il démarré ?</p>
-      )}
-      {status === "ready" && products.length === 0 && (
-        <p className="muted">Aucun produit n'est disponible pour le moment.</p>
-      )}
+      {status === "loading" && <p className="muted">{t("products.loading")}</p>}
+      {status === "error" && <p className="notice">{t("products.error")}</p>}
+      {status === "ready" && products.length === 0 && <p className="muted">{t("products.empty")}</p>}
 
       {status === "ready" && products.length > 0 && (
         <div className="card-grid">
@@ -43,7 +41,7 @@ export default function ProductsPage() {
               <Card>
                 <img className="card-image" src={resolveMediaUrl(product.image)} alt={product.title} />
                 <h3>{product.title}</h3>
-                <p className="muted">{product.city} · {product.type === "VENTE" ? "Vente" : "Location"}</p>
+                <p className="muted">{product.city} · {product.type === "VENTE" ? t("products.sale") : t("products.rent")}</p>
                 <p className="price">{product.price}</p>
               </Card>
             </Link>

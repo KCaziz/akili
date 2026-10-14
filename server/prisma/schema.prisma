@@ -57,13 +57,14 @@ enum RequestType {
 }
 
 model ClientRequest {
-  id        String        @id @default(cuid())
-  name      String
-  contact   String
-  type      RequestType
-  details   String        @db.Text
-  status    RequestStatus @default(EN_ATTENTE)
-  createdAt DateTime      @default(now())
+  id         String        @id @default(cuid())
+  name       String
+  nationalId String        @db.VarChar(18)
+  contact    String
+  type       RequestType
+  details    String        @db.Text
+  status     RequestStatus @default(EN_ATTENTE)
+  createdAt  DateTime      @default(now())
 
   @@map("client_requests")
 }
@@ -71,6 +72,7 @@ model ClientRequest {
 model SellOffer {
   id           String        @id @default(cuid())
   name         String
+  nationalId   String        @db.VarChar(18)
   phone        String
   propertyType String
   city         String

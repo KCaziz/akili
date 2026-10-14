@@ -25,12 +25,6 @@ export default function MediaUploadField({ label, value, onChange, accept = "ima
     <label>
       {label}
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="https://… (ou importez un fichier ci-dessous)"
-        />
         <input type="file" accept={accept} onChange={handleFileChange} disabled={uploading} />
         {uploading && <span className="muted">Envoi en cours…</span>}
         {error && <span className="error">{error}</span>}

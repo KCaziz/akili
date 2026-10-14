@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchRequests, updateRequestStatus } from "../../lib/api";
+import TruncatedText from "../../components/admin/TruncatedText";
 
 export default function AdminRequestsPage() {
   const [requests, setRequests] = useState([]);
@@ -45,10 +46,11 @@ export default function AdminRequestsPage() {
           <thead>
             <tr>
               <th>Nom</th>
+              <th>NIN</th>
               <th>Contact</th>
               <th>Type</th>
               <th>Détail</th>
-              <th>Statut</th>
+              <th className="admin-status-cell">Statut</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -56,10 +58,13 @@ export default function AdminRequestsPage() {
             {requests.map((request) => (
               <tr key={request.id}>
                 <td>{request.name}</td>
+                <td>{request.nationalId}</td>
                 <td>{request.contact}</td>
                 <td>{request.type === "PRODUIT" ? "Produit" : "Service"}</td>
-                <td>{request.details}</td>
-                <td>
+                <td className="admin-description-cell">
+                  <TruncatedText text={request.details} title="Détail de la demande" />
+                </td>
+                <td className="admin-status-cell">
                   <span className={`badge badge-${request.status === "TRAITE" ? "done" : "pending"}`}>
                     {request.status === "TRAITE" ? "traité" : "en attente"}
                   </span>

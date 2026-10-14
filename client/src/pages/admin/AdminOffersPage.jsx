@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchSellOffers, updateSellOfferStatus } from "../../lib/api";
+import TruncatedText from "../../components/admin/TruncatedText";
 
 export default function AdminOffersPage() {
   const [offers, setOffers] = useState([]);
@@ -45,10 +46,12 @@ export default function AdminOffersPage() {
           <thead>
             <tr>
               <th>Nom</th>
+              <th>NIN</th>
               <th>Téléphone</th>
               <th>Bien</th>
               <th>Ville</th>
-              <th>Statut</th>
+              <th>Description</th>
+              <th className="admin-status-cell">Statut</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -56,10 +59,14 @@ export default function AdminOffersPage() {
             {offers.map((offer) => (
               <tr key={offer.id}>
                 <td>{offer.name}</td>
+                <td>{offer.nationalId}</td>
                 <td>{offer.phone}</td>
                 <td>{offer.propertyType}{offer.price ? ` — ${offer.price}` : ""}</td>
                 <td>{offer.city}</td>
-                <td>
+                <td className="admin-description-cell">
+                  <TruncatedText text={offer.description} title="Description du bien" />
+                </td>
+                <td className="admin-status-cell">
                   <span className={`badge badge-${offer.status === "TRAITE" ? "done" : "pending"}`}>
                     {offer.status === "TRAITE" ? "traité" : "en attente"}
                   </span>

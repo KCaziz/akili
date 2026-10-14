@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Container from "../components/ui/Container";
 import { fetchGallery, resolveMediaUrl } from "../lib/api";
 
 export default function GalleryPage() {
+  const { t } = useTranslation();
   const [media, setMedia] = useState([]);
   const [status, setStatus] = useState("loading");
 
@@ -26,36 +28,30 @@ export default function GalleryPage() {
 
   return (
     <Container className="section">
-      <span className="eyebrow">Galerie</span>
-      <h1>Photos &amp; vidéos de l'agence</h1>
-      <p className="lead">Découvrez nos locaux, notre équipe et nos événements en images.</p>
+      <span className="eyebrow">{t("gallery.eyebrow")}</span>
+      <h1>{t("gallery.title")}</h1>
+      <p className="lead">{t("gallery.lead")}</p>
 
-      <p className="notice">
-        Photos illustratives pour cette version de démonstration — à remplacer par les vraies
-        photos et vidéos de l'agence Akili.
-      </p>
+      <p className="notice">{t("gallery.demoNotice")}</p>
 
-      {status === "loading" && <p className="muted">Chargement…</p>}
-      {status === "error" && <p className="notice">Impossible de charger la galerie.</p>}
+      {status === "loading" && <p className="muted">{t("gallery.loading")}</p>}
+      {status === "error" && <p className="notice">{t("gallery.error")}</p>}
 
       {status === "ready" && (
         <>
           <div className="gallery-grid">
             {photos.map((photo) => (
               <figure key={photo.id} className="gallery-item">
-                <img src={resolveMediaUrl(photo.url)} alt={photo.caption || "Photo de l'agence"} />
+                <img src={resolveMediaUrl(photo.url)} alt={photo.caption || t("gallery.photoAlt")} />
                 {photo.caption && <figcaption>{photo.caption}</figcaption>}
               </figure>
             ))}
           </div>
 
-          <h2 className="gallery-section-title">Vidéos</h2>
+          <h2 className="gallery-section-title">{t("gallery.videosTitle")}</h2>
           {videos.length === 0 ? (
             <div className="gallery-empty">
-              <p>
-                Aucune vidéo n'a encore été fournie par l'agence. Cette section affichera les
-                vidéos de présentation d'Akili dès qu'elles seront disponibles.
-              </p>
+              <p>{t("gallery.noVideos")}</p>
             </div>
           ) : (
             <div className="gallery-grid">

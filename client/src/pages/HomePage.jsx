@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Container from "../components/ui/Container";
 import Button from "../components/ui/Button";
 
 export default function HomePage() {
+  const { t } = useTranslation();
+
   return (
     <>
       <section className="hero">
@@ -13,15 +16,12 @@ export default function HomePage() {
         />
         <div className="hero-overlay" />
         <Container className="hero-inner">
-          <span className="eyebrow">Agence immobilière</span>
-          <h1>Votre projet immobilier, entre de bonnes mains</h1>
-          <p className="lead">
-            Que vous achetiez, vendiez ou louiez, Akili vous accompagne à chaque étape avec
-            un suivi personnalisé et une parfaite connaissance du marché local.
-          </p>
+          <span className="eyebrow">{t("home.eyebrow")}</span>
+          <h1>{t("home.title")}</h1>
+          <p className="lead">{t("home.lead")}</p>
           <div className="hero-actions">
-            <Link to="/produits"><Button>Voir les produits</Button></Link>
-            <Link to="/vendre"><Button variant="secondary">Proposer un bien</Button></Link>
+            <Link to="/produits"><Button>{t("home.viewProducts")}</Button></Link>
+            <Link to="/vendre"><Button variant="secondary">{t("home.proposeProperty")}</Button></Link>
           </div>
         </Container>
       </section>
@@ -34,47 +34,38 @@ export default function HomePage() {
             alt="Intérieur moderne"
           />
           <div>
-            <span className="eyebrow">Qui sommes-nous</span>
-            <h2>Un accompagnement de confiance, à chaque étape</h2>
-            <p>
-              Akili est une agence immobilière qui accompagne particuliers et professionnels
-              dans leurs projets d'achat, de vente et de location. Nous connaissons le terrain :
-              chaque quartier, chaque type de bien, chaque étape administrative. Cette
-              connaissance, nous la mettons au service de votre projet, avec des conseils
-              clairs et un interlocuteur disponible du premier contact jusqu'à la signature.
-            </p>
-            <p>
-              Notre approche est simple : vous écouter, comprendre votre besoin réel, et vous
-              proposer des solutions adaptées plutôt qu'une liste de biens génériques.
-            </p>
+            <span className="eyebrow">{t("home.aboutEyebrow")}</span>
+            <h2>{t("home.aboutTitle")}</h2>
+            <p>{t("home.aboutP1")}</p>
+            <p>{t("home.aboutP2")}</p>
           </div>
         </Container>
       </section>
 
       <section className="section section-alt">
         <Container>
-          <span className="eyebrow">Nos domaines</span>
-          <h2>Ce que nous proposons</h2>
+          <span className="eyebrow">{t("home.domainsEyebrow")}</span>
+          <h2>{t("home.domainsTitle")}</h2>
           <div className="feature-grid">
             <div className="feature">
               <div className="feature-icon">01</div>
-              <h3>Vente &amp; achat</h3>
-              <p>Vendez ou achetez en toute sérénité, avec un accompagnement complet jusqu'à la signature.</p>
+              <h3>{t("home.featureSaleTitle")}</h3>
+              <p>{t("home.featureSaleText")}</p>
             </div>
             <div className="feature">
               <div className="feature-icon">02</div>
-              <h3>Location</h3>
-              <p>Un bon locataire, un bon logement : nous nous occupons de la mise en relation et du suivi.</p>
+              <h3>{t("home.featureRentTitle")}</h3>
+              <p>{t("home.featureRentText")}</p>
             </div>
             <div className="feature">
               <div className="feature-icon">03</div>
-              <h3>Estimation</h3>
-              <p>La juste valeur de votre bien, basée sur une connaissance fine du marché local.</p>
+              <h3>{t("home.featureEstimateTitle")}</h3>
+              <p>{t("home.featureEstimateText")}</p>
             </div>
             <div className="feature">
               <div className="feature-icon">04</div>
-              <h3>Conseil</h3>
-              <p>Des démarches simplifiées et des conseils clairs, de la recherche à la signature.</p>
+              <h3>{t("home.featureAdviceTitle")}</h3>
+              <p>{t("home.featureAdviceText")}</p>
             </div>
           </div>
         </Container>
@@ -88,9 +79,9 @@ export default function HomePage() {
         />
         <div className="hero-overlay" />
         <Container className="cta-inner">
-          <h2>Un projet immobilier en tête ?</h2>
-          <p>Parlons-en. Notre équipe vous répond rapidement.</p>
-          <Link to="/contact"><Button>Nous contacter</Button></Link>
+          <h2>{t("home.ctaTitle")}</h2>
+          <p>{t("home.ctaText")}</p>
+          <Link to="/contact"><Button>{t("home.ctaButton")}</Button></Link>
         </Container>
       </section>
     </>

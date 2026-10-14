@@ -1,16 +1,19 @@
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const links = [
-  { to: "/", label: "Présentation" },
-  { to: "/services", label: "Services" },
-  { to: "/produits", label: "Produits" },
-  { to: "/galerie", label: "Galerie" },
-  { to: "/vendre", label: "Vendre" },
-  { to: "/demande", label: "Demande" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", key: "presentation" },
+  { to: "/services", key: "services" },
+  { to: "/produits", key: "products" },
+  { to: "/galerie", key: "gallery" },
+  { to: "/vendre", key: "sell" },
+  { to: "/demande", key: "request" },
+  { to: "/contact", key: "contact" },
 ];
 
 export default function Navigation({ onNavigate }) {
+  const { t } = useTranslation();
+
   return (
     <nav className="main-nav">
       {links.map((link) => (
@@ -20,7 +23,7 @@ export default function Navigation({ onNavigate }) {
           onClick={onNavigate}
           className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
         >
-          {link.label}
+          {t(`nav.${link.key}`)}
         </NavLink>
       ))}
     </nav>

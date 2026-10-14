@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Container from "../../components/ui/Container";
 import Button from "../../components/ui/Button";
 import { fetchProduct, resolveMediaUrl } from "../../lib/api";
 
 export default function ProductDetailPage() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [status, setStatus] = useState("loading");
@@ -28,7 +30,7 @@ export default function ProductDetailPage() {
   if (status === "loading") {
     return (
       <Container className="section">
-        <p className="muted">Chargement…</p>
+        <p className="muted">{t("productDetail.loading")}</p>
       </Container>
     );
   }
@@ -36,16 +38,16 @@ export default function ProductDetailPage() {
   if (status === "error" || !product) {
     return (
       <Container className="section">
-        <h1>Bien introuvable</h1>
-        <p>Ce bien n'existe pas ou n'est plus disponible.</p>
-        <Link to="/produits">Retour au catalogue</Link>
+        <h1>{t("productDetail.notFoundTitle")}</h1>
+        <p>{t("productDetail.notFoundText")}</p>
+        <Link to="/produits">{t("productDetail.backToCatalog")}</Link>
       </Container>
     );
   }
 
   return (
     <Container className="section">
-      <Link to="/produits" className="back-link">&larr; Retour au catalogue</Link>
+      <Link to="/produits" className="back-link">&larr; {t("productDetail.backToCatalog")}</Link>
 
       <div className="product-detail">
         <img className="card-image large" src={resolveMediaUrl(product.image)} alt={product.title} />
@@ -53,13 +55,13 @@ export default function ProductDetailPage() {
           <h1>{product.title}</h1>
           <p className="price">{product.price}</p>
           <ul className="product-meta">
-            <li><strong>Type :</strong> {product.type === "VENTE" ? "Vente" : "Location"}</li>
-            <li><strong>Ville :</strong> {product.city}</li>
-            {product.rooms && <li><strong>Pièces :</strong> {product.rooms}</li>}
-            {product.surface && <li><strong>Surface :</strong> {product.surface}</li>}
+            <li><strong>{t("productDetail.type")}</strong> {product.type === "VENTE" ? t("products.sale") : t("products.rent")}</li>
+            <li><strong>{t("productDetail.city")}</strong> {product.city}</li>
+            {product.rooms && <li><strong>{t("productDetail.rooms")}</strong> {product.rooms}</li>}
+            {product.surface && <li><strong>{t("productDetail.surface")}</strong> {product.surface}</li>}
           </ul>
-          {product.description && <p>{product.description}</p>}
-          <Link to="/demande"><Button>Faire une demande sur ce bien</Button></Link>
+          {product.description && <p className="preserve-lines">{product.description}</p>}
+          <Link to="/demande"><Button>{t("productDetail.requestOnThis")}</Button></Link>
         </div>
       </div>
     </Container>

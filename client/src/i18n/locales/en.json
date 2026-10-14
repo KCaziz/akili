@@ -1,0 +1,151 @@
+{
+  "nav": {
+    "presentation": "Home",
+    "services": "Services",
+    "products": "Properties",
+    "gallery": "Gallery",
+    "sell": "Sell",
+    "request": "Request",
+    "contact": "Contact"
+  },
+  "header": {
+    "brand": "Akili",
+    "brandSub": "Real Estate",
+    "openMenu": "Open menu"
+  },
+  "footer": {
+    "rights": "© {{year}} Akili Real Estate — All rights reserved.",
+    "contact": "Contact",
+    "adminSpace": "Admin area"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "home": {
+    "eyebrow": "Real estate agency",
+    "title": "Your real estate project, in good hands",
+    "lead": "Whether you're buying, selling or renting, Akili supports you at every step with personalised follow-up and a deep knowledge of the local market.",
+    "viewProducts": "View properties",
+    "proposeProperty": "List a property",
+    "aboutEyebrow": "Who we are",
+    "aboutTitle": "Trusted support, at every step",
+    "aboutP1": "Akili is a real estate agency that supports individuals and professionals in their buying, selling and renting projects. We know the ground: every neighbourhood, every type of property, every administrative step. We put this knowledge at the service of your project, with clear advice and a dedicated contact from the first conversation to the signature.",
+    "aboutP2": "Our approach is simple: listen to you, understand your real need, and offer tailored solutions rather than a generic list of properties.",
+    "domainsEyebrow": "Our areas of expertise",
+    "domainsTitle": "What we offer",
+    "featureSaleTitle": "Sale & purchase",
+    "featureSaleText": "Sell or buy with peace of mind, with full support through to the signature.",
+    "featureRentTitle": "Rental",
+    "featureRentText": "A good tenant, a good home: we handle the matching and the follow-up.",
+    "featureEstimateTitle": "Valuation",
+    "featureEstimateText": "The fair value of your property, based on a precise knowledge of the local market.",
+    "featureAdviceTitle": "Advice",
+    "featureAdviceText": "Simplified procedures and clear advice, from the search to the signature.",
+    "ctaTitle": "Have a real estate project in mind?",
+    "ctaText": "Let's talk about it. Our team responds quickly.",
+    "ctaButton": "Contact us"
+  },
+  "services": {
+    "title": "Our services",
+    "lead": "Akili supports you at every step of your real estate project.",
+    "loading": "Loading services…",
+    "error": "Unable to load services right now. Is the server running?"
+  },
+  "products": {
+    "title": "Our properties",
+    "lead": "Discover our selection of properties for sale and for rent.",
+    "loading": "Loading properties…",
+    "error": "Unable to load properties. Is the server running?",
+    "empty": "No property is available right now.",
+    "sale": "Sale",
+    "rent": "Rent"
+  },
+  "productDetail": {
+    "loading": "Loading…",
+    "notFoundTitle": "Property not found",
+    "notFoundText": "This property does not exist or is no longer available.",
+    "backToCatalog": "Back to the catalogue",
+    "type": "Type:",
+    "city": "City:",
+    "rooms": "Rooms:",
+    "surface": "Surface:",
+    "requestOnThis": "Make a request about this property"
+  },
+  "gallery": {
+    "eyebrow": "Gallery",
+    "title": "Agency photos & videos",
+    "lead": "Discover our offices, our team and our events in pictures.",
+    "demoNotice": "Illustrative photos for this demo version — to be replaced with real Akili agency photos and videos.",
+    "loading": "Loading…",
+    "error": "Unable to load the gallery.",
+    "videosTitle": "Videos",
+    "noVideos": "No video has been provided by the agency yet. This section will display Akili's presentation videos as soon as they are available.",
+    "photoAlt": "Agency photo"
+  },
+  "sell": {
+    "title": "Sell a property",
+    "lead": "Would you like to list a property for sale? Fill in this form, an Akili advisor will get back to you.",
+    "fullName": "Full name",
+    "nationalId": "National identification number (NIN)",
+    "nationalIdPlaceholder": "18 digits",
+    "phone": "Phone",
+    "propertyType": "Property type",
+    "choosePropertyType": "Choose a type",
+    "propertyApartment": "Apartment",
+    "propertyVilla": "Villa",
+    "propertyLand": "Land",
+    "propertyCommercial": "Commercial unit",
+    "city": "City",
+    "surface": "Surface (m²)",
+    "price": "Asking price",
+    "pricePlaceholder": "E.g.: 12,000,000 DZD",
+    "description": "Property description",
+    "submit": "Send my listing",
+    "submitting": "Sending…",
+    "success": "Your listing has been sent. An Akili advisor will get back to you shortly."
+  },
+  "request": {
+    "title": "Make a request",
+    "lead": "Looking for a specific property or service? Describe your need, an Akili advisor will get back to you.",
+    "fullName": "Full name",
+    "nationalId": "National identification number (NIN)",
+    "nationalIdPlaceholder": "18 digits",
+    "contact": "Phone or e-mail",
+    "type": "Request type",
+    "chooseType": "Choose a type",
+    "typeProduct": "A property",
+    "typeService": "An agency service",
+    "details": "Request details",
+    "detailsPlaceholder": "E.g.: I'm looking for a 3-room flat in Algiers, budget up to 20,000,000 DZD",
+    "submit": "Send my request",
+    "submitting": "Sending…",
+    "success": "Your request has been sent. An Akili advisor will get back to you shortly."
+  },
+  "contact": {
+    "title": "Contact us",
+    "lead": "Got a question? Write to us or reach us directly on WhatsApp.",
+    "fullName": "Full name",
+    "nationalId": "National identification number (NIN)",
+    "nationalIdPlaceholder": "18 digits",
+    "email": "E-mail",
+    "message": "Message",
+    "submit": "Send",
+    "submitting": "Sending…",
+    "success": "Your message has been sent and will be handled by an Akili advisor. (Email notification to the team not yet enabled — a sending provider is still to be chosen.)",
+    "whatsappTitle": "Chat on WhatsApp",
+    "whatsappText": "Reach an Akili advisor directly.",
+    "whatsappButton": "Open WhatsApp"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page you are looking for does not exist.",
+    "backHome": "Back to home"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidNationalId": "Must be exactly 18 digits",
+    "invalidPhone": "Invalid number (e.g. 0551234567)",
+    "invalidEmail": "Invalid email address",
+    "invalidContact": "An Algerian phone number (e.g. 0551234567) or a valid email is required"
+  }
+}

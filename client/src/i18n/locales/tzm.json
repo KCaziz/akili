@@ -1,0 +1,151 @@
+{
+  "nav": {
+    "presentation": "Asatal",
+    "services": "Imeslayen",
+    "products": "Ismal",
+    "gallery": "Tabziqt n tugniwin",
+    "sell": "Zzenz",
+    "request": "Asuter",
+    "contact": "Nermes"
+  },
+  "header": {
+    "brand": "Akili",
+    "brandSub": "Askan n ssya",
+    "openMenu": "Ldi umuɣ"
+  },
+  "footer": {
+    "rights": "© {{year}} Akili Askan n ssya — Akk izerfan ttwaḥerzen.",
+    "contact": "Nermes",
+    "adminSpace": "Agbur n unebdal"
+  },
+  "language": {
+    "label": "Tutlayt"
+  },
+  "home": {
+    "eyebrow": "Takebbanit n ssya",
+    "title": "Asenfar-ik n ssya, ger ifassen yelhan",
+    "lead": "Ama tessaɣed, tzenzeḍ neɣ tkerrzeḍ, Akili tettɛawan-ik di yal amecwar s useɛdi udmawan akked tmusni n ssuq adigan.",
+    "viewProducts": "Wali ismal",
+    "proposeProperty": "Sumer aɣerbaz i zzenz",
+    "aboutEyebrow": "Anwa-ten nekni",
+    "aboutTitle": "Aɛawen anamek, di yal amecwar",
+    "aboutP1": "Akili d takebbanit n ssya i gettɛawanen imdanen akked yimahalen deg isenfaren-nsen n ssuɣ, zzenz akked kerray. Nessen akal: yal taddart, yal anaw n uɣerbaz, yal amecwar n tnezzut. Tamusni-agi, nettaɛamed fell-as deg usenfar-ik, s yimeslayen iclayen akked umsaway yellan seg umeslay amezwaru alamma d usingem.",
+    "aboutP2": "Tarrayt-nneɣ tefsus: a ken-nesmeḥses, a nefhem lebɣi-k ssaḥiḥ, a k-d-nefk tifrat yemmlalen deg amḍiq n tebdart tamatut n ismal.",
+    "domainsEyebrow": "Imeslayen-nneɣ",
+    "domainsTitle": "Ayen i nesumer",
+    "featureSaleTitle": "Zzenz & asuɣ",
+    "featureSaleText": "Zzenz neɣ asuɣ s talwit, s aɛawen ummid alamma d usingem.",
+    "featureRentTitle": "Akerray",
+    "featureRentText": "Akerraz yelhan, axxam yelhan: nekni i gettɛasen amtawi akked uḍfar.",
+    "featureEstimateTitle": "Aktil",
+    "featureEstimateText": "Azal ameɛqul n uɣerbaz-ik, s lmend n tmusni n ssuq adigan.",
+    "featureAdviceTitle": "Amsawal",
+    "featureAdviceText": "Tiregwa ifsusen akked imeslayen iclayen, seg usenger alamma d usingem.",
+    "ctaTitle": "Tesɛiḍ asenfar n ssya di uxemmem-ik?",
+    "ctaText": "A d-nemmeslay fell-as. Agraw-nneɣ ad d-yerr s zrib.",
+    "ctaButton": "Nermes"
+  },
+  "services": {
+    "title": "Imeslayen-nneɣ",
+    "lead": "Akili tettɛawan-ik di yal amecwar n usenfar-ik n ssya.",
+    "loading": "Asali n yimeslayen…",
+    "error": "Ur yezmir ara ad d-yali imeslayen tura. Ma aqeddac yermed?"
+  },
+  "products": {
+    "title": "Ismal-nneɣ",
+    "lead": "Issin tafrant-nneɣ n ismal i zzenz akked kerray.",
+    "loading": "Asali n ismal…",
+    "error": "Ur yezmir ara ad d-yali ismal. Ma aqeddac yermed?",
+    "empty": "Ulac aɣerbaz yellan tura.",
+    "sale": "Zzenz",
+    "rent": "Akerray"
+  },
+  "productDetail": {
+    "loading": "Asali…",
+    "notFoundTitle": "Aɣerbaz ulac-it",
+    "notFoundText": "Aɣerbaz-agi ulac-it neɣ ur yelli ara tura.",
+    "backToCatalog": "Uɣal ar tebdart",
+    "type": "Anaw:",
+    "city": "Taddart:",
+    "rooms": "Taxxamin:",
+    "surface": "Tiddi:",
+    "requestOnThis": "Sker asuter ɣef uɣerbaz-agi"
+  },
+  "gallery": {
+    "eyebrow": "Tabziqt n tugniwin",
+    "title": "Tugniwin & tividyutin n takebbanit",
+    "lead": "Issin imukan-nneɣ, agraw-nneɣ d tedyanin-nneɣ s tugniwin.",
+    "demoNotice": "Tugniwin n umedya i lqem-agi — ad ttwabedlent s tugniwin akked tividyutin tidak n Akili.",
+    "loading": "Asali…",
+    "error": "Ur yezmir ara ad d-tali tabziqt.",
+    "videosTitle": "Tividyutin",
+    "noVideos": "Takebbanit ur d-tefka ara aqbuc ɛad. Agbur-agi ad d-isken tividyutin n Akili mi ara ilint.",
+    "photoAlt": "Tugna n takebbanit"
+  },
+  "sell": {
+    "title": "Zzenz aɣerbaz",
+    "lead": "Tebɣiḍ a d-tsumreḍ aɣerbaz i zzenz? Ačaṛ aseggas-agi, amsawal n Akili ad ak-d-yerr.",
+    "fullName": "Isem ummid",
+    "nationalId": "Uṭṭun n timagit tanamurt (NIN)",
+    "nationalIdPlaceholder": "18 n yimḍanen",
+    "phone": "Tilifun",
+    "propertyType": "Anaw n uɣerbaz",
+    "choosePropertyType": "Fren anaw",
+    "propertyApartment": "Takatit",
+    "propertyVilla": "Tawrirt",
+    "propertyLand": "Akal",
+    "propertyCommercial": "Amḥaz n ssuq",
+    "city": "Taddart",
+    "surface": "Tiddi (m²)",
+    "price": "Azal ittwaxsen",
+    "pricePlaceholder": "Amedya: 12.000.000 DA",
+    "description": "Aglam n uɣerbaz",
+    "submit": "Azen tasumra-inu",
+    "submitting": "Azen…",
+    "success": "Tasumra-k tettwazen akken iwata. Amsawal n Akili ad ak-d-yerr azekka-agi."
+  },
+  "request": {
+    "title": "Sker asuter",
+    "lead": "Tettnadiḍ ɣef uɣerbaz neɣ ameslay udmawan? Glem lebɣi-k, amsawal n Akili ad ak-d-yerr.",
+    "fullName": "Isem ummid",
+    "nationalId": "Uṭṭun n timagit tanamurt (NIN)",
+    "nationalIdPlaceholder": "18 n yimḍanen",
+    "contact": "Tilifun neɣ imayl",
+    "type": "Anaw n usuter",
+    "chooseType": "Fren anaw",
+    "typeProduct": "Aɣerbaz",
+    "typeService": "Ameslay n takebbanit",
+    "details": "Taglamt n usuter",
+    "detailsPlaceholder": "Amedya: tettnadiɣ ɣef F3 di Dzayer, lexir-inu alamma d 20.000.000 DA",
+    "submit": "Azen asuter-inu",
+    "submitting": "Azen…",
+    "success": "Asuter-ik yettwazen akken iwata. Amsawal n Akili ad ak-d-yerr azekka-agi."
+  },
+  "contact": {
+    "title": "Nermes-aɣ",
+    "lead": "Tesɛiḍ asteqsi? Aru-yaɣ-d neɣ nermes-aɣ srid deg WhatsApp.",
+    "fullName": "Isem ummid",
+    "nationalId": "Uṭṭun n timagit tanamurt (NIN)",
+    "nationalIdPlaceholder": "18 n yimḍanen",
+    "email": "Imayl",
+    "message": "Izen",
+    "submit": "Azen",
+    "submitting": "Azen…",
+    "success": "Izen-ik yettwazen akken iwata, ad ittwasefrek sɣur umsawal n Akili. (Alɣu s imayl ar ugraw mazal ur yermed ara — mazal ad d-yettwafren uɛeqqab n uzen.)",
+    "whatsappTitle": "Mmeslay deg WhatsApp",
+    "whatsappText": "Nermes srid amsawal n Akili.",
+    "whatsappButton": "Ldi WhatsApp"
+  },
+  "notFound": {
+    "title": "Asebter ulac-it",
+    "text": "Asebter i tettnadiḍ ulac-it.",
+    "backHome": "Uɣal ar usatal"
+  },
+  "validation": {
+    "required": "Taqcict-agi tettwasra",
+    "invalidNationalId": "Ilaq ad yili s 18 n yimḍanen",
+    "invalidPhone": "Uṭṭun arameɣtu (amedya: 0551234567)",
+    "invalidEmail": "Tansa n imayl arameɣtu",
+    "invalidContact": "Yettwasra uṭṭun n tilifun adzayri (amedya: 0551234567) neɣ imayl arameɣtu"
+  }
+}

@@ -1,16 +1,26 @@
 import { prisma } from "../config/prisma.js";
+import { isNonEmptyString, isValidNationalId, isValidContact } from "../utils/validators.js";
 
 export async function createRequest(req, res, next) {
   try {
-    const { name, contact, type, details } = req.body ?? {};
-    if (!name || !contact || !type || !details) {
-      return res.status(400).json({ error: "Tous les champs sont requis" });
+    const { name, nationalId, contact, type, details } = req.body ?? {};
+    if (!isNonEmptyString(name, { maxLength: 191 })) {
+      return res.status(400).json({ error: "Le nom complet est requis" });
+    }
+    if (!isValidNationalId(nationalId)) {
+      return res.status(400).json({ error: "Le numéro d'identification national doit comporter exactement 18 chiffres" });
+    }
+    if (!isValidContact(contact)) {
+      return res.status(400).json({ error: "Le contact doit être un numéro de téléphone algérien (ex. 0551234567) ou une adresse e-mail valide" });
     }
     if (!["PRODUIT", "SERVICE"].includes(type)) {
       return res.status(400).json({ error: "Type de demande invalide" });
     }
+    if (!isNonEmptyString(details, { maxLength: 5000 })) {
+      return res.status(400).json({ error: "Le détail de la demande est requis (5000 caractères maximum)" });
+    }
     const request = await prisma.clientRequest.create({
-      data: { name, contact, type, details },
+      data: { name: name.trim(), nationalId: nationalId.trim(), contact: contact.trim(), type, details: details.trim() },
     });
     res.status(201).json(request);
   } catch (err) {

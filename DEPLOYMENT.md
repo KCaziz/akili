@@ -53,6 +53,13 @@ Ce fichier crée les 6 tables (produits, services, demandes, offres, galerie, ad
 
 Ce fichier a été testé de bout en bout avant livraison (import réel + connexion admin + lecture des produits vérifiés), donc il n'y a normalement rien à corriger dedans.
 
+> Si une base a déjà été créée à partir d'une **version antérieure** de ce fichier (sans la colonne
+> `nationalId`), exécute d'abord ceci dans phpMyAdmin avant de repartir :
+> ```sql
+> ALTER TABLE `client_requests` ADD COLUMN `nationalId` VARCHAR(18) NOT NULL DEFAULT '';
+> ALTER TABLE `sell_offers` ADD COLUMN `nationalId` VARCHAR(18) NOT NULL DEFAULT '';
+> ```
+
 ---
 
 ## 3. Préparer le paquet à uploader (sur ta machine)

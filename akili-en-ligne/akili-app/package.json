@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "postinstall": "prisma generate"
+    "postinstall": "node -e \"const{execSync}=require('node:child_process');const path=require('node:path');const root=process.env.INIT_CWD||process.cwd();execSync('npx prisma generate --schema='+JSON.stringify(path.join(root,'prisma','schema.prisma')),{stdio:'inherit',cwd:root});\""
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.10.0",

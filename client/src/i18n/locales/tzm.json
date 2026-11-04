@@ -6,7 +6,8 @@
     "gallery": "Tabziqt n tugniwin",
     "sell": "Zzenz",
     "request": "Asuter",
-    "contact": "Nermes"
+    "contact": "Nermes",
+    "simulator": "Asimulatur n ttelq"
   },
   "header": {
     "brand": "Akili",
@@ -43,7 +44,15 @@
     "featureAdviceText": "Tiregwa ifsusen akked imeslayen iclayen, seg usenger alamma d usingem.",
     "ctaTitle": "Tesɛiḍ asenfar n ssya di uxemmem-ik?",
     "ctaText": "A d-nemmeslay fell-as. Agraw-nneɣ ad d-yerr s zrib.",
-    "ctaButton": "Nermes"
+    "ctaButton": "Nermes",
+    "featuredEyebrow": "Afran",
+    "featuredTitle": "Ismal-nneɣ yettwafernen",
+    "seeAll": "Wali akk ismal",
+    "figuresYears": "iseggasen n tirmit",
+    "figuresSold": "ismal yettwazenzen",
+    "figuresClients": "imsaɣen i nɛawen",
+    "testimonialsEyebrow": "Inagan",
+    "testimonialsTitle": "Ayen d-qqaren yimsaɣen-nneɣ"
   },
   "services": {
     "title": "Imeslayen-nneɣ",
@@ -58,7 +67,14 @@
     "error": "Ur yezmir ara ad d-yali ismal. Ma aqeddac yermed?",
     "empty": "Ulac aɣerbaz yellan tura.",
     "sale": "Zzenz",
-    "rent": "Akerray"
+    "rent": "Akerray",
+    "roomsShort": "{{count}} texxamin",
+    "resultCount": "Ismal yettwafen: {{count}}",
+    "mapUnlocated": "Ismal war adig ur d-ttbanen ara deg tkarḍa: {{count}}",
+    "viewLabel": "Askan",
+    "viewList": "Tabdart",
+    "viewMap": "Takarḍa",
+    "noResults": "Ulac asaɣur i yemmlalen d tewtilin-agi. Ɛreḍ ad tessimɣureḍ anadi-k."
   },
   "productDetail": {
     "loading": "Asali…",
@@ -69,7 +85,15 @@
     "city": "Taddart:",
     "rooms": "Taxxamin:",
     "surface": "Tiddi:",
-    "requestOnThis": "Sker asuter ɣef uɣerbaz-agi"
+    "requestOnThis": "Sker asuter ɣef uɣerbaz-agi",
+    "photoCount": "{{count}} tugniwin",
+    "close": "Mdel",
+    "previous": "Tugna yezrin",
+    "next": "Tugna d-iteddun",
+    "openFullscreen": "Sken ɣef ugdil aččuran",
+    "video": "Tavidyut n tirza",
+    "location": "Adig",
+    "askOnWhatsapp": "Seqsi deg WhatsApp"
   },
   "gallery": {
     "eyebrow": "Tabziqt n tugniwin",
@@ -147,5 +171,73 @@
     "invalidPhone": "Uṭṭun arameɣtu (amedya: 0551234567)",
     "invalidEmail": "Tansa n imayl arameɣtu",
     "invalidContact": "Yettwasra uṭṭun n tilifun adzayri (amedya: 0551234567) neɣ imayl arameɣtu"
+  },
+  "common": {
+    "currency": "DZD",
+    "perMonth": "/ ayyur"
+  },
+  "badges": {
+    "new": "Amaynut",
+    "exclusive": "Asufeɣ",
+    "sold": "Yettwazenz",
+    "rented": "Yettwakerrez"
+  },
+  "favorites": {
+    "add": "Rnu ɣer yismenyifen",
+    "remove": "Kkes seg yismenyifen",
+    "navLabel": "Ismenyifen-iw",
+    "title": "Ismenyifen-iw",
+    "lead": "Ismal i teḥrezeḍ. Ttwaskelsen deg ibenk-agi.",
+    "empty": "Ur tesɛiḍ ara yakan ismal deg yismenyifen. Sit ɣef wul n yal alɣu akken ad t-teḥrezeḍ dagi.",
+    "browse": "Snirem ismal"
+  },
+  "filters": {
+    "type": "Anaw",
+    "all": "Zzenz d ukerray",
+    "city": "Tamdint",
+    "allCities": "Akk timdinin",
+    "minPrice": "Tadrimt tamecṭuḥt (DZD)",
+    "maxPrice": "Tadrimt tameqqrant (DZD)",
+    "minRooms": "Texxamin (drus)",
+    "any": "Akk",
+    "search": "Nadi",
+    "reset": "Ales",
+    "sort": "Smizzwer s",
+    "sortNewest": "Imaynuten",
+    "sortPriceAsc": "Azal yettalin",
+    "sortPriceDesc": "Azal yettrusun"
+  },
+  "share": {
+    "label": "Bḍu:",
+    "more": "Ugar…"
+  },
+  "simulator": {
+    "title": "Asimulatur n ttelq n uxxam",
+    "lead": "Ḥseb tiferdiyin-ik n wayyur s lmend n tedrimt-ik, tanzagt d ufmiḍi.",
+    "price": "Azal n usaɣur (DZD)",
+    "downPayment": "Tadrimt-ik (DZD)",
+    "duration": "Tanzagt (iseggasen)",
+    "rate": "Afmiḍi n useggas (%)",
+    "monthly": "Tiferdi n wayyur",
+    "loanAmount": "Ttelq",
+    "totalInterest": "Azal n tfayda",
+    "totalCost": "Akk ayen ara d-terreḍ",
+    "disclaimer": "Asimulatur d amatar kan, war aḍman d yiṣuḍaf. Afmiḍi n tidet d lbanka i t-yettṣeggiden."
+  },
+  "alert": {
+    "title": "Ṭṭef alɣu ɣef yismal imaynuten",
+    "lead": "Eǧǧ-d tansa-k: amsawal n Akili ad k-yessiwel akken kan ara d-yeffeɣ usaɣur i yemmlalen d unadi-k.",
+    "criteria": "Anadi-k:",
+    "allProperties": "akk ismal",
+    "name": "Isem",
+    "contact": "Tiliɣri neɣ imayl",
+    "submit": "Snulfu-d alɣu-iw",
+    "submitting": "Tuzna…",
+    "success": "Yettwaskles! Ad k-nessiwel akken kan ara yili usaɣur i yemmlalen."
+  },
+  "whatsapp": {
+    "floatLabel": "Mmeslay yid-neɣ deg WhatsApp",
+    "message": "Azul Akili, bɣiɣ ad ẓreɣ kra n talɣut.",
+    "propertyMessage": "Azul, ccah-iyi usaɣur-agi: {{title}} — {{url}}"
   }
 }

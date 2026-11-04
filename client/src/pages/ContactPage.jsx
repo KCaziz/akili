@@ -4,13 +4,13 @@ import Container from "../components/ui/Container";
 import Button from "../components/ui/Button";
 import { createClientRequest } from "../lib/api";
 import { validateRequired, validateNationalId, validateEmail, runValidators } from "../lib/validation";
-
-const WHATSAPP_NUMBER = "213783940376";
+import { useSiteSettings } from "../lib/useSiteSettings";
 
 const initialState = { name: "", nationalId: "", email: "", message: "" };
 
 export default function ContactPage() {
   const { t } = useTranslation();
+  const { whatsappNumber } = useSiteSettings();
   const [form, setForm] = useState(initialState);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState(null);
@@ -94,7 +94,7 @@ export default function ContactPage() {
           <h3>{t("contact.whatsappTitle")}</h3>
           <p>{t("contact.whatsappText")}</p>
           <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}`}
+            href={`https://wa.me/${whatsappNumber}`}
             target="_blank"
             rel="noreferrer"
             className="btn btn-whatsapp"

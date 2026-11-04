@@ -1,6 +1,8 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import WhatsAppFloat from "../components/layout/WhatsAppFloat";
+import ScrollReveal from "../components/ui/ScrollReveal";
 
 export default function MainLayout() {
   return (
@@ -10,6 +12,8 @@ export default function MainLayout() {
         <Outlet />
       </main>
       <Footer />
+      <WhatsAppFloat />
+      <ScrollReveal />
     </div>
   );
 }

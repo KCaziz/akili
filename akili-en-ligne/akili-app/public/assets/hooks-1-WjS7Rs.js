@@ -1,0 +1,1 @@
+import{c as e,u as t}from"./index-BkY8ihDX.js";import{u as n}from"./leafletSetup-CIWrPh3Q.js";var r=t(e(),1);function i(){return n().map}function a(e){let t=i();return(0,r.useEffect)(function(){return t.on(e),function(){t.off(e)}},[t,e]),t}export{a as n,i as t};

@@ -41,8 +41,16 @@ export const updateService = (id, data) => request(`/services/${id}`, { method: 
 export const deleteService = (id) => request(`/services/${id}`, { method: "DELETE" });
 
 // ---- Produits ----
-export const fetchProducts = () => request("/products");
+// params : type, city, minPrice, maxPrice, minRooms, sort, featured, ids, limit (vides ignorés).
+export function fetchProducts(params = {}) {
+  const query = new URLSearchParams(
+    Object.entries(params).filter(([, value]) => value !== undefined && value !== null && value !== ""),
+  ).toString();
+  return request(`/products${query ? `?${query}` : ""}`);
+}
+export const fetchCities = () => request("/products/cities");
 export const fetchProduct = (id) => request(`/products/${id}`);
+export const recordProductView = (id) => request(`/products/${id}/view`, { method: "POST" });
 export const createProduct = (data) => request("/products", { method: "POST", body: data });
 export const updateProduct = (id, data) => request(`/products/${id}`, { method: "PUT", body: data });
 export const deleteProduct = (id) => request(`/products/${id}`, { method: "DELETE" });
@@ -61,6 +69,26 @@ export const updateSellOfferStatus = (id, status) => request(`/sell-offers/${id}
 export const fetchGallery = () => request("/gallery");
 export const createGalleryMedia = (data) => request("/gallery", { method: "POST", body: data });
 export const deleteGalleryMedia = (id) => request(`/gallery/${id}`, { method: "DELETE" });
+
+// ---- Avis clients ----
+export const fetchTestimonials = () => request("/testimonials");
+export const fetchAllTestimonials = () => request("/testimonials/all");
+export const createTestimonial = (data) => request("/testimonials", { method: "POST", body: data });
+export const updateTestimonial = (id, data) => request(`/testimonials/${id}`, { method: "PUT", body: data });
+export const deleteTestimonial = (id) => request(`/testimonials/${id}`, { method: "DELETE" });
+
+// ---- Paramètres du site (chiffres clés, WhatsApp) ----
+export const fetchSettings = () => request("/settings");
+export const updateSettings = (data) => request("/settings", { method: "PUT", body: data });
+
+// ---- Alertes ----
+export const createAlert = (data) => request("/alerts", { method: "POST", body: data });
+export const fetchAlerts = () => request("/alerts");
+export const updateAlert = (id, isActive) => request(`/alerts/${id}`, { method: "PATCH", body: { isActive } });
+export const deleteAlert = (id) => request(`/alerts/${id}`, { method: "DELETE" });
+
+// ---- Statistiques admin ----
+export const fetchStats = () => request("/stats");
 
 // ---- Auth admin ----
 export const login = (username, password) => request("/auth/login", { method: "POST", body: { username, password } });

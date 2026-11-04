@@ -6,7 +6,8 @@
     "gallery": "Gallery",
     "sell": "Sell",
     "request": "Request",
-    "contact": "Contact"
+    "contact": "Contact",
+    "simulator": "Mortgage calculator"
   },
   "header": {
     "brand": "Akili",
@@ -43,7 +44,15 @@
     "featureAdviceText": "Simplified procedures and clear advice, from the search to the signature.",
     "ctaTitle": "Have a real estate project in mind?",
     "ctaText": "Let's talk about it. Our team responds quickly.",
-    "ctaButton": "Contact us"
+    "ctaButton": "Contact us",
+    "featuredEyebrow": "Selection",
+    "featuredTitle": "Featured properties",
+    "seeAll": "See all properties",
+    "figuresYears": "years of experience",
+    "figuresSold": "properties sold",
+    "figuresClients": "clients served",
+    "testimonialsEyebrow": "Testimonials",
+    "testimonialsTitle": "What our clients say"
   },
   "services": {
     "title": "Our services",
@@ -58,7 +67,14 @@
     "error": "Unable to load properties. Is the server running?",
     "empty": "No property is available right now.",
     "sale": "Sale",
-    "rent": "Rent"
+    "rent": "Rent",
+    "roomsShort": "{{count}} rooms",
+    "resultCount": "{{count}} propert(y/ies) found",
+    "mapUnlocated": "{{count}} propert(y/ies) without a location are not shown on the map.",
+    "viewLabel": "Display",
+    "viewList": "List",
+    "viewMap": "Map",
+    "noResults": "No property matches these criteria. Try widening your search."
   },
   "productDetail": {
     "loading": "Loading…",
@@ -69,7 +85,15 @@
     "city": "City:",
     "rooms": "Rooms:",
     "surface": "Surface:",
-    "requestOnThis": "Make a request about this property"
+    "requestOnThis": "Make a request about this property",
+    "photoCount": "{{count}} photos",
+    "close": "Close",
+    "previous": "Previous photo",
+    "next": "Next photo",
+    "openFullscreen": "View full screen",
+    "video": "Video tour",
+    "location": "Location",
+    "askOnWhatsapp": "Ask a question on WhatsApp"
   },
   "gallery": {
     "eyebrow": "Gallery",
@@ -147,5 +171,73 @@
     "invalidPhone": "Invalid number (e.g. 0551234567)",
     "invalidEmail": "Invalid email address",
     "invalidContact": "An Algerian phone number (e.g. 0551234567) or a valid email is required"
+  },
+  "common": {
+    "currency": "DZD",
+    "perMonth": "/ month"
+  },
+  "badges": {
+    "new": "New",
+    "exclusive": "Exclusive",
+    "sold": "Sold",
+    "rented": "Rented"
+  },
+  "favorites": {
+    "add": "Add to favourites",
+    "remove": "Remove from favourites",
+    "navLabel": "My favourites",
+    "title": "My favourites",
+    "lead": "The properties you've saved. They are stored on this device.",
+    "empty": "You haven't saved any property yet. Click the heart on a listing to keep it here.",
+    "browse": "Browse properties"
+  },
+  "filters": {
+    "type": "Transaction",
+    "all": "Sale and rent",
+    "city": "City",
+    "allCities": "All cities",
+    "minPrice": "Min budget (DZD)",
+    "maxPrice": "Max budget (DZD)",
+    "minRooms": "Min. rooms",
+    "any": "Any",
+    "search": "Search",
+    "reset": "Reset",
+    "sort": "Sort by",
+    "sortNewest": "Newest",
+    "sortPriceAsc": "Price: low to high",
+    "sortPriceDesc": "Price: high to low"
+  },
+  "share": {
+    "label": "Share:",
+    "more": "More…"
+  },
+  "simulator": {
+    "title": "Mortgage calculator",
+    "lead": "Estimate your monthly payments based on your down payment, loan term and interest rate.",
+    "price": "Property price (DZD)",
+    "downPayment": "Down payment (DZD)",
+    "duration": "Term (years)",
+    "rate": "Annual rate (%)",
+    "monthly": "Estimated monthly payment",
+    "loanAmount": "Loan amount",
+    "totalInterest": "Total interest",
+    "totalCost": "Total repaid",
+    "disclaimer": "Indicative estimate, excluding insurance and fees. The actual rate depends on your bank."
+  },
+  "alert": {
+    "title": "Get notified of new properties",
+    "lead": "Leave your contact details: an Akili advisor will let you know as soon as a matching property is listed.",
+    "criteria": "Your search:",
+    "allProperties": "all properties",
+    "name": "Name",
+    "contact": "Phone or email",
+    "submit": "Create my alert",
+    "submitting": "Sending…",
+    "success": "Got it! We'll contact you as soon as a matching property is available."
+  },
+  "whatsapp": {
+    "floatLabel": "Chat with us on WhatsApp",
+    "message": "Hello Akili, I'd like some information.",
+    "propertyMessage": "Hello, I'm interested in this property: {{title}} — {{url}}"
   }
 }

@@ -6,7 +6,8 @@
     "gallery": "Galerie",
     "sell": "Vendre",
     "request": "Demande",
-    "contact": "Contact"
+    "contact": "Contact",
+    "simulator": "Simulateur"
   },
   "header": {
     "brand": "Akili",
@@ -43,7 +44,15 @@
     "featureAdviceText": "Des démarches simplifiées et des conseils clairs, de la recherche à la signature.",
     "ctaTitle": "Un projet immobilier en tête ?",
     "ctaText": "Parlons-en. Notre équipe vous répond rapidement.",
-    "ctaButton": "Nous contacter"
+    "ctaButton": "Nous contacter",
+    "featuredEyebrow": "Sélection",
+    "featuredTitle": "Nos biens en vedette",
+    "seeAll": "Voir tous les biens",
+    "figuresYears": "années d'expérience",
+    "figuresSold": "biens vendus",
+    "figuresClients": "clients accompagnés",
+    "testimonialsEyebrow": "Témoignages",
+    "testimonialsTitle": "Ce que disent nos clients"
   },
   "services": {
     "title": "Nos services",
@@ -58,7 +67,14 @@
     "error": "Impossible de charger les produits. Le serveur est-il démarré ?",
     "empty": "Aucun produit n'est disponible pour le moment.",
     "sale": "Vente",
-    "rent": "Location"
+    "rent": "Location",
+    "roomsShort": "{{count}} pièces",
+    "resultCount": "{{count}} bien(s) trouvé(s)",
+    "mapUnlocated": "{{count}} bien(s) sans position ne figurent pas sur la carte.",
+    "viewLabel": "Affichage",
+    "viewList": "Liste",
+    "viewMap": "Carte",
+    "noResults": "Aucun bien ne correspond à ces critères. Essayez d'élargir votre recherche."
   },
   "productDetail": {
     "loading": "Chargement…",
@@ -69,7 +85,15 @@
     "city": "Ville :",
     "rooms": "Pièces :",
     "surface": "Surface :",
-    "requestOnThis": "Faire une demande sur ce bien"
+    "requestOnThis": "Faire une demande sur ce bien",
+    "photoCount": "{{count}} photos",
+    "close": "Fermer",
+    "previous": "Photo précédente",
+    "next": "Photo suivante",
+    "openFullscreen": "Afficher en plein écran",
+    "video": "Vidéo de visite",
+    "location": "Emplacement",
+    "askOnWhatsapp": "Poser une question sur WhatsApp"
   },
   "gallery": {
     "eyebrow": "Galerie",
@@ -147,5 +171,73 @@
     "invalidPhone": "Numéro invalide (ex. 0551234567)",
     "invalidEmail": "Adresse e-mail invalide",
     "invalidContact": "Numéro algérien (ex. 0551234567) ou e-mail valide requis"
+  },
+  "common": {
+    "currency": "DZD",
+    "perMonth": "/ mois"
+  },
+  "badges": {
+    "new": "Nouveau",
+    "exclusive": "Exclusivité",
+    "sold": "Vendu",
+    "rented": "Loué"
+  },
+  "favorites": {
+    "add": "Ajouter aux favoris",
+    "remove": "Retirer des favoris",
+    "navLabel": "Mes favoris",
+    "title": "Mes favoris",
+    "lead": "Les biens que vous avez mis de côté. Ils sont enregistrés sur cet appareil.",
+    "empty": "Vous n'avez encore aucun bien en favori. Cliquez sur le cœur d'une annonce pour la garder ici.",
+    "browse": "Parcourir les biens"
+  },
+  "filters": {
+    "type": "Transaction",
+    "all": "Vente et location",
+    "city": "Ville",
+    "allCities": "Toutes les villes",
+    "minPrice": "Budget min (DZD)",
+    "maxPrice": "Budget max (DZD)",
+    "minRooms": "Pièces min.",
+    "any": "Indifférent",
+    "search": "Rechercher",
+    "reset": "Réinitialiser",
+    "sort": "Trier par",
+    "sortNewest": "Plus récents",
+    "sortPriceAsc": "Prix croissant",
+    "sortPriceDesc": "Prix décroissant"
+  },
+  "share": {
+    "label": "Partager :",
+    "more": "Autres…"
+  },
+  "simulator": {
+    "title": "Simulateur de crédit immobilier",
+    "lead": "Estimez vos mensualités selon votre apport, la durée et le taux du prêt.",
+    "price": "Prix du bien (DZD)",
+    "downPayment": "Apport personnel (DZD)",
+    "duration": "Durée (années)",
+    "rate": "Taux annuel (%)",
+    "monthly": "Mensualité estimée",
+    "loanAmount": "Montant emprunté",
+    "totalInterest": "Coût des intérêts",
+    "totalCost": "Total remboursé",
+    "disclaimer": "Simulation indicative, hors assurance et frais de dossier. Le taux réel dépend de votre banque."
+  },
+  "alert": {
+    "title": "Être alerté des nouveaux biens",
+    "lead": "Laissez votre contact : un conseiller Akili vous préviendra dès qu'un bien correspondant à votre recherche sera publié.",
+    "criteria": "Votre recherche :",
+    "allProperties": "tous les biens",
+    "name": "Nom",
+    "contact": "Téléphone ou e-mail",
+    "submit": "Créer mon alerte",
+    "submitting": "Envoi…",
+    "success": "C'est noté ! Nous vous contacterons dès qu'un bien correspondant sera disponible."
+  },
+  "whatsapp": {
+    "floatLabel": "Discuter avec nous sur WhatsApp",
+    "message": "Bonjour Akili, j'aimerais avoir des informations.",
+    "propertyMessage": "Bonjour, je suis intéressé(e) par ce bien : {{title}} — {{url}}"
   }
 }

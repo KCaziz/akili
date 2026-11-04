@@ -8,6 +8,9 @@ const links = [
   { to: "/admin/galerie", label: "Galerie" },
   { to: "/admin/demandes", label: "Demandes clients" },
   { to: "/admin/offres", label: "Offres de vente" },
+  { to: "/admin/alertes", label: "Alertes visiteurs" },
+  { to: "/admin/avis", label: "Avis clients" },
+  { to: "/admin/parametres", label: "Paramètres du site" },
   { to: "/admin/compte", label: "Mon compte" },
 ];
 

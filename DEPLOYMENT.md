@@ -174,9 +174,26 @@ Un lien vers le fichier de log (souvent « Passenger log file ») est générale
 
 ---
 
+## 11. Mise à jour Phase 5 (galerie par bien, filtres, carte, avis, alertes…)
+
+À faire **dans cet ordre** sur le site déjà en ligne :
+
+1. **Sauvegarde** : phpMyAdmin → ta base → **Exporter** → Exécuter. Garde le fichier.
+2. **Base de données** : phpMyAdmin → ta base → onglet **SQL** → colle le contenu de `akili-en-ligne/mise-a-jour-phase5.sql` → Exécuter. Le script est non destructif (il ajoute des colonnes et des tables, ne supprime rien) et transforme la photo actuelle de chaque bien en première photo de sa galerie. **Ne l'exécute qu'une seule fois.**
+3. **Code** : en local `bash scripts/build-for-cpanel.sh`, re-zippe `akili-en-ligne/akili-app/` (l'ancien `akili-app.zip` est périmé), uploade et extrais par-dessus `~/deltasign` (garde ton `.env` de prod).
+4. Pas de nouvelle dépendance serveur dans cette mise à jour : pas besoin de `npm install`. Par sécurité tu peux quand même lancer `npx prisma generate --schema=prisma/schema.prisma` en shell (dans l'environnement virtuel de l'app) — le schéma a changé.
+5. **Restart** de l'application. Au premier démarrage, le serveur déduit le prix numérique de chaque bien à partir du prix texte existant (visible dans le log : « Prix numérique repris pour N bien(s) »).
+6. Dans l'admin, à compléter par l'agence :
+   - **Paramètres du site** : chiffres clés (la section est masquée sur l'accueil tant qu'ils sont vides) et numéro WhatsApp.
+   - **Avis clients** : uniquement de vrais témoignages (section masquée tant qu'il n'y en a aucun).
+   - **Produits** : ajouter les photos supplémentaires, la position sur la carte, cocher « En vedette » / « Exclusivité », passer les biens vendus/loués en statut « Vendu »/« Loué ».
+
+---
+
 ## Limites connues de cette configuration (à garder en tête)
 
 - **Stockage des fichiers uploadés (`server/uploads/`) sur le disque du serveur mutualisé** : fonctionne, mais si l'hébergeur change de serveur physique ou si tu migres d'offre un jour, ces fichiers ne sont pas automatiquement transférés — à sauvegarder toi-même périodiquement (via File Manager ou un export). Pour un usage sérieux à moyen terme, migrer vers un stockage objet (S3, Cloudinary...) reste recommandé, mais n'est pas nécessaire pour démarrer.
 - **Pas d'envoi d'email réel** : le formulaire Contact enregistre toujours le message en base (visible dans l'admin), aucun fournisseur d'email n'est configuré. À ajouter si besoin (SendGrid, Brevo, etc. — la plupart ont une API simple compatible avec un hébergement mutualisé).
-- **Numéro WhatsApp** : toujours un placeholder dans `client/src/pages/ContactPage.jsx` — remplace `WHATSAPP_NUMBER` par le vrai numéro avant un nouveau build.
+- **Numéro WhatsApp** : se règle dans l'admin, **Paramètres du site** (plus besoin de rebuild).
+- **Alertes visiteurs** : enregistrées en base et listées dans l'admin avec les biens correspondants, mais **aucun envoi automatique** (pas de fournisseur e-mail/SMS) — l'agence prévient le visiteur via le bouton « Prévenir » (WhatsApp ou e-mail pré-rédigé).
 - **Pas de sauvegarde automatique de la base** : vérifie si ton hébergeur fait des backups automatiques de MySQL, sinon configure un export régulier (cPanel propose généralement un outil « Backup » ou « Backup Wizard »).

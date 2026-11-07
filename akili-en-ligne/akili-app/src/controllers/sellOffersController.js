@@ -1,9 +1,9 @@
 import { prisma } from "../config/prisma.js";
-import { isNonEmptyString, isValidNationalId, isValidAlgerianPhone } from "../utils/validators.js";
+import { isNonEmptyString, isValidNationalId, isValidAlgerianPhone, isValidEmail } from "../utils/validators.js";
 
 export async function createSellOffer(req, res, next) {
   try {
-    const { name, nationalId, phone, propertyType, city, surface, price, description } = req.body ?? {};
+    const { name, nationalId, phone, email, propertyType, city, surface, price, description } = req.body ?? {};
     if (!isNonEmptyString(name, { maxLength: 191 })) {
       return res.status(400).json({ error: "Le nom complet est requis" });
     }
@@ -13,6 +13,9 @@ export async function createSellOffer(req, res, next) {
     if (!isValidAlgerianPhone(phone)) {
       return res.status(400).json({ error: "Le téléphone doit être un numéro algérien valide (ex. 0551234567)" });
     }
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ error: "L'adresse e-mail est invalide" });
+    }
     if (!isNonEmptyString(propertyType, { maxLength: 191 }) || !isNonEmptyString(city, { maxLength: 191 })) {
       return res.status(400).json({ error: "Le type de bien et la ville sont requis" });
     }
@@ -21,6 +24,7 @@ export async function createSellOffer(req, res, next) {
         name: name.trim(),
         nationalId: nationalId.trim(),
         phone: phone.trim(),
+        email: email.trim(),
         propertyType,
         city: city.trim(),
         surface: surface || null,

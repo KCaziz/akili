@@ -1,2 +1,7 @@
-- dans l'admin tu vois les collones details elles sont trop petites si un contenu est grands alors elle ne fait que grandir en hauteur avec 3 mots par lignes ce n'est pas pratique pour la lecture (ici je sais pas rendre la lecture de description pratique mais il faut la changer)
-- dans la collones actions enléves les trais en bas car sa porte a confusion (trait de demarcation entre les lignes)
+- je voudrais que tu supprime toutes les mentions indiquant une future amélioration et les mentions a la troisiéme personne de l'agence exp  — à remplacer par les vraies photos et vidéos de l'agence Akili. ou Cette section affichera les vidéos de présentation d'Akili dès qu'elles seront disponibles
+- dans la gallerie je veut qu'on puissent voir les images en plein ecran avec une possibilité de defiler (caroussel)
+- je voudrais qu'on ajoute un petit assistant en bas a droite avec des questions préposer et des réponse préfaites je te laisse la liberter de cela dans le contexte de la platforme 
+- la page /admin est moche je voudrais qu'elle soit plus belle plus dynamique plus de touts 
+- les produits peuvent avoir plusiers images ainsi que des videos mais ses dernieres ne serons visible que dans les details 
+- dans /admin/demandes il n'y a que certaines demandes qui ont le bouttons 'Voir détails' les autres ont juste ... c'est tout. 
+- dans /vendre il faut ajouter un input pour le mail.

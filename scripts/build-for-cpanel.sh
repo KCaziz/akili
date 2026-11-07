@@ -24,6 +24,7 @@ cp "$SERVER_DIR/package.json" "$DEST_DIR/package.json"
 cp "$SERVER_DIR/package-lock.json" "$DEST_DIR/package-lock.json"
 cp "$SERVER_DIR/app.cjs" "$DEST_DIR/app.cjs"
 cp "$SERVER_DIR/cpanel-setup.sql" "$ROOT_DIR/akili-en-ligne/base-de-donnees.sql"
+cp "$SERVER_DIR/cpanel-update-2026-11.sql" "$ROOT_DIR/akili-en-ligne/mise-a-jour-base-2026-11.sql"
 cp -r "$CLIENT_DIR/dist/." "$DEST_DIR/public/"
 touch "$DEST_DIR/uploads/.gitkeep"
 

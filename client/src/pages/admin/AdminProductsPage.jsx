@@ -1,9 +1,24 @@
 import { useEffect, useState } from "react";
 import Button from "../../components/ui/Button";
-import MediaUploadField from "../../components/admin/MediaUploadField";
+import ProductMediaManager from "../../components/admin/ProductMediaManager";
+import AdminIcon from "../../components/admin/AdminIcon";
 import { fetchProducts, createProduct, updateProduct, deleteProduct, resolveMediaUrl } from "../../lib/api";
 
-const emptyForm = { title: "", description: "", type: "VENTE", city: "", price: "", surface: "", rooms: "", image: "" };
+const emptyForm = { title: "", description: "", type: "VENTE", city: "", price: "", surface: "", rooms: "", media: [] };
+
+function mediaOf(product) {
+  if (product.media?.length) return product.media.map(({ type, url }) => ({ type, url }));
+  return product.image ? [{ type: "PHOTO", url: product.image }] : [];
+}
+
+function mediaSummary(product) {
+  const media = mediaOf(product);
+  const photos = media.filter((item) => item.type === "PHOTO").length;
+  const videos = media.length - photos;
+  const parts = [`${photos} photo${photos > 1 ? "s" : ""}`];
+  if (videos > 0) parts.push(`${videos} vidéo${videos > 1 ? "s" : ""}`);
+  return parts.join(" · ");
+}
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState([]);
@@ -12,9 +27,9 @@ export default function AdminProductsPage() {
   const [formOpen, setFormOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(emptyForm);
+  const [saving, setSaving] = useState(false);
 
   function load() {
-    setStatus("loading");
     fetchProducts()
       .then((data) => {
         setProducts(data);
@@ -43,10 +58,11 @@ export default function AdminProductsPage() {
       price: product.price,
       surface: product.surface || "",
       rooms: product.rooms ?? "",
-      image: product.image || "",
+      media: mediaOf(product),
     });
     setEditingId(product.id);
     setFormOpen(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleChange(event) {
@@ -57,6 +73,7 @@ export default function AdminProductsPage() {
   async function handleSubmit(event) {
     event.preventDefault();
     setError(null);
+    setSaving(true);
     try {
       if (editingId) {
         await updateProduct(editingId, form);
@@ -67,6 +84,8 @@ export default function AdminProductsPage() {
       load();
     } catch (err) {
       setError(err.message);
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -82,16 +101,23 @@ export default function AdminProductsPage() {
 
   return (
     <>
-      <div className="admin-header-row">
-        <h1>Produits</h1>
-        <Button onClick={openCreateForm}>+ Ajouter un produit</Button>
+      <div className="admin-page-header">
+        <div>
+          <h1>Produits</h1>
+          <p className="muted">Gestion du catalogue de biens.</p>
+        </div>
+        {!formOpen && (
+          <button type="button" className="admin-btn admin-btn-primary" onClick={openCreateForm}>
+            <AdminIcon name="plus" size={16} /> Ajouter un produit
+          </button>
+        )}
       </div>
-      <p className="muted">Gestion du catalogue de biens.</p>
 
       {error && <p className="error">{error}</p>}
 
       {formOpen && (
-        <form className="form form-wide" onSubmit={handleSubmit} style={{ margin: "20px 0" }}>
+        <form className="admin-card form form-wide admin-form" onSubmit={handleSubmit}>
+          <h2 className="admin-form-title">{editingId ? "Modifier le produit" : "Nouveau produit"}</h2>
           <div className="form-row">
             <label>Titre<input name="title" value={form.title} onChange={handleChange} required /></label>
             <label>Type
@@ -109,53 +135,64 @@ export default function AdminProductsPage() {
             <label>Surface<input name="surface" value={form.surface} onChange={handleChange} /></label>
             <label>Pièces<input type="number" name="rooms" value={form.rooms} onChange={handleChange} /></label>
           </div>
-          <MediaUploadField
-            label="Image"
-            value={form.image}
-            onChange={(url) => setForm((prev) => ({ ...prev, image: url }))}
-          />
-          <label>Description<textarea name="description" rows={3} value={form.description} onChange={handleChange} /></label>
-          <div style={{ display: "flex", gap: 12 }}>
-            <Button type="submit">{editingId ? "Enregistrer" : "Créer"}</Button>
+          <ProductMediaManager media={form.media} onChange={(media) => setForm((prev) => ({ ...prev, media }))} />
+          <label>Description<textarea name="description" rows={4} value={form.description} onChange={handleChange} /></label>
+          <div className="admin-form-actions">
+            <Button type="submit">{saving ? "Enregistrement…" : editingId ? "Enregistrer" : "Créer"}</Button>
             <Button type="button" variant="secondary" onClick={() => setFormOpen(false)}>Annuler</Button>
           </div>
         </form>
       )}
 
-      {status === "loading" && <p className="muted">Chargement…</p>}
+      {status === "loading" && <div className="skeleton skeleton-table" />}
+      {status === "ready" && products.length === 0 && <div className="admin-empty">Aucun produit pour le moment.</div>}
 
-      {status === "ready" && (
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Titre</th>
-              <th>Type</th>
-              <th>Ville</th>
-              <th>Prix</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product.id}>
-                <td>
-                  {product.image && (
-                    <img src={resolveMediaUrl(product.image)} alt="" style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 6 }} />
-                  )}
-                </td>
-                <td>{product.title}</td>
-                <td>{product.type === "VENTE" ? "Vente" : "Location"}</td>
-                <td>{product.city}</td>
-                <td>{product.price}</td>
-                <td className="admin-actions">
-                  <button className="link-btn" onClick={() => openEditForm(product)}>Modifier</button>
-                  <button className="link-btn danger" onClick={() => handleDelete(product.id)}>Supprimer</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {status === "ready" && products.length > 0 && (
+        <div className="admin-card admin-table-card">
+          <div className="table-scroll">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Bien</th>
+                  <th>Type</th>
+                  <th>Prix</th>
+                  <th>Médias</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr key={product.id}>
+                    <td>
+                      <div className="cell-with-thumb">
+                        {product.image ? (
+                          <img className="cell-thumb" src={resolveMediaUrl(product.image)} alt="" />
+                        ) : (
+                          <span className="cell-thumb cell-thumb-empty" />
+                        )}
+                        <div>
+                          <strong className="cell-title">{product.title}</strong>
+                          <span className="cell-sub">{product.city}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span className={`type-pill type-${product.type === "VENTE" ? "product" : "service"}`}>
+                        {product.type === "VENTE" ? "Vente" : "Location"}
+                      </span>
+                    </td>
+                    <td className="admin-status-cell">{product.price}</td>
+                    <td className="admin-status-cell muted">{mediaSummary(product)}</td>
+                    <td className="admin-actions">
+                      <button className="link-btn" onClick={() => openEditForm(product)}>Modifier</button>
+                      <button className="link-btn danger" onClick={() => handleDelete(product.id)}>Supprimer</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
     </>
   );

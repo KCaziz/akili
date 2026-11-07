@@ -49,16 +49,17 @@
     "title": "Imeslayen-nneɣ",
     "lead": "Akili tettɛawan-ik di yal amecwar n usenfar-ik n ssya.",
     "loading": "Asali n yimeslayen…",
-    "error": "Ur yezmir ara ad d-yali imeslayen tura. Ma aqeddac yermed?"
+    "error": "Ur d-ttalin ara imeslayen tura. Ɛreḍ tikkelt-nniḍen ticki."
   },
   "products": {
     "title": "Ismal-nneɣ",
     "lead": "Issin tafrant-nneɣ n ismal i zzenz akked kerray.",
     "loading": "Asali n ismal…",
-    "error": "Ur yezmir ara ad d-yali ismal. Ma aqeddac yermed?",
+    "error": "Ur d-ttalin ara ismal tura. Ɛreḍ tikkelt-nniḍen ticki.",
     "empty": "Ulac aɣerbaz yellan tura.",
     "sale": "Zzenz",
-    "rent": "Akerray"
+    "rent": "Akerray",
+    "photoCount": "{{count}} n tugniwin"
   },
   "productDetail": {
     "loading": "Asali…",
@@ -69,17 +70,17 @@
     "city": "Taddart:",
     "rooms": "Taxxamin:",
     "surface": "Tiddi:",
-    "requestOnThis": "Sker asuter ɣef uɣerbaz-agi"
+    "requestOnThis": "Sker asuter ɣef uɣerbaz-agi",
+    "videosTitle": "Tividyutin n uɣerbaz",
+    "enlarge": "Ssimɣer tugna"
   },
   "gallery": {
     "eyebrow": "Tabziqt n tugniwin",
-    "title": "Tugniwin & tividyutin n takebbanit",
+    "title": "Tugniwin & tividyutin-nneɣ",
     "lead": "Issin imukan-nneɣ, agraw-nneɣ d tedyanin-nneɣ s tugniwin.",
-    "demoNotice": "Tugniwin n umedya i lqem-agi — ad ttwabedlent s tugniwin akked tividyutin tidak n Akili.",
     "loading": "Asali…",
     "error": "Ur yezmir ara ad d-tali tabziqt.",
     "videosTitle": "Tividyutin",
-    "noVideos": "Takebbanit ur d-tefka ara aqbuc ɛad. Agbur-agi ad d-isken tividyutin n Akili mi ara ilint.",
     "photoAlt": "Tugna n takebbanit"
   },
   "sell": {
@@ -102,7 +103,8 @@
     "description": "Aglam n uɣerbaz",
     "submit": "Azen tasumra-inu",
     "submitting": "Azen…",
-    "success": "Tasumra-k tettwazen akken iwata. Amsawal n Akili ad ak-d-yerr azekka-agi."
+    "success": "Tasumra-k tettwazen akken iwata. Amsawal n Akili ad ak-d-yerr azekka-agi.",
+    "email": "Imayl"
   },
   "request": {
     "title": "Sker asuter",
@@ -114,7 +116,7 @@
     "type": "Anaw n usuter",
     "chooseType": "Fren anaw",
     "typeProduct": "Aɣerbaz",
-    "typeService": "Ameslay n takebbanit",
+    "typeService": "Yiwen seg imeslayen-nneɣ",
     "details": "Taglamt n usuter",
     "detailsPlaceholder": "Amedya: tettnadiɣ ɣef F3 di Dzayer, lexir-inu alamma d 20.000.000 DA",
     "submit": "Azen asuter-inu",
@@ -131,7 +133,7 @@
     "message": "Izen",
     "submit": "Azen",
     "submitting": "Azen…",
-    "success": "Izen-ik yettwazen akken iwata, ad ittwasefrek sɣur umsawal n Akili. (Alɣu s imayl ar ugraw mazal ur yermed ara — mazal ad d-yettwafren uɛeqqab n uzen.)",
+    "success": "Izen-ik yettwazen akken iwata. Amsawal ad ak-d-yerr deg ukud i d-iteddun.",
     "whatsappTitle": "Mmeslay deg WhatsApp",
     "whatsappText": "Nermes srid amsawal n Akili.",
     "whatsappButton": "Ldi WhatsApp"
@@ -147,5 +149,60 @@
     "invalidPhone": "Uṭṭun arameɣtu (amedya: 0551234567)",
     "invalidEmail": "Tansa n imayl arameɣtu",
     "invalidContact": "Yettwasra uṭṭun n tilifun adzayri (amedya: 0551234567) neɣ imayl arameɣtu"
+  },
+  "lightbox": {
+    "close": "Mdel",
+    "previous": "Uzwir",
+    "next": "Uḍfir"
+  },
+  "assistant": {
+    "title": "Amɛiwen n Akili",
+    "subtitle": "Tiririyin s zrib i yesteqsiyen-ik",
+    "greeting": "Azul! Amek i zemreɣ ad k-ɛawneɣ? Fren asteqsi ddaw-a.",
+    "open": "Ldi amɛiwen",
+    "close": "Mdel amɛiwen",
+    "otherQuestions": "Isteqsiyen-nniḍen",
+    "restart": "Ales seg tazwara",
+    "questions": {
+      "buy": {
+        "q": "Amek ara d-sɣeɣ aɣerbaz?",
+        "a": "Wali tabdart n ismal-nneɣ, sakin sit ɣef « Sker asuter ɣef uɣerbaz-agi » deg usebter n uɣerbaz i k-yeɛǧben. Amsawal ad ak-d-yerr i wakken ad theyyim tirza.",
+        "cta": "Wali ismal"
+      },
+      "sell": {
+        "q": "Bɣiɣ ad zzenzeɣ aɣerbaz-iw, amek?",
+        "a": "Ačar tiferkit « Zzenz aɣerbaz » s yisallen igejdanen (anaw, taddart, tiddi, azal). Ad ak-d-nerr i wakken ad nektil aɣerbaz u ad t-nheyyi i zzenz.",
+        "cta": "Sumer aɣerbaz-iw"
+      },
+      "rent": {
+        "q": "Ttnadiɣ ɣef uɣerbaz i kerray",
+        "a": "Ismal n kerray ttbanen-d deg tebdart s « Akerray ». Ur tufiḍ ara ayen tettnadiḍ? Glem-aɣ-d ayen tebɣiḍ, ad ak-d-nsumer ismal yemmezgen.",
+        "cta": "Sker asuter"
+      },
+      "estimate": {
+        "q": "Tettaktilem ismal?",
+        "a": "Ih, nettaktil aɣerbaz-ik s tmusni-nneɣ n ssuq adigan. Nermes-aɣ i wakken ad nesbadu asarag.",
+        "cta": "Nermes-aɣ"
+      },
+      "documents": {
+        "q": "Anwi isemlen i ilaqen i zzenz?",
+        "a": "S umata: takarḍa n timagit, arra n tilin (neɣ adlis n wakal) d isemlen n uɣerbaz ma llan ɣur-k. Amsawal ad ak-d-yini tabdart s telqey.",
+        "cta": "Nermes-aɣ"
+      },
+      "services": {
+        "q": "Anwi imeslayen i d-tsumrem?",
+        "a": "Zzenz d usuɣ, akerray, aktil d uɛawen n tnezzut: ad k-neḍfer seg tirza tamezwarut alamma d usingem.",
+        "cta": "Wali imeslayen-nneɣ"
+      },
+      "nin": {
+        "q": "Acuɣer i tessutrem NIN-iw?",
+        "a": "Uṭṭun n timagit tanamurt yeǧǧa-aɣ ad nissin yal amsaɣ s telqey u ad nḥrez tiregwa. Yettwaseqdac kan i ufaylu-k."
+      },
+      "contact": {
+        "q": "Amek ara mmeslayeɣ d umsawal?",
+        "a": "Aru-yaɣ-d s tferkit n unermes neɣ nermes-aɣ srid deg WhatsApp, ad ak-d-nerr s zrib.",
+        "cta": "Ldi WhatsApp"
+      }
+    }
   }
 }

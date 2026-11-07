@@ -71,6 +71,7 @@ CREATE TABLE `sell_offers` (
     `name` VARCHAR(191) NOT NULL,
     `nationalId` VARCHAR(18) NOT NULL,
     `phone` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NULL,
     `propertyType` VARCHAR(191) NOT NULL,
     `city` VARCHAR(191) NOT NULL,
     `surface` VARCHAR(191) NULL,
@@ -79,6 +80,18 @@ CREATE TABLE `sell_offers` (
     `status` ENUM('EN_ATTENTE', 'TRAITE') NOT NULL DEFAULT 'EN_ATTENTE',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE `product_media` (
+    `id` VARCHAR(191) NOT NULL,
+    `productId` VARCHAR(191) NOT NULL,
+    `type` ENUM('PHOTO', 'VIDEO') NOT NULL,
+    `url` TEXT NOT NULL,
+    `position` INTEGER NOT NULL DEFAULT 0,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    INDEX `product_media_productId_idx`(`productId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -120,3 +133,8 @@ INSERT INTO `gallery_media` (`id`, `type`, `url`, `caption`, `createdAt`) VALUES
 ('cmv0y5qp3000eq4f0tr8lf2zx', 'PHOTO', 'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=900&q=80', 'Salle de réunion', '2026-10-09 12:33:57.351'),
 ('cmv0y5qp3000fq4f0d5huggqu', 'PHOTO', 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80', 'Visite d\'un bien', '2026-10-09 12:33:57.351'),
 ('cmv0y5qp3000gq4f0cmvha4b7', 'PHOTO', 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=900&q=80', 'Entrée de l\'agence', '2026-10-09 12:33:57.351');
+
+ALTER TABLE `product_media` ADD CONSTRAINT `product_media_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+INSERT INTO `product_media` (`id`, `productId`, `type`, `url`, `position`)
+SELECT CONCAT('pm_', `id`), `id`, 'PHOTO', `image`, 0 FROM `products` WHERE `image` IS NOT NULL AND `image` <> '';

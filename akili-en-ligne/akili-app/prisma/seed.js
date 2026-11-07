@@ -123,6 +123,11 @@ async function main() {
   await upsertByUniqueField(prisma.service, "title", services);
   await upsertByUniqueField(prisma.product, "title", products);
 
+  const productsWithoutMedia = await prisma.product.findMany({ where: { media: { none: {} }, image: { not: null } } });
+  for (const product of productsWithoutMedia) {
+    await prisma.productMedia.create({ data: { productId: product.id, type: "PHOTO", url: product.image, position: 0 } });
+  }
+
   const existingMedia = await prisma.galleryMedia.count();
   if (existingMedia === 0) {
     await prisma.galleryMedia.createMany({ data: galleryPhotos });

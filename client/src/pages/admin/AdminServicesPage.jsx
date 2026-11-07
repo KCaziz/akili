@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "../../components/ui/Button";
+import TruncatedText from "../../components/admin/TruncatedText";
 import { fetchServices, createService, updateService, deleteService } from "../../lib/api";
 
 const emptyForm = { title: "", description: "" };
@@ -72,11 +73,13 @@ export default function AdminServicesPage() {
 
   return (
     <>
-      <div className="admin-header-row">
-        <h1>Services</h1>
-        <Button onClick={openCreateForm}>+ Ajouter un service</Button>
+      <div className="admin-page-header">
+        <div>
+          <h1>Services</h1>
+          <p className="muted">Gestion des services proposés sur le site.</p>
+        </div>
+        <button type="button" className="admin-btn admin-btn-primary" onClick={openCreateForm}>+ Ajouter un service</button>
       </div>
-      <p className="muted">Gestion des services proposés par l'agence.</p>
 
       {error && <p className="error">{error}</p>}
 
@@ -91,9 +94,10 @@ export default function AdminServicesPage() {
         </form>
       )}
 
-      {status === "loading" && <p className="muted">Chargement…</p>}
+      {status === "loading" && <div className="skeleton skeleton-table" />}
 
       {status === "ready" && (
+        <div className="admin-card admin-table-card">
         <table className="admin-table">
           <thead>
             <tr>
@@ -105,8 +109,10 @@ export default function AdminServicesPage() {
           <tbody>
             {services.map((service) => (
               <tr key={service.id}>
-                <td>{service.title}</td>
-                <td className="admin-description-cell">{service.description}</td>
+                <td><strong className="cell-title">{service.title}</strong></td>
+                <td className="admin-description-cell">
+                  <TruncatedText text={service.description} title={service.title} />
+                </td>
                 <td className="admin-actions">
                   <button className="link-btn" onClick={() => openEditForm(service)}>Modifier</button>
                   <button className="link-btn danger" onClick={() => handleDelete(service.id)}>Supprimer</button>
@@ -115,6 +121,7 @@ export default function AdminServicesPage() {
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </>
   );

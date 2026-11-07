@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
-import Container from "../../components/ui/Container";
-import Button from "../../components/ui/Button";
+import { useNavigate, Navigate, Link } from "react-router-dom";
 import { useAdminAuth } from "../../contexts/AdminAuthContext";
 
 export default function AdminLoginPage() {
@@ -36,29 +34,41 @@ export default function AdminLoginPage() {
 
   return (
     <div className="admin-login">
-      <Container className="admin-login-box">
-        <h1>Espace Admin</h1>
-        <p className="muted">Connexion réservée à l'équipe Akili.</p>
+      <div className="admin-login-visual">
+        <img
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80"
+          alt=""
+        />
+        <div className="admin-login-visual-overlay">
+          <span className="admin-brand-logo admin-brand-logo-lg">A</span>
+          <h2>Akili Immobilier</h2>
+          <p>Gérez vos biens, vos services et les demandes de vos clients depuis un seul espace.</p>
+        </div>
+      </div>
 
-        <form className="form" onSubmit={handleSubmit}>
-          <label>
-            Identifiant
-            <input type="text" name="username" value={form.username} onChange={handleChange} required />
-          </label>
-          <label>
-            Mot de passe
-            <input type="password" name="password" value={form.password} onChange={handleChange} required />
-          </label>
-          <Button type="submit">{loading ? "Connexion…" : "Se connecter"}</Button>
-        </form>
+      <div className="admin-login-panel">
+        <div className="admin-login-box">
+          <h1>Connexion</h1>
+          <p className="muted">Accès réservé à l'équipe Akili.</p>
 
-        {error && <p className="error">{error}</p>}
+          <form className="form admin-login-form" onSubmit={handleSubmit}>
+            <label>
+              Identifiant
+              <input type="text" name="username" value={form.username} onChange={handleChange} autoComplete="username" required />
+            </label>
+            <label>
+              Mot de passe
+              <input type="password" name="password" value={form.password} onChange={handleChange} autoComplete="current-password" required />
+            </label>
+            {error && <p className="error">{error}</p>}
+            <button type="submit" className="admin-btn admin-btn-primary admin-btn-block" disabled={loading}>
+              {loading ? "Connexion…" : "Se connecter"}
+            </button>
+          </form>
 
-        <p className="notice">
-          Démonstration : identifiant <code>admin</code>, mot de passe <code>akili2026</code>
-          — à changer avant toute mise en production réelle.
-        </p>
-      </Container>
+          <Link to="/" className="admin-login-back">&larr; Retour au site</Link>
+        </div>
+      </div>
     </div>
   );
 }

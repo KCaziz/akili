@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import Container from "../components/ui/Container";
 import Button from "../components/ui/Button";
 import { createSellOffer } from "../lib/api";
-import { validateRequired, validateNationalId, validateAlgerianPhone, runValidators } from "../lib/validation";
+import { validateRequired, validateNationalId, validateAlgerianPhone, validateEmail, runValidators } from "../lib/validation";
 
-const initialState = { name: "", nationalId: "", phone: "", propertyType: "", city: "", surface: "", price: "", description: "" };
+const initialState = { name: "", nationalId: "", phone: "", email: "", propertyType: "", city: "", surface: "", price: "", description: "" };
 
 export default function SellPage() {
   const { t } = useTranslation();
@@ -25,6 +25,7 @@ export default function SellPage() {
       name: validateRequired(form.name),
       nationalId: validateNationalId(form.nationalId),
       phone: validateAlgerianPhone(form.phone),
+      email: validateEmail(form.email),
       propertyType: validateRequired(form.propertyType),
       city: validateRequired(form.city),
     });
@@ -75,6 +76,11 @@ export default function SellPage() {
             {t("sell.phone")}
             <input type="tel" name="phone" value={form.phone} onChange={handleChange} placeholder="0551234567" required />
             {fieldErrors.phone && <span className="field-error">{t(`validation.${fieldErrors.phone}`)}</span>}
+          </label>
+          <label>
+            {t("sell.email")}
+            <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="nom@exemple.com" required />
+            {fieldErrors.email && <span className="field-error">{t(`validation.${fieldErrors.email}`)}</span>}
           </label>
         </div>
 

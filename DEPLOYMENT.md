@@ -169,8 +169,18 @@ Un lien vers le fichier de log (souvent « Passenger log file ») est générale
 2. Re-zippe `akili-en-ligne/akili-app/` (le `.env` qu'il contient n'est qu'un modèle à valeurs `A REMPLIR` — vérifie avant d'écraser que tu n'envoies pas par-dessus un `.env` de prod déjà configuré côté serveur si tu gères les variables via un fichier plutôt que l'UI cPanel).
 3. Dans File Manager : remplace les fichiers modifiés (ou ré-uploade et extrais par-dessus — cPanel demande confirmation avant d'écraser).
 4. Si tu as modifié `server/package.json` (nouvelle dépendance) : reclique **Run NPM Install** dans Setup Node.js App.
-5. Si tu as modifié `prisma/schema.prisma` (nouveau champ, nouvelle table) : il faut adapter la base MySQL manuellement via phpMyAdmin (`ALTER TABLE ...` ou `CREATE TABLE ...`), puisqu'il n'y a pas de terminal pour lancer `prisma migrate`. Dis-moi quand tu en es là, je te génère le SQL correspondant à chaque changement de schéma, comme pour `cpanel-setup.sql`.
+5. Si tu as modifié `prisma/schema.prisma` (nouveau champ, nouvelle table) : il faut adapter la base MySQL manuellement via phpMyAdmin (`ALTER TABLE ...` ou `CREATE TABLE ...`), puisqu'il n'y a pas de terminal pour lancer `prisma migrate`. Il faut aussi recliquer **Run NPM Install**, qui régénère le client Prisma (sans ça, le serveur ne connaît pas les nouveaux champs et plante).
 6. Clique **Restart** sur l'application.
+
+### Mise à jour de novembre 2026 (médias multiples, e-mail vendeur, nouvel admin)
+
+Le schéma a changé (table `product_media`, colonne `email` sur les offres de vente). Ordre à respecter :
+
+1. **Sauvegarde** : phpMyAdmin → base → onglet **Exporter** → Exécuter. Garde le fichier `.sql` obtenu.
+2. phpMyAdmin → base → onglet **SQL** : colle le contenu de `akili-en-ligne/mise-a-jour-base-2026-11.sql` → **Exécuter**. Le script peut être relancé sans risque et ne supprime aucune donnée ; l'image actuelle de chaque bien devient sa première photo.
+3. File Manager → dossier de l'application : upload de `akili-en-ligne/akili-app.zip`, puis clic droit → **Extract** en écrasant les fichiers. Ce zip ne contient **pas** de `.env` : la configuration de production et le dossier `uploads/` (photos déjà envoyées) restent intacts.
+4. Setup Node.js App → **Run NPM Install** (obligatoire cette fois, voir point 5 ci-dessus).
+5. **Restart**, puis vérifier : une fiche produit, la galerie (plein écran), l'assistant en bas à droite, le formulaire « Vendre » (champ e-mail), et l'admin.
 
 ---
 

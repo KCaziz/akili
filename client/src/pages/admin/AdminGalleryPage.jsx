@@ -57,11 +57,13 @@ export default function AdminGalleryPage() {
 
   return (
     <>
-      <div className="admin-header-row">
-        <h1>Galerie</h1>
-        <Button onClick={() => setFormOpen((open) => !open)}>+ Ajouter un média</Button>
+      <div className="admin-page-header">
+        <div>
+          <h1>Galerie</h1>
+          <p className="muted">Gestion des photos et vidéos affichées dans la galerie du site.</p>
+        </div>
+        <button type="button" className="admin-btn admin-btn-primary" onClick={() => setFormOpen((open) => !open)}>+ Ajouter un média</button>
       </div>
-      <p className="muted">Gestion des photos et vidéos de l'agence.</p>
 
       {error && <p className="error">{error}</p>}
 

@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import { fetchRequests, updateRequestStatus } from "../../lib/api";
+import { formatDate, formatDateTime } from "../../lib/format";
 import TruncatedText from "../../components/admin/TruncatedText";
+import StatusFilter from "../../components/admin/StatusFilter";
+import { filterByStatus } from "../../lib/status";
+
+function contactHref(contact) {
+  return contact.includes("@") ? `mailto:${contact}` : `tel:${contact}`;
+}
 
 export default function AdminRequestsPage() {
   const [requests, setRequests] = useState([]);
   const [status, setStatus] = useState("loading");
   const [error, setError] = useState(null);
+  const [filter, setFilter] = useState("ALL");
 
   function load() {
-    setStatus("loading");
     fetchRequests()
       .then((data) => {
         setRequests(data);
@@ -32,53 +39,78 @@ export default function AdminRequestsPage() {
     }
   }
 
+  const visible = filterByStatus(requests, filter);
+
   return (
     <>
-      <h1>Demandes clients</h1>
-      <p className="muted">Demandes formulées via les formulaires « Demande » et « Contact » du site.</p>
+      <div className="admin-page-header">
+        <div>
+          <h1>Demandes clients</h1>
+          <p className="muted">Demandes envoyées via les formulaires « Demande » et « Contact » du site.</p>
+        </div>
+        {status === "ready" && <StatusFilter items={requests} value={filter} onChange={setFilter} />}
+      </div>
 
       {error && <p className="error">{error}</p>}
-      {status === "loading" && <p className="muted">Chargement…</p>}
-      {status === "ready" && requests.length === 0 && <p className="muted">Aucune demande pour le moment.</p>}
+      {status === "loading" && <div className="skeleton skeleton-table" />}
+      {status === "ready" && visible.length === 0 && <div className="admin-empty">Aucune demande à afficher.</div>}
 
-      {status === "ready" && requests.length > 0 && (
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>NIN</th>
-              <th>Contact</th>
-              <th>Type</th>
-              <th>Détail</th>
-              <th className="admin-status-cell">Statut</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {requests.map((request) => (
-              <tr key={request.id}>
-                <td>{request.name}</td>
-                <td>{request.nationalId}</td>
-                <td>{request.contact}</td>
-                <td>{request.type === "PRODUIT" ? "Produit" : "Service"}</td>
-                <td className="admin-description-cell">
-                  <TruncatedText text={request.details} title="Détail de la demande" />
-                </td>
-                <td className="admin-status-cell">
-                  <span className={`badge badge-${request.status === "TRAITE" ? "done" : "pending"}`}>
-                    {request.status === "TRAITE" ? "traité" : "en attente"}
-                  </span>
-                </td>
-                <td className="admin-actions">
-                  <a className="link-btn" href={`mailto:${request.contact}`}>Contacter</a>
-                  <button className="link-btn" onClick={() => toggleStatus(request)}>
-                    {request.status === "TRAITE" ? "Marquer en attente" : "Marquer traité"}
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {status === "ready" && visible.length > 0 && (
+        <div className="admin-card admin-table-card">
+          <div className="table-scroll">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Contact</th>
+                  <th>Type</th>
+                  <th>Détail</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visible.map((request) => (
+                  <tr key={request.id}>
+                    <td>
+                      <strong className="cell-title">{request.name}</strong>
+                      <span className="cell-sub">{formatDate(request.createdAt)}</span>
+                    </td>
+                    <td>{request.contact}</td>
+                    <td>
+                      <span className={`type-pill type-${request.type === "PRODUIT" ? "product" : "service"}`}>
+                        {request.type === "PRODUIT" ? "Produit" : "Service"}
+                      </span>
+                    </td>
+                    <td className="admin-description-cell">
+                      <TruncatedText
+                        text={request.details}
+                        title={`Demande de ${request.name}`}
+                        fields={[
+                          { label: "Reçue le", value: formatDateTime(request.createdAt) },
+                          { label: "NIN", value: request.nationalId },
+                          { label: "Contact", value: request.contact },
+                          { label: "Type", value: request.type === "PRODUIT" ? "Produit" : "Service" },
+                        ]}
+                      />
+                    </td>
+                    <td className="admin-status-cell">
+                      <span className={`badge badge-${request.status === "TRAITE" ? "done" : "pending"}`}>
+                        {request.status === "TRAITE" ? "traité" : "en attente"}
+                      </span>
+                    </td>
+                    <td className="admin-actions">
+                      <a className="link-btn" href={contactHref(request.contact)}>Contacter</a>
+                      <button className="link-btn" onClick={() => toggleStatus(request)}>
+                        {request.status === "TRAITE" ? "Marquer en attente" : "Marquer traité"}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
     </>
   );

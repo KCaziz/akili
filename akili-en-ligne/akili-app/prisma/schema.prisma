@@ -29,11 +29,25 @@ model Product {
   price       String
   surface     String?
   rooms       Int?
-  image       String?      @db.Text
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  image       String?        @db.Text
+  media       ProductMedia[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
 
   @@map("products")
+}
+
+model ProductMedia {
+  id        String    @id @default(cuid())
+  productId String
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  type      MediaType
+  url       String    @db.Text
+  position  Int       @default(0)
+  createdAt DateTime  @default(now())
+
+  @@index([productId])
+  @@map("product_media")
 }
 
 model Service {
@@ -74,6 +88,7 @@ model SellOffer {
   name         String
   nationalId   String        @db.VarChar(18)
   phone        String
+  email        String?
   propertyType String
   city         String
   surface      String?

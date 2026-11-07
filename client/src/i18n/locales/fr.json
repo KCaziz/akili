@@ -49,16 +49,17 @@
     "title": "Nos services",
     "lead": "Akili vous accompagne à chaque étape de votre projet immobilier.",
     "loading": "Chargement des services…",
-    "error": "Impossible de charger les services pour le moment. Le serveur est-il démarré ?"
+    "error": "Impossible de charger les services pour le moment. Veuillez réessayer plus tard."
   },
   "products": {
     "title": "Nos produits",
     "lead": "Découvrez notre sélection de biens à la vente et à la location.",
     "loading": "Chargement des produits…",
-    "error": "Impossible de charger les produits. Le serveur est-il démarré ?",
+    "error": "Impossible de charger les produits pour le moment. Veuillez réessayer plus tard.",
     "empty": "Aucun produit n'est disponible pour le moment.",
     "sale": "Vente",
-    "rent": "Location"
+    "rent": "Location",
+    "photoCount": "{{count}} photos"
   },
   "productDetail": {
     "loading": "Chargement…",
@@ -69,17 +70,17 @@
     "city": "Ville :",
     "rooms": "Pièces :",
     "surface": "Surface :",
-    "requestOnThis": "Faire une demande sur ce bien"
+    "requestOnThis": "Faire une demande sur ce bien",
+    "videosTitle": "Vidéos du bien",
+    "enlarge": "Agrandir la photo"
   },
   "gallery": {
     "eyebrow": "Galerie",
-    "title": "Photos & vidéos de l'agence",
+    "title": "Nos photos & vidéos",
     "lead": "Découvrez nos locaux, notre équipe et nos événements en images.",
-    "demoNotice": "Photos illustratives pour cette version de démonstration — à remplacer par les vraies photos et vidéos de l'agence Akili.",
     "loading": "Chargement…",
     "error": "Impossible de charger la galerie.",
     "videosTitle": "Vidéos",
-    "noVideos": "Aucune vidéo n'a encore été fournie par l'agence. Cette section affichera les vidéos de présentation d'Akili dès qu'elles seront disponibles.",
     "photoAlt": "Photo de l'agence"
   },
   "sell": {
@@ -102,7 +103,8 @@
     "description": "Description du bien",
     "submit": "Envoyer mon offre",
     "submitting": "Envoi…",
-    "success": "Votre offre a bien été envoyée. Un conseiller Akili vous recontactera prochainement."
+    "success": "Votre offre a bien été envoyée. Un conseiller Akili vous recontactera prochainement.",
+    "email": "E-mail"
   },
   "request": {
     "title": "Formuler une demande",
@@ -114,7 +116,7 @@
     "type": "Type de demande",
     "chooseType": "Choisir un type",
     "typeProduct": "Un produit (bien immobilier)",
-    "typeService": "Un service de l'agence",
+    "typeService": "Un de nos services",
     "details": "Détail de la demande",
     "detailsPlaceholder": "Ex : je recherche un F3 à Alger, budget max 20 000 000 DZD",
     "submit": "Envoyer ma demande",
@@ -131,7 +133,7 @@
     "message": "Message",
     "submit": "Envoyer",
     "submitting": "Envoi…",
-    "success": "Votre message a bien été envoyé et sera traité par un conseiller Akili. (Notification par e-mail à l'équipe non encore activée — un fournisseur d'envoi reste à choisir.)",
+    "success": "Votre message a bien été envoyé. Un conseiller vous répondra dans les plus brefs délais.",
     "whatsappTitle": "Discuter sur WhatsApp",
     "whatsappText": "Contactez directement un conseiller Akili.",
     "whatsappButton": "Ouvrir WhatsApp"
@@ -147,5 +149,60 @@
     "invalidPhone": "Numéro invalide (ex. 0551234567)",
     "invalidEmail": "Adresse e-mail invalide",
     "invalidContact": "Numéro algérien (ex. 0551234567) ou e-mail valide requis"
+  },
+  "lightbox": {
+    "close": "Fermer",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "assistant": {
+    "title": "Assistant Akili",
+    "subtitle": "Réponses rapides à vos questions",
+    "greeting": "Bonjour ! Comment puis-je vous aider ? Choisissez une question ci-dessous.",
+    "open": "Ouvrir l'assistant",
+    "close": "Fermer l'assistant",
+    "otherQuestions": "Autres questions",
+    "restart": "Recommencer",
+    "questions": {
+      "buy": {
+        "q": "Comment acheter un bien ?",
+        "a": "Parcourez notre catalogue, puis cliquez sur « Faire une demande sur ce bien » depuis la fiche qui vous intéresse. Un conseiller vous recontacte pour organiser une visite.",
+        "cta": "Voir les biens"
+      },
+      "sell": {
+        "q": "Je veux vendre mon bien, comment faire ?",
+        "a": "Remplissez le formulaire « Vendre un bien » avec les informations principales (type, ville, surface, prix souhaité). Nous vous recontactons pour estimer le bien et préparer sa mise en vente.",
+        "cta": "Proposer mon bien"
+      },
+      "rent": {
+        "q": "Je cherche un bien à louer",
+        "a": "Nos biens en location sont affichés dans le catalogue avec la mention « Location ». Vous ne trouvez pas ce qu'il vous faut ? Décrivez votre recherche, nous vous proposerons des biens adaptés.",
+        "cta": "Formuler une demande"
+      },
+      "estimate": {
+        "q": "Proposez-vous une estimation ?",
+        "a": "Oui, nous estimons votre bien en nous appuyant sur notre connaissance du marché local. Contactez-nous pour fixer un rendez-vous.",
+        "cta": "Nous contacter"
+      },
+      "documents": {
+        "q": "Quels documents prévoir pour vendre ?",
+        "a": "En général : une pièce d'identité, l'acte de propriété (ou le livret foncier) et les documents d'urbanisme du bien si vous les avez. Un conseiller vous indiquera la liste exacte selon votre situation.",
+        "cta": "Nous contacter"
+      },
+      "services": {
+        "q": "Quels services proposez-vous ?",
+        "a": "Vente et achat, location, estimation et accompagnement administratif : nous vous suivons de la première visite jusqu'à la signature.",
+        "cta": "Voir nos services"
+      },
+      "nin": {
+        "q": "Pourquoi mon NIN est-il demandé ?",
+        "a": "Le numéro d'identification national nous permet d'identifier chaque client de façon fiable et de sécuriser les démarches. Il sert uniquement au traitement de votre dossier."
+      },
+      "contact": {
+        "q": "Comment parler à un conseiller ?",
+        "a": "Écrivez-nous via le formulaire de contact ou joignez-nous directement sur WhatsApp, nous vous répondons rapidement.",
+        "cta": "Ouvrir WhatsApp"
+      }
+    }
   }
 }

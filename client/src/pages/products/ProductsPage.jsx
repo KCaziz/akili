@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import Container from "../../components/ui/Container";
 import Card from "../../components/ui/Card";
 import { fetchProducts, resolveMediaUrl } from "../../lib/api";
+import { getProductPhotos } from "../../lib/productMedia";
 
 export default function ProductsPage() {
   const { t } = useTranslation();
@@ -36,16 +37,22 @@ export default function ProductsPage() {
 
       {status === "ready" && products.length > 0 && (
         <div className="card-grid">
-          {products.map((product) => (
+          {products.map((product) => {
+            const photoCount = getProductPhotos(product).length;
+            return (
             <Link key={product.id} to={`/produits/${product.id}`} className="card-link">
               <Card>
-                <img className="card-image" src={resolveMediaUrl(product.image)} alt={product.title} />
+                <div className="card-image-wrap">
+                  <img className="card-image" src={resolveMediaUrl(product.image)} alt={product.title} />
+                  {photoCount > 1 && <span className="card-photo-count">{t("products.photoCount", { count: photoCount })}</span>}
+                </div>
                 <h3>{product.title}</h3>
                 <p className="muted">{product.city} · {product.type === "VENTE" ? t("products.sale") : t("products.rent")}</p>
                 <p className="price">{product.price}</p>
               </Card>
             </Link>
-          ))}
+            );
+          })}
         </div>
       )}
     </Container>

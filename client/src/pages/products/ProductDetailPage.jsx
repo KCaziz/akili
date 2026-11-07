@@ -3,7 +3,9 @@ import { useParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Container from "../../components/ui/Container";
 import Button from "../../components/ui/Button";
+import PhotoCarousel from "../../components/products/PhotoCarousel";
 import { fetchProduct, resolveMediaUrl } from "../../lib/api";
+import { getProductPhotos, getProductVideos } from "../../lib/productMedia";
 
 export default function ProductDetailPage() {
   const { t } = useTranslation();
@@ -50,7 +52,7 @@ export default function ProductDetailPage() {
       <Link to="/produits" className="back-link">&larr; {t("productDetail.backToCatalog")}</Link>
 
       <div className="product-detail">
-        <img className="card-image large" src={resolveMediaUrl(product.image)} alt={product.title} />
+        <PhotoCarousel key={product.id} photos={getProductPhotos(product)} alt={product.title} />
         <div>
           <h1>{product.title}</h1>
           <p className="price">{product.price}</p>
@@ -64,6 +66,19 @@ export default function ProductDetailPage() {
           <Link to="/demande"><Button>{t("productDetail.requestOnThis")}</Button></Link>
         </div>
       </div>
+
+      {getProductVideos(product).length > 0 && (
+        <section className="product-videos">
+          <h2>{t("productDetail.videosTitle")}</h2>
+          <div className="gallery-grid">
+            {getProductVideos(product).map((video) => (
+              <figure key={video.id} className="gallery-item">
+                <video src={resolveMediaUrl(video.url)} controls preload="metadata" />
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
     </Container>
   );
 }

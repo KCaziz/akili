@@ -49,16 +49,17 @@
     "title": "Our services",
     "lead": "Akili supports you at every step of your real estate project.",
     "loading": "Loading services…",
-    "error": "Unable to load services right now. Is the server running?"
+    "error": "Unable to load services right now. Please try again later."
   },
   "products": {
     "title": "Our properties",
     "lead": "Discover our selection of properties for sale and for rent.",
     "loading": "Loading properties…",
-    "error": "Unable to load properties. Is the server running?",
+    "error": "Unable to load properties right now. Please try again later.",
     "empty": "No property is available right now.",
     "sale": "Sale",
-    "rent": "Rent"
+    "rent": "Rent",
+    "photoCount": "{{count}} photos"
   },
   "productDetail": {
     "loading": "Loading…",
@@ -69,17 +70,17 @@
     "city": "City:",
     "rooms": "Rooms:",
     "surface": "Surface:",
-    "requestOnThis": "Make a request about this property"
+    "requestOnThis": "Make a request about this property",
+    "videosTitle": "Property videos",
+    "enlarge": "Enlarge photo"
   },
   "gallery": {
     "eyebrow": "Gallery",
-    "title": "Agency photos & videos",
+    "title": "Our photos & videos",
     "lead": "Discover our offices, our team and our events in pictures.",
-    "demoNotice": "Illustrative photos for this demo version — to be replaced with real Akili agency photos and videos.",
     "loading": "Loading…",
     "error": "Unable to load the gallery.",
     "videosTitle": "Videos",
-    "noVideos": "No video has been provided by the agency yet. This section will display Akili's presentation videos as soon as they are available.",
     "photoAlt": "Agency photo"
   },
   "sell": {
@@ -102,7 +103,8 @@
     "description": "Property description",
     "submit": "Send my listing",
     "submitting": "Sending…",
-    "success": "Your listing has been sent. An Akili advisor will get back to you shortly."
+    "success": "Your listing has been sent. An Akili advisor will get back to you shortly.",
+    "email": "E-mail"
   },
   "request": {
     "title": "Make a request",
@@ -114,7 +116,7 @@
     "type": "Request type",
     "chooseType": "Choose a type",
     "typeProduct": "A property",
-    "typeService": "An agency service",
+    "typeService": "One of our services",
     "details": "Request details",
     "detailsPlaceholder": "E.g.: I'm looking for a 3-room flat in Algiers, budget up to 20,000,000 DZD",
     "submit": "Send my request",
@@ -131,7 +133,7 @@
     "message": "Message",
     "submit": "Send",
     "submitting": "Sending…",
-    "success": "Your message has been sent and will be handled by an Akili advisor. (Email notification to the team not yet enabled — a sending provider is still to be chosen.)",
+    "success": "Your message has been sent. An advisor will reply as soon as possible.",
     "whatsappTitle": "Chat on WhatsApp",
     "whatsappText": "Reach an Akili advisor directly.",
     "whatsappButton": "Open WhatsApp"
@@ -147,5 +149,60 @@
     "invalidPhone": "Invalid number (e.g. 0551234567)",
     "invalidEmail": "Invalid email address",
     "invalidContact": "An Algerian phone number (e.g. 0551234567) or a valid email is required"
+  },
+  "lightbox": {
+    "close": "Close",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "assistant": {
+    "title": "Akili assistant",
+    "subtitle": "Quick answers to your questions",
+    "greeting": "Hello! How can I help you? Pick a question below.",
+    "open": "Open the assistant",
+    "close": "Close the assistant",
+    "otherQuestions": "Other questions",
+    "restart": "Start over",
+    "questions": {
+      "buy": {
+        "q": "How do I buy a property?",
+        "a": "Browse our catalogue, then click \"Make a request about this property\" on the listing you like. An advisor will get back to you to arrange a visit.",
+        "cta": "View properties"
+      },
+      "sell": {
+        "q": "I want to sell my property, how does it work?",
+        "a": "Fill in the \"Sell a property\" form with the main details (type, city, surface, asking price). We will get back to you to value the property and prepare its listing.",
+        "cta": "List my property"
+      },
+      "rent": {
+        "q": "I'm looking for a rental",
+        "a": "Our rentals are shown in the catalogue with the \"Rent\" label. Can't find what you need? Describe your search and we will suggest suitable properties.",
+        "cta": "Make a request"
+      },
+      "estimate": {
+        "q": "Do you offer property valuations?",
+        "a": "Yes, we value your property based on our knowledge of the local market. Contact us to book an appointment.",
+        "cta": "Contact us"
+      },
+      "documents": {
+        "q": "Which documents do I need to sell?",
+        "a": "Usually: an ID document, the title deed (or land register booklet) and the property's planning documents if you have them. An advisor will give you the exact list for your situation.",
+        "cta": "Contact us"
+      },
+      "services": {
+        "q": "What services do you offer?",
+        "a": "Sale and purchase, rental, valuation and administrative support: we stay with you from the first visit to the signature.",
+        "cta": "View our services"
+      },
+      "nin": {
+        "q": "Why is my NIN requested?",
+        "a": "The national identification number lets us identify each client reliably and secure the procedures. It is only used to process your file."
+      },
+      "contact": {
+        "q": "How can I talk to an advisor?",
+        "a": "Write to us through the contact form or reach us directly on WhatsApp, we reply quickly.",
+        "cta": "Open WhatsApp"
+      }
+    }
   }
 }

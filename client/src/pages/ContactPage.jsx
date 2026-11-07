@@ -4,8 +4,7 @@ import Container from "../components/ui/Container";
 import Button from "../components/ui/Button";
 import { createClientRequest } from "../lib/api";
 import { validateRequired, validateNationalId, validateEmail, runValidators } from "../lib/validation";
-
-const WHATSAPP_NUMBER = "213783940376";
+import { WHATSAPP_URL } from "../lib/constants";
 
 const initialState = { name: "", nationalId: "", email: "", message: "" };
 
@@ -94,7 +93,7 @@ export default function ContactPage() {
           <h3>{t("contact.whatsappTitle")}</h3>
           <p>{t("contact.whatsappText")}</p>
           <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}`}
+            href={WHATSAPP_URL}
             target="_blank"
             rel="noreferrer"
             className="btn btn-whatsapp"

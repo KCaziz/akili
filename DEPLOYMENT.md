@@ -191,6 +191,33 @@ Cette mise à jour regroupe **tout** ce qui a été fait depuis la V1 en ligne :
 
 ---
 
+## 11. E-mails du site (contact@akili-immobilier.com)
+
+Le site envoie, via la boîte cPanel :
+- à l'agence : un e-mail à chaque demande, message de contact, offre de vente et alerte (« Répondre » écrit directement au visiteur quand il a laissé un e-mail) ;
+- au visiteur (s'il a laissé un e-mail) : un accusé de réception dans la langue du site (fr / ar / en / tamazight).
+
+Sans configuration SMTP, rien n'est envoyé et le site fonctionne comme avant (tout reste visible dans l'admin). Une panne SMTP ne bloque jamais l'envoi d'un formulaire.
+
+1. cPanel → **Email Accounts** → ligne `contact@akili-immobilier.com` → **Connect Devices** : note le **serveur sortant (SMTP)** et le **port SSL** (généralement `mail.akili-immobilier.com`, port `465`).
+2. Setup Node.js App → ton application → **Environment variables** (ou `.env` sur le serveur), ajoute :
+
+   | Variable | Valeur |
+   |---|---|
+   | `SMTP_HOST` | `mail.akili-immobilier.com` (valeur vue à l'étape 1) |
+   | `SMTP_PORT` | `465` |
+   | `SMTP_USER` | `contact@akili-immobilier.com` |
+   | `SMTP_PASS` | le mot de passe de la boîte |
+   | `MAIL_TO` | (facultatif) autre adresse qui doit recevoir les notifications ; par défaut `SMTP_USER` |
+
+3. **Restart** l'application.
+4. Admin → **Paramètres du site** → **Envoyer un e-mail de test**. Le message d'erreur éventuel indique le problème (mot de passe, hôte, port).
+5. cPanel → **Email Deliverability** : si SPF ou DKIM est signalé comme non valide, clique **Repair** — sinon les accusés de réception risquent d'arriver en spam chez Gmail/Outlook.
+
+L'adresse affichée sur le site (page Contact + pied de page) se modifie dans Admin → Paramètres du site → E-mail.
+
+---
+
 ## Limites connues de cette configuration (à garder en tête)
 
 - **Stockage des fichiers uploadés (`server/uploads/`) sur le disque du serveur mutualisé** : fonctionne, mais si l'hébergeur change de serveur physique ou si tu migres d'offre un jour, ces fichiers ne sont pas automatiquement transférés — à sauvegarder toi-même périodiquement (via File Manager ou un export). Pour un usage sérieux à moyen terme, migrer vers un stockage objet (S3, Cloudinary...) reste recommandé, mais n'est pas nécessaire pour démarrer.

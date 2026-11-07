@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "../../components/ui/Button";
-import { fetchSettings, updateSettings } from "../../lib/api";
+import { fetchSettings, updateSettings, sendTestEmail } from "../../lib/api";
 
 const FIELDS = [
   { key: "yearsExperience", label: "Années d'expérience" },
@@ -12,6 +12,7 @@ export default function AdminSettingsPage() {
   const [form, setForm] = useState(null);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState(null);
+  const [mailTest, setMailTest] = useState({ status: "idle", message: "" });
 
   useEffect(() => {
     fetchSettings()
@@ -38,12 +39,22 @@ export default function AdminSettingsPage() {
     }
   }
 
+  async function handleTestEmail() {
+    setMailTest({ status: "sending", message: "" });
+    try {
+      const { sentTo } = await sendTestEmail();
+      setMailTest({ status: "ok", message: `E-mail de test envoyé à ${sentTo}. Vérifiez la boîte de réception (et les spams).` });
+    } catch (err) {
+      setMailTest({ status: "error", message: err.message });
+    }
+  }
+
   return (
     <>
       <div className="admin-page-header">
         <div>
           <h1>Paramètres du site</h1>
-          <p className="muted">Chiffres clés de la page d'accueil et numéro WhatsApp de l'agence.</p>
+          <p className="muted">Chiffres clés de la page d'accueil, WhatsApp et e-mail de l'agence.</p>
         </div>
       </div>
       {error && <p className="error">{error}</p>}
@@ -74,6 +85,24 @@ export default function AdminSettingsPage() {
               <input name="whatsappNumber" value={form.whatsappNumber} onChange={handleChange} inputMode="numeric" />
             </label>
             <p className="muted">Utilisé par le bouton flottant, la page Contact et le bouton « Poser une question » sur chaque bien.</p>
+          </fieldset>
+
+          <fieldset className="admin-fieldset">
+            <legend>E-mail</legend>
+            <label>
+              Adresse e-mail affichée sur le site
+              <input type="email" name="contactEmail" value={form.contactEmail} onChange={handleChange} placeholder="contact@akili-immobilier.com" />
+            </label>
+            <p className="muted">
+              Affichée sur la page Contact et en bas de chaque page. (L'adresse qui reçoit les notifications et envoie les accusés de
+              réception se règle dans la configuration du serveur.)
+            </p>
+            <div className="mail-test">
+              <button type="button" className="admin-btn admin-btn-outline" onClick={handleTestEmail} disabled={mailTest.status === "sending"}>
+                {mailTest.status === "sending" ? "Envoi…" : "Envoyer un e-mail de test"}
+              </button>
+              {mailTest.message && <span className={mailTest.status === "ok" ? "notice" : "error"}>{mailTest.message}</span>}
+            </div>
           </fieldset>
 
           <div className="admin-form-actions">

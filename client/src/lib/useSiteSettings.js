@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchSettings } from "./api";
 
 // Le numéro WhatsApp de repli tant que les paramètres ne sont pas chargés.
-const DEFAULT_SETTINGS = { yearsExperience: "", propertiesSold: "", clientsServed: "", whatsappNumber: "213783940376" };
+const DEFAULT_SETTINGS = { yearsExperience: "", propertiesSold: "", clientsServed: "", whatsappNumber: "213783940376", contactEmail: "contact@akili-immobilier.com" };
 let pending = null;
 
 function loadSettings() {

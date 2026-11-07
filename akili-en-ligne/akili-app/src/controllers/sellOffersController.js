@@ -1,5 +1,6 @@
 import { prisma } from "../config/prisma.js";
 import { isNonEmptyString, isValidNationalId, isValidAlgerianPhone, isValidEmail } from "../utils/validators.js";
+import { onNewSellOffer } from "../services/notifications.js";
 
 export async function createSellOffer(req, res, next) {
   try {
@@ -32,6 +33,7 @@ export async function createSellOffer(req, res, next) {
         description: description || null,
       },
     });
+    onNewSellOffer(offer, req.body.lang);
     res.status(201).json(offer);
   } catch (err) {
     next(err);

@@ -1,5 +1,6 @@
 import { prisma } from "../config/prisma.js";
 import { isNonEmptyString, isValidNationalId, isValidContact } from "../utils/validators.js";
+import { onNewRequest } from "../services/notifications.js";
 
 export async function createRequest(req, res, next) {
   try {
@@ -22,6 +23,7 @@ export async function createRequest(req, res, next) {
     const request = await prisma.clientRequest.create({
       data: { name: name.trim(), nationalId: nationalId.trim(), contact: contact.trim(), type, details: details.trim() },
     });
+    onNewRequest(request, req.body.lang);
     res.status(201).json(request);
   } catch (err) {
     next(err);

@@ -158,7 +158,9 @@
     "success": "Izen-ik yettwazen akken iwata. Amsawal ad ak-d-yerr deg ukud i d-iteddun.",
     "whatsappTitle": "Mmeslay deg WhatsApp",
     "whatsappText": "Nermes srid amsawal n Akili.",
-    "whatsappButton": "Ldi WhatsApp"
+    "whatsappButton": "Ldi WhatsApp",
+    "emailTitle": "Aru-yaɣ-d s imayl",
+    "emailText": "Ɣur-k asteqsi neɣ arrat ara aɣ-d-tazneḍ? Aru-yaɣ-d srid."
   },
   "notFound": {
     "title": "Asebter ulac-it",

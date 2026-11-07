@@ -1550,3 +1550,15 @@
     flex-direction: column;
   }
 }
+
+.mail-test {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.mail-test .notice,
+.mail-test .error {
+  margin: 0;
+}

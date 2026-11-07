@@ -200,7 +200,7 @@ INSERT INTO `product_images` (`id`, `productId`, `url`, `position`)
 SELECT UUID(), `id`, `image`, 0 FROM `products` WHERE `image` IS NOT NULL AND `image` <> '';
 
 -- Numéro WhatsApp jusqu'ici codé en dur dans le frontend.
-INSERT IGNORE INTO `site_settings` (`key`, `value`) VALUES ('whatsappNumber', '213783940376');
+INSERT IGNORE INTO `site_settings` (`key`, `value`) VALUES ('whatsappNumber', '213783940376'), ('contactEmail', 'contact@akili-immobilier.com');
 
 -- --------------------------------------------------------------------------
 

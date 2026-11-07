@@ -646,6 +646,19 @@ img {
   text-align: center;
 }
 
+.contact-side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.email-link {
+  display: inline-block;
+  font-weight: 700;
+  color: var(--color-primary);
+  word-break: break-all;
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 860px) {

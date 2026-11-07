@@ -1,5 +1,6 @@
 import { prisma } from "../config/prisma.js";
 import { isNonEmptyString, isValidContact } from "../utils/validators.js";
+import { onNewAlert } from "../services/notifications.js";
 
 function toOptionalPositiveInt(value) {
   if (value === null || value === undefined || value === "") return null;
@@ -32,6 +33,7 @@ export async function createAlert(req, res, next) {
         minRooms,
       },
     });
+    onNewAlert(alert, req.body.lang);
     res.status(201).json({ id: alert.id });
   } catch (err) {
     next(err);

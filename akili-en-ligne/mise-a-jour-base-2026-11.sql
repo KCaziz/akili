@@ -96,7 +96,7 @@ WHERE p.`image` IS NOT NULL AND p.`image` <> ''
 
 -- Numéro WhatsApp jusqu'ici codé en dur dans le site (modifiable ensuite dans
 -- l'admin > Paramètres du site).
-INSERT IGNORE INTO `site_settings` (`key`, `value`) VALUES ('whatsappNumber', '213783940376');
+INSERT IGNORE INTO `site_settings` (`key`, `value`) VALUES ('whatsappNumber', '213783940376'), ('contactEmail', 'contact@akili-immobilier.com');
 
 -- --- Vidéos multiples par bien ------------------------------------------------
 CREATE TABLE IF NOT EXISTS `product_videos` (

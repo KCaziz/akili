@@ -158,7 +158,9 @@
     "success": "Votre message a bien été envoyé. Un conseiller vous répondra dans les plus brefs délais.",
     "whatsappTitle": "Discuter sur WhatsApp",
     "whatsappText": "Contactez directement un conseiller Akili.",
-    "whatsappButton": "Ouvrir WhatsApp"
+    "whatsappButton": "Ouvrir WhatsApp",
+    "emailTitle": "Nous écrire par e-mail",
+    "emailText": "Une question, un document à nous transmettre ? Écrivez-nous directement."
   },
   "notFound": {
     "title": "Page introuvable",

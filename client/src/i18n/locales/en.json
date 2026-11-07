@@ -158,7 +158,9 @@
     "success": "Your message has been sent. An advisor will reply as soon as possible.",
     "whatsappTitle": "Chat on WhatsApp",
     "whatsappText": "Reach an Akili advisor directly.",
-    "whatsappButton": "Open WhatsApp"
+    "whatsappButton": "Open WhatsApp",
+    "emailTitle": "Email us",
+    "emailText": "A question or a document to send us? Write to us directly."
   },
   "notFound": {
     "title": "Page not found",

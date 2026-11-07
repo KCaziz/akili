@@ -107,6 +107,7 @@ MySQL / MariaDB (akili_dev en local via docker-compose, 6 tables — voir server
 | Phase 2 | Formulaires fonctionnels (Vendre, Demande, Contact) + emails/WhatsApp |
 | Phase 3 | Back-office Admin (CRUD produits/services, gestion demandes/offres) |
 | Phase 4 | Sécurité, tests, mise en production |
+| Phase 5 | Améliorations demandées par le client après mise en ligne (13 points, 2026-11-04) |
 
 Le détail chiffré (durées, jalons, acomptes) est dans l'offre de service, pas dans ce fichier technique.
 
@@ -431,6 +432,123 @@ Tests effectués :
 - Serveur unique testé en conditions same-origin (front + API sur le même port `4000`) : page d'accueil (`200`, `text/html`), route client `/produits` (fallback SPA, `200`), asset JS (`200`, bon `Content-Type`), API toujours fonctionnelle, route API inconnue toujours `404` JSON (pas absorbée par le fallback SPA).
 - `npm run build`/`npm run lint` (client) : OK.
 - Limite de vérification : le déploiement réel sur un vrai compte cPanel n'a pas pu être testé dans cette session (pas d'accès à un hébergement réel) — tout a été vérifié en reproduisant fidèlement les contraintes annoncées (MySQL, pas de terminal, same-origin, SQL via import direct) en local. Le guide `DEPLOYMENT.md` doit être suivi et les résultats confirmés une fois l'hébergement réel disponible.
+
+---
+
+# PHASE 5 — AMÉLIORATIONS DEMANDÉES PAR LE CLIENT (2026-11-04)
+
+Contexte : après la mise en ligne de la V1 (`deltasign.ay-web.com`), le client a validé une liste de 13 améliorations. Elles dépassent le périmètre de l'offre de service initiale (60 000 DZD) — **à couvrir par un avenant** (règle #8 de ce fichier).
+
+Contraintes qui s'appliquent à toute la phase :
+- Le site public est en **4 langues** (fr, ar, en, tzm — `client/src/i18n/locales/`) : tout nouveau texte visible côté public doit être ajouté dans les 4 fichiers. L'admin reste en français.
+- La **prod a déjà des données** : chaque changement de schéma doit fournir un script SQL non destructif applicable sur la base existante (pas seulement `cpanel-setup.sql` pour une base vierge).
+- L'hébergement a maintenant un accès shell (2026-10-14) : `npx prisma migrate deploy` devient possible, mais la base de prod a été créée via `cpanel-setup.sql` (pas de table `_prisma_migrations`) — on garde donc un script SQL à coller dans phpMyAdmin comme voie principale.
+
+### P5-00 — Évolution du modèle de données
+- Statut : `✅ done`
+- Priorité : `🔴 high`
+- Dépendances : aucune
+
+Tâches :
+- `Product` : prix numérique `priceValue` (le champ `price` actuel est un texte libre type « 18 500 000 DZD », inutilisable pour filtrer par budget ou trier) ; `status` (DISPONIBLE / VENDU / LOUE) ; `isExclusive` ; `isFeatured` ; `latitude`/`longitude` ; `videoUrl` ; `views` (compteur de consultations).
+- Nouveau modèle `ProductImage` (plusieurs photos par bien, ordonnées) — les images existantes (`products.image`) sont reprises comme première photo.
+- Nouveaux modèles : `Testimonial` (avis clients), `SiteSetting` (clé/valeur : chiffres clés, numéro WhatsApp), `SearchAlert` (alertes visiteurs).
+- Migration Prisma + script SQL de mise à jour de la prod (avec reprise des données existantes) + `cpanel-setup.sql` mis à jour pour une installation neuve.
+
+### P5-01 — Galerie photos par bien (point 1)
+- Statut : `✅ done` — Dépendances : `P5-00`
+- Plusieurs photos par annonce (upload multiple dans l'admin, réordonnables, suppression), carrousel sur la fiche, affichage plein écran (lightbox) avec flèches clavier et glissement tactile.
+
+### P5-02 — Recherche, filtres et tri (point 2)
+- Statut : `✅ done` — Dépendances : `P5-00`
+- Filtres vente/location, ville, budget min/max, nombre de pièces min ; tri prix croissant/décroissant, plus récents. Filtrage côté serveur (`GET /api/products?...`), filtres reflétés dans l'URL (partageable).
+
+### P5-03 — Carte interactive (point 3)
+- Statut : `✅ done` — Dépendances : `P5-00`
+- Leaflet + OpenStreetMap (gratuit, sans clé API). Carte sur la fiche d'un bien + vue carte de tout le catalogue (bascule liste/carte). Dans l'admin, position choisie en cliquant sur une carte.
+
+### P5-04 — Badges (point 4)
+- Statut : `✅ done` — Dépendances : `P5-00`
+- « Nouveau » calculé automatiquement (publié il y a moins de 30 jours), « Exclusivité » (case à cocher admin), « Vendu » / « Loué » (statut du bien, choisi dans l'admin).
+
+### P5-05 — Vidéo de visite (point 5)
+- Statut : `✅ done` — Dépendances : `P5-00`
+- Vidéo uploadée (mp4/webm) ou lien YouTube/Vimeo, affichée sur la fiche.
+
+### P5-06 — Biens en vedette (point 6)
+- Statut : `✅ done` — Dépendances : `P5-00`
+- Case « En vedette » dans l'admin, section dédiée sur la page d'accueil.
+
+### P5-07 — Chiffres clés + avis clients (point 7)
+- Statut : `✅ done` — Dépendances : `P5-00`
+- Chiffres clés modifiables depuis l'admin (page « Paramètres du site »), avec animation de compteur. Avis clients gérés dans l'admin (CRUD), affichés sur l'accueil.
+
+### P5-08 — Animations au défilement (point 8)
+- Statut : `✅ done` — Dépendances : aucune
+- Apparition progressive des sections via `IntersectionObserver` (pas de librairie), désactivée si l'utilisateur a demandé à réduire les animations (`prefers-reduced-motion`).
+
+### P5-09 — WhatsApp flottant + partage (point 9)
+- Statut : `✅ done` — Dépendances : `P5-07` (numéro WhatsApp passé dans les paramètres du site)
+- Bouton WhatsApp fixe sur toutes les pages publiques. Boutons « Partager ce bien » (WhatsApp, Facebook) sur la fiche, + partage natif du téléphone quand il est disponible.
+
+### P5-10 — Simulateur de crédit (point 10)
+- Statut : `✅ done` — Dépendances : aucune
+- Calcul des mensualités (prix, apport, durée, taux) sur la fiche d'un bien en vente et sur une page dédiée. Calcul purement côté navigateur, indicatif.
+
+### P5-11 — Favoris (point 11)
+- Statut : `✅ done` — Dépendances : aucune
+- Stockés dans le navigateur du visiteur (pas de compte visiteur), page « Mes favoris ».
+
+### P5-12 — Alertes (point 12)
+- Statut : `✅ done` — Dépendances : `P5-00`, `P5-02`
+- Le visiteur enregistre ses critères + contact depuis le catalogue. **Aucun fournisseur d'e-mail/SMS n'est configuré** : l'envoi automatique n'est pas possible en l'état. L'admin voit les alertes et, pour chacune, les biens publiés depuis qui correspondent, avec un lien direct pour contacter la personne (WhatsApp/e-mail). L'envoi automatique pourra être branché plus tard sur le même système.
+
+### P5-13 — Tableau de bord avec statistiques (point 13)
+- Statut : `✅ done` — Dépendances : `P5-00`
+- Demandes reçues par mois (12 derniers mois, graphique), biens les plus consultés, demandes/offres en attente, alertes actives.
+
+### Compte rendu Phase 5 (2026-11-04)
+
+Réalisé — backend :
+- Migration `20261104191734_phase5_catalog_features` : colonnes `priceValue`, `status`, `isExclusive`, `isFeatured`, `latitude`, `longitude`, `videoUrl`, `views` sur `products` ; tables `product_images`, `testimonials`, `site_settings`, `search_alerts`. Reprise des données incluse (photo existante → 1re photo ; numéro WhatsApp → `site_settings`).
+- `priceValue` déduit des prix texte au démarrage du serveur (`server.js`, idempotent) plutôt qu'en SQL : `REGEXP_REPLACE` n'existe pas sur MySQL 5.7.
+- `GET /api/products` : filtres `type`, `city` (insensible à la casse), `minPrice`, `maxPrice`, `minRooms`, `featured`, `ids` (favoris), `limit`, tri `newest`/`price_asc`/`price_desc`. `GET /api/products/cities`, `POST /api/products/:id/view` (compté une fois par session côté navigateur).
+- Saisie admin : prix numérique en DZD, libellé `price` généré par le serveur ; photo principale `image` = 1re photo, tenue à jour automatiquement.
+- Nouvelles routes : `/api/testimonials` (public = avis publiés ; admin CRUD), `/api/settings` (liste blanche de clés, validées), `/api/alerts` (création publique validée, liste admin avec biens correspondants publiés depuis l'alerte), `/api/stats` (admin).
+- CSP : `frame-src` autorisé pour `youtube-nocookie.com` et `player.vimeo.com` (vidéos de visite) ; tuiles OpenStreetMap couvertes par `img-src https:`.
+
+Réalisé — frontend public (4 langues, 76 nouvelles clés dans chaque fichier, cohérence vérifiée par script) :
+- Catalogue : barre de filtres + tri synchronisés avec l'URL (partageable, bouton retour), bascule liste/carte, badges, favoris, formulaire d'alerte reprenant les critères en cours.
+- Fiche : galerie (vignettes, flèches) + plein écran (clavier, glissement tactile, sens inversé en arabe), vidéo YouTube/Vimeo ou fichier, carte, partage WhatsApp/Facebook/natif, « Poser une question sur WhatsApp », simulateur pré-rempli (biens en vente disponibles).
+- Accueil : chiffres clés avec compteur animé, biens en vedette, avis clients, animations d'apparition. Pages `/favoris` et `/simulateur`, lien favoris avec compteur dans le header, bouton WhatsApp flottant.
+- Cartes : Leaflet + OpenStreetMap, chargées à la demande (chunk séparé de ~160 ko, n'alourdit pas les autres pages).
+
+Réalisé — admin : formulaire produit complet (photos multiples réordonnables, vidéo, position par clic sur carte, statut, exclusivité, vedette), pages Avis clients, Alertes visiteurs, Paramètres du site ; tableau de bord avec graphique mensuel (palette validée contraste + daltonisme, infobulle, vue tableau), biens les plus consultés.
+
+Décisions / signalements :
+- **Chiffres clés et avis : rien d'inventé en prod.** Sections masquées tant que l'agence ne les a pas saisis. Des valeurs/avis de démo existent uniquement dans `seed.js` (local), jamais dans les scripts SQL de prod.
+- **Alertes sans envoi automatique** (pas de fournisseur e-mail/SMS) : bouton « Prévenir » qui ouvre WhatsApp/e-mail avec un message pré-rédigé listant les biens correspondants.
+- **Favoris stockés dans le navigateur** (pas de compte visiteur) : perdus si le visiteur change d'appareil ou vide ses données.
+- **Simulateur indicatif** : taux par défaut 6,5 %, modifiable ; hors assurance et frais (mention affichée).
+- Défaut préexistant corrigé : `.section` écrasait le padding latéral de `.container` (`<Container className="section">`) — contenu collé aux bords sur mobile sur toutes ces pages.
+- Arabe : séparateur de milliers insécable (sinon « 18 500 000 » s'affichait « 000 500 18 ») et contenu saisi par l'agence isolé (`dir="auto"`, `<bdi>`).
+- `scripts/build-for-cpanel.sh` copiait `server/scripts/` (supprimé quand le `postinstall` est passé inline) : corrigé, et il copie maintenant `mise-a-jour-phase5.sql`.
+
+Tests effectués :
+- Backend : 26 vérifications par script (filtres, tri, photos multiples et réordonnancement, validation des entrées invalides, vues, vedette, favoris, correspondance des alertes, stats, paramètres, avis publiés/masqués, refus sans authentification), base remise dans son état initial ensuite.
+- **Navigateur réel** (Chrome headless piloté par Puppeteer, build de prod servi par Express avec le CSP de prod) : 45 vérifications — accueil, filtres + URL, tri, carte (6 marqueurs, tuiles chargées, popup), alerte, galerie + plein écran + clavier, vues, vidéo, favoris, simulateur, arabe RTL, mobile 390 px sans débordement horizontal, admin (connexion, graphique + infobulle, formulaire produit avec carte, alertes, avis, paramètres). Captures relues à l'œil : c'est ce qui a révélé les défauts arabe et mobile ci-dessus, corrigés puis revérifiés.
+- SQL : `sql/mise-a-jour-phase5.sql` appliqué sur une copie de l'ancien schéma de prod puis serveur démarré dessus (prix repris, tri, connexion OK) ; `cpanel-setup.sql` importé sur une base vierge. Bases de test supprimées.
+- Limite : non testé sur le vrai serveur cPanel ni sur la vraie base de prod.
+
+---
+
+### Fusion du 2026-11-07 (Phase 5 + travaux du 2026-11-07)
+
+Les deux branches avaient implémenté en parallèle les photos multiples, la visionneuse plein écran et un nouveau tableau de bord. Choix retenus :
+- **Données** : modèle Phase 5 conservé (`product_images`, statut, prix numérique, carte…). La vidéo unique `products.videoUrl` est remplacée par une table `product_videos` (plusieurs vidéos par bien, fichier ou lien YouTube/Vimeo). La table `product_media` de l'autre branche est abandonnée. Migration `20261107085312_product_videos_and_offer_email` (+ e-mail sur `sell_offers`).
+- **Prod** : un seul script idempotent `server/sql/mise-a-jour-2026-11.sql` (copié en `akili-en-ligne/mise-a-jour-base-2026-11.sql`), qui remplace `mise-a-jour-phase5.sql` et `cpanel-update-2026-11.sql`. Testé sur 4 bases temporaires (V1, base Phase 5 avec vidéo, installation neuve, migrations Prisma) : schéma identique à `schema.prisma` dans les 4 cas, relance sans doublon.
+- **Front** : une seule visionneuse (`components/ui/Lightbox.jsx`, vignettes + portal), galerie de fiche `ImageGallery` (Phase 5), carrousel `PhotoCarousel` supprimé. Bouton WhatsApp flottant placé au-dessus du lanceur de l'assistant. Le numéro WhatsApp de l'assistant vient des paramètres du site.
+- **Admin** : design du 2026-11-07 appliqué aux pages Phase 5 (Alertes, Avis, Paramètres) ; formulaire produit Phase 5 + gestionnaire de médias (photos + vidéos fichiers/liens) ; tableau de bord = design du 2026-11-07 alimenté par `/api/stats` (12 mois, biens les plus consultés, alertes actives, rappel des chiffres clés manquants).
 
 ---
 

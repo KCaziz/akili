@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchProducts, fetchServices, fetchRequests, fetchSellOffers, fetchGallery, resolveMediaUrl } from "../../lib/api";
+import { fetchProducts, fetchRequests, fetchSellOffers, fetchStats, fetchSettings } from "../../lib/api";
 import { useAdminAuth } from "../../contexts/AdminAuthContext";
 import AdminIcon from "../../components/admin/AdminIcon";
 
-const MONTHS_SHOWN = 6;
 const monthFormatter = new Intl.DateTimeFormat("fr-FR", { month: "short" });
+const monthYearFormatter = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric" });
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short" });
 
 function useCountUp(target, duration = 900) {
@@ -36,21 +36,10 @@ function StatCard({ icon, label, value, hint, to, tone }) {
   );
 }
 
-function buildMonthlyActivity(requests, offers) {
-  const now = new Date();
-  const months = Array.from({ length: MONTHS_SHOWN }, (_, index) => {
-    const date = new Date(now.getFullYear(), now.getMonth() - (MONTHS_SHOWN - 1 - index), 1);
-    return { key: `${date.getFullYear()}-${date.getMonth()}`, label: monthFormatter.format(date), requests: 0, offers: 0 };
-  });
-  const byKey = new Map(months.map((month) => [month.key, month]));
-  for (const [items, field] of [[requests, "requests"], [offers, "offers"]]) {
-    for (const item of items) {
-      const date = new Date(item.createdAt);
-      const month = byKey.get(`${date.getFullYear()}-${date.getMonth()}`);
-      if (month) month[field] += 1;
-    }
-  }
-  return months;
+// Les mois viennent de /api/stats sous la forme « 2026-11 ».
+function monthDate(key) {
+  const [year, month] = key.split("-").map(Number);
+  return new Date(year, month - 1, 1);
 }
 
 function greeting() {
@@ -64,8 +53,8 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    Promise.all([fetchProducts(), fetchServices(), fetchRequests(), fetchSellOffers(), fetchGallery()])
-      .then(([products, services, requests, offers, gallery]) => setData({ products, services, requests, offers, gallery }))
+    Promise.all([fetchProducts(), fetchRequests(), fetchSellOffers(), fetchStats(), fetchSettings().catch(() => ({}))])
+      .then(([products, requests, offers, stats, settings]) => setData({ products, requests, offers, stats, settings }))
       .catch((err) => setError(err.message));
   }, []);
 
@@ -82,14 +71,16 @@ export default function AdminDashboardPage() {
     );
   }
 
-  const { products, services, requests, offers, gallery } = data;
+  const { products, requests, offers, stats, settings } = data;
   const pendingRequests = requests.filter((request) => request.status === "EN_ATTENTE");
   const pendingOffers = offers.filter((offer) => offer.status === "EN_ATTENTE");
   const forSale = products.filter((product) => product.type === "VENTE").length;
   const salePercent = products.length ? Math.round((forSale / products.length) * 100) : 0;
-  const activity = buildMonthlyActivity(requests, offers);
+  const activity = stats.monthly;
   const maxActivity = Math.max(1, ...activity.map((month) => Math.max(month.requests, month.offers)));
   const totalPending = pendingRequests.length + pendingOffers.length;
+  const figuresMissing = !settings.yearsExperience && !settings.propertiesSold && !settings.clientsServed;
+  const topViewed = stats.topViewed.filter((product) => product.views > 0);
 
   return (
     <div className="dashboard">
@@ -113,17 +104,23 @@ export default function AdminDashboardPage() {
         </div>
       </section>
 
+      {figuresMissing && (
+        <p className="dashboard-notice">
+          Les chiffres clés de la page d'accueil ne sont pas encore renseignés — <Link to="/admin/parametres">les compléter</Link>.
+        </p>
+      )}
+
       <div className="stat-grid">
         <StatCard icon="building" tone="teal" label="Biens en ligne" value={products.length} hint={`${forSale} en vente · ${products.length - forSale} en location`} to="/admin/produits" />
         <StatCard icon="inbox" tone="amber" label="Demandes en attente" value={pendingRequests.length} hint={`${requests.length} au total`} to="/admin/demandes" />
         <StatCard icon="tag" tone="rose" label="Offres de vente en attente" value={pendingOffers.length} hint={`${offers.length} au total`} to="/admin/offres" />
-        <StatCard icon="image" tone="indigo" label="Médias en galerie" value={gallery.length} hint={`${services.length} services proposés`} to="/admin/galerie" />
+        <StatCard icon="bell" tone="indigo" label="Alertes visiteurs actives" value={stats.totals.activeAlerts} hint="Visiteurs à prévenir" to="/admin/alertes" />
       </div>
 
       <div className="dashboard-grid">
         <section className="admin-card dashboard-chart">
           <header className="admin-card-header">
-            <h2>Activité des 6 derniers mois</h2>
+            <h2>Activité des 12 derniers mois</h2>
             <div className="chart-legend">
               <span className="legend-dot legend-requests" /> Demandes
               <span className="legend-dot legend-offers" /> Offres de vente
@@ -131,24 +128,26 @@ export default function AdminDashboardPage() {
           </header>
           <div className="chart-bars">
             {activity.map((month) => (
-              <div key={month.key} className="chart-col">
+              <div
+                key={month.month}
+                className="chart-col"
+                title={`${monthYearFormatter.format(monthDate(month.month))} : ${month.requests} demande(s), ${month.offers} offre(s)`}
+              >
                 <div className="chart-col-bars">
                   <span
                     className="chart-bar chart-bar-requests"
                     style={{ height: `${(month.requests / maxActivity) * 100}%` }}
-                    title={`${month.requests} demande(s)`}
                   >
                     {month.requests > 0 && <em>{month.requests}</em>}
                   </span>
                   <span
                     className="chart-bar chart-bar-offers"
                     style={{ height: `${(month.offers / maxActivity) * 100}%` }}
-                    title={`${month.offers} offre(s)`}
                   >
                     {month.offers > 0 && <em>{month.offers}</em>}
                   </span>
                 </div>
-                <span className="chart-label">{month.label}</span>
+                <span className="chart-label">{monthFormatter.format(monthDate(month.month))}</span>
               </div>
             ))}
           </div>
@@ -165,17 +164,20 @@ export default function AdminDashboardPage() {
             <span><span className="legend-dot legend-requests" /> Vente <strong>{forSale}</strong></span>
             <span><span className="legend-dot legend-offers" /> Location <strong>{products.length - forSale}</strong></span>
           </div>
-          <ul className="mini-list">
-            {products.slice(0, 4).map((product) => (
-              <li key={product.id}>
-                <span className="mini-thumb" style={{ backgroundImage: product.image ? `url("${resolveMediaUrl(product.image)}")` : undefined }} />
-                <div>
-                  <strong>{product.title}</strong>
-                  <span>{product.city} · {product.price}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <h3 className="admin-card-subtitle">Biens les plus consultés</h3>
+          {topViewed.length > 0 ? (
+            <ol className="top-viewed">
+              {topViewed.map((product) => (
+                <li key={product.id}>
+                  <Link to={`/produits/${product.id}`} target="_blank">{product.title}</Link>
+                  <span className="muted">{product.city}</span>
+                  <strong>{product.views} vue{product.views > 1 ? "s" : ""}</strong>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p className="muted">Pas encore de consultations enregistrées.</p>
+          )}
         </section>
 
         <section className="admin-card">

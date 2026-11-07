@@ -14,6 +14,7 @@ const sections = [
       { to: "/admin/produits", label: "Produits", icon: "building" },
       { to: "/admin/services", label: "Services", icon: "briefcase" },
       { to: "/admin/galerie", label: "Galerie", icon: "image" },
+      { to: "/admin/avis", label: "Avis clients", icon: "star" },
     ],
   },
   {
@@ -21,11 +22,15 @@ const sections = [
     links: [
       { to: "/admin/demandes", label: "Demandes clients", icon: "inbox" },
       { to: "/admin/offres", label: "Offres de vente", icon: "tag" },
+      { to: "/admin/alertes", label: "Alertes visiteurs", icon: "bell" },
     ],
   },
   {
     title: "Paramètres",
-    links: [{ to: "/admin/compte", label: "Mon compte", icon: "user" }],
+    links: [
+      { to: "/admin/parametres", label: "Paramètres du site", icon: "settings" },
+      { to: "/admin/compte", label: "Mon compte", icon: "user" },
+    ],
   },
 ];
 

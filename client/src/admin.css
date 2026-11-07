@@ -862,8 +862,8 @@
 
 .chart-bars {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 8px;
   height: 220px;
   align-items: end;
 }
@@ -1047,7 +1047,7 @@
   flex-wrap: wrap;
 }
 
-.form .media-manager-buttons label.admin-btn {
+.form .media-manager label.admin-btn {
   flex-direction: row;
   gap: 8px;
   font-weight: 700;
@@ -1387,5 +1387,166 @@
 
   .chart-bars {
     gap: 6px;
+  }
+}
+
+/* ---------- Pages ajoutées en Phase 5 (alertes, avis, paramètres, fiche bien) ---------- */
+
+.dashboard-notice {
+  margin: 0 0 20px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #fdf0d3;
+  color: #6b4e00;
+  font-weight: 600;
+}
+
+.dashboard-notice a {
+  color: inherit;
+}
+
+.admin-card-subtitle {
+  margin: 22px 0 8px;
+  font-size: 0.95rem;
+}
+
+.top-viewed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: top;
+}
+
+.top-viewed li {
+  counter-increment: top;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "rank title views" "rank city views";
+  column-gap: 12px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.top-viewed li:last-child {
+  border-bottom: none;
+}
+
+.top-viewed li::before {
+  content: counter(top);
+  grid-area: rank;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 61, 62, 0.08);
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.top-viewed a {
+  grid-area: title;
+  font-weight: 700;
+  color: var(--color-dark);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-viewed .muted {
+  grid-area: city;
+  font-size: 0.8rem;
+}
+
+.top-viewed strong {
+  grid-area: views;
+  font-size: 0.85rem;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.admin-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.flag-pill {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.flag-featured {
+  background: rgba(227, 168, 70, 0.18);
+  color: #8a5a00;
+}
+
+.flag-exclusive {
+  background: rgba(15, 61, 62, 0.1);
+  color: var(--color-primary);
+}
+
+.badge-muted {
+  background: #eceff1;
+  color: #55606a;
+}
+
+.rating-cell {
+  color: #e3a846;
+  letter-spacing: 1px;
+}
+
+.rating-cell span {
+  color: #d5dade;
+}
+
+.admin-form .admin-fieldset {
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+
+.admin-form .admin-fieldset legend {
+  font-size: 0.95rem;
+}
+
+.media-manager-header-spaced {
+  margin-top: 22px;
+}
+
+.media-link-row {
+  display: flex;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.media-link-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.media-tile-link {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  color: #fff;
+  background: linear-gradient(135deg, #1d2b2c, #0f3d3e);
+  font-size: 0.75rem;
+  text-align: center;
+  word-break: break-all;
+}
+
+@media (max-width: 600px) {
+  .media-link-row {
+    flex-direction: column;
   }
 }

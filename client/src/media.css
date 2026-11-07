@@ -1,131 +1,9 @@
-/* ---------- Carrousel photo (fiche bien) ---------- */
+/* ---------- Vidéos de la fiche bien ---------- */
 
-.carousel {
-  min-width: 0;
-}
-
-.carousel-main {
-  position: relative;
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--color-bg-alt);
-  box-shadow: var(--shadow-sm);
-}
-
-.carousel-image-btn {
-  display: block;
-  width: 100%;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: zoom-in;
-}
-
-.carousel-image {
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-  animation: media-fade 0.35s ease;
-}
-
-.carousel-empty {
-  height: 400px;
-  border-radius: var(--radius);
-  background: var(--color-bg-alt);
-}
-
-.carousel-arrow,
-.lightbox-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
+.video-list {
   display: grid;
-  place-items: center;
-  line-height: 1;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.carousel-arrow {
-  width: 42px;
-  height: 42px;
-  font-size: 1.8rem;
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--color-dark);
-  box-shadow: var(--shadow-sm);
-}
-
-.carousel-arrow:hover {
-  background: #fff;
-  transform: translateY(-50%) scale(1.08);
-}
-
-.carousel-arrow-prev,
-.lightbox-arrow-prev {
-  inset-inline-start: 14px;
-}
-
-.carousel-arrow-next,
-.lightbox-arrow-next {
-  inset-inline-end: 14px;
-}
-
-[dir="rtl"] .carousel-arrow,
-[dir="rtl"] .lightbox-arrow {
-  scale: -1 1;
-}
-
-.carousel-counter {
-  position: absolute;
-  bottom: 12px;
-  inset-inline-end: 12px;
-  background: rgba(11, 42, 43, 0.7);
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 999px;
-}
-
-.carousel-thumbs,
-.lightbox-thumbs {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 12px 2px 4px;
-}
-
-.carousel-thumb,
-.lightbox-thumb {
-  flex-shrink: 0;
-  padding: 0;
-  border: 2px solid transparent;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  cursor: pointer;
-  background: none;
-  opacity: 0.65;
-  transition: opacity 0.2s ease, border-color 0.2s ease;
-}
-
-.carousel-thumb img {
-  width: 76px;
-  height: 56px;
-  object-fit: cover;
-}
-
-.carousel-thumb.active,
-.carousel-thumb:hover,
-.lightbox-thumb.active,
-.lightbox-thumb:hover {
-  opacity: 1;
-  border-color: var(--color-accent);
-}
-
-.product-videos {
-  margin-top: 56px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 20px;
 }
 
 @keyframes media-fade {
@@ -138,7 +16,7 @@
 .lightbox {
   position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: 1000;
   background: rgba(6, 18, 19, 0.95);
   display: flex;
   flex-direction: column;
@@ -207,6 +85,16 @@
 }
 
 .lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  transition: background 0.2s ease, transform 0.2s ease;
   width: 52px;
   height: 52px;
   font-size: 2.2rem;
@@ -219,9 +107,42 @@
   transform: translateY(-50%) scale(1.08);
 }
 
+.lightbox-arrow-prev {
+  inset-inline-start: 14px;
+}
+
+.lightbox-arrow-next {
+  inset-inline-end: 14px;
+}
+
+[dir="rtl"] .lightbox-arrow {
+  scale: -1 1;
+}
+
 .lightbox-thumbs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
   justify-content: center;
   padding: 14px 20px 20px;
+}
+
+.lightbox-thumb {
+  flex-shrink: 0;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  background: none;
+  opacity: 0.65;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.lightbox-thumb.active,
+.lightbox-thumb:hover {
+  opacity: 1;
+  border-color: var(--color-accent);
 }
 
 .lightbox-thumb img {
@@ -447,12 +368,15 @@
   100% { box-shadow: 0 0 0 18px rgba(227, 168, 70, 0), 0 12px 28px rgba(15, 61, 62, 0.35); }
 }
 
-@media (max-width: 860px) {
-  .carousel-image,
-  .carousel-empty {
-    height: 280px;
-  }
+/* Le bouton WhatsApp flottant se place au-dessus du lanceur de l’assistant (même coin),
+   et passe sous le panneau de l’assistant quand celui-ci est ouvert. */
+.whatsapp-float {
+  bottom: 98px;
+  inset-inline-end: 25px;
+  z-index: 140;
+}
 
+@media (max-width: 860px) {
   .lightbox-stage {
     padding: 0 12px;
   }
@@ -466,5 +390,10 @@
   .assistant {
     bottom: 16px;
     inset-inline-end: 16px;
+  }
+
+  .whatsapp-float {
+    bottom: 88px;
+    inset-inline-end: 20px;
   }
 }

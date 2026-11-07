@@ -18,6 +18,10 @@ import sellOffersRouter from "./routes/sellOffers.js";
 import galleryRouter from "./routes/gallery.js";
 import authRouter from "./routes/auth.js";
 import uploadsRouter from "./routes/uploads.js";
+import testimonialsRouter from "./routes/testimonials.js";
+import settingsRouter from "./routes/settings.js";
+import alertsRouter from "./routes/alerts.js";
+import statsRouter from "./routes/stats.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, "..", "public");
@@ -26,7 +30,24 @@ const app = express();
 
 // crossOriginResourcePolicy "cross-origin" : nécessaire quand front (Vite dev, :5173) et API
 // (:4000) tournent sur des ports différents. Sans impact en production (même origine).
-app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
+// img-src élargi à "https:" : le catalogue/galerie affichent des photos de démonstration
+// hébergées sur Unsplash (domaine externe) — le CSP par défaut d'Helmet ("img-src 'self'
+// data:") les bloquerait silencieusement côté navigateur une fois que ce serveur sert aussi
+// la page HTML (en dev, Vite sert la page donc ce CSP ne s'appliquait jamais).
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        "img-src": ["'self'", "data:", "https:"],
+        "media-src": ["'self'", "https:"],
+        // Vidéos de visite hébergées sur YouTube/Vimeo, intégrées en iframe sur la fiche d'un bien.
+        "frame-src": ["'self'", "https://www.youtube-nocookie.com", "https://player.vimeo.com"],
+      },
+    },
+  }),
+);
 app.use(cors({ origin: env.corsOrigin, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
@@ -42,6 +63,10 @@ app.use("/api/sell-offers", sellOffersRouter);
 app.use("/api/gallery", galleryRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/uploads", uploadsRouter);
+app.use("/api/testimonials", testimonialsRouter);
+app.use("/api/settings", settingsRouter);
+app.use("/api/alerts", alertsRouter);
+app.use("/api/stats", statsRouter);
 
 // Sert le frontend React buildé (client/dist copié dans server/public au déploiement) sur le
 // même serveur Node que l'API — nécessaire sur un hébergement mutualisé cPanel, qui n'autorise

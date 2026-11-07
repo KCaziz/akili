@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { resolveMediaUrl } from "../../lib/api";
 
 const SWIPE_THRESHOLD = 50;
 
+// Rendu dans <body> (portal) : un parent animé (transform, cf. ScrollReveal) casserait le position: fixed.
 export default function Lightbox({ items, startIndex = 0, onClose }) {
   const { t } = useTranslation();
   const [index, setIndex] = useState(startIndex);
@@ -42,7 +44,7 @@ export default function Lightbox({ items, startIndex = 0, onClose }) {
 
   const current = items[index];
 
-  return (
+  return createPortal(
     <div className="lightbox" role="dialog" aria-modal="true" onClick={onClose}>
       <div className="lightbox-topbar" onClick={(event) => event.stopPropagation()}>
         <span className="lightbox-counter">{index + 1} / {total}</span>
@@ -96,6 +98,7 @@ export default function Lightbox({ items, startIndex = 0, onClose }) {
           ))}
         </div>
       )}
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -5,6 +5,7 @@ const links = [
   { to: "/", key: "presentation" },
   { to: "/services", key: "services" },
   { to: "/produits", key: "products" },
+  { to: "/simulateur", key: "simulator" },
   { to: "/galerie", key: "gallery" },
   { to: "/vendre", key: "sell" },
   { to: "/demande", key: "request" },

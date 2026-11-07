@@ -13,6 +13,8 @@ import ContactPage from "../pages/ContactPage";
 import SellPage from "../pages/SellPage";
 import RequestPage from "../pages/RequestPage";
 import NotFoundPage from "../pages/NotFoundPage";
+import FavoritesPage from "../pages/FavoritesPage";
+import SimulatorPage from "../pages/SimulatorPage";
 
 import AdminLoginPage from "../pages/admin/AdminLoginPage";
 import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
@@ -22,6 +24,9 @@ import AdminGalleryPage from "../pages/admin/AdminGalleryPage";
 import AdminRequestsPage from "../pages/admin/AdminRequestsPage";
 import AdminOffersPage from "../pages/admin/AdminOffersPage";
 import AdminAccountPage from "../pages/admin/AdminAccountPage";
+import AdminTestimonialsPage from "../pages/admin/AdminTestimonialsPage";
+import AdminSettingsPage from "../pages/admin/AdminSettingsPage";
+import AdminAlertsPage from "../pages/admin/AdminAlertsPage";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +42,8 @@ const router = createBrowserRouter([
       { path: "contact", element: <ContactPage /> },
       { path: "vendre", element: <SellPage /> },
       { path: "demande", element: <RequestPage /> },
+      { path: "favoris", element: <FavoritesPage /> },
+      { path: "simulateur", element: <SimulatorPage /> },
       { path: "*", element: <NotFoundPage /> },
     ],
   },
@@ -54,6 +61,9 @@ const router = createBrowserRouter([
           { path: "galerie", element: <AdminGalleryPage /> },
           { path: "demandes", element: <AdminRequestsPage /> },
           { path: "offres", element: <AdminOffersPage /> },
+          { path: "avis", element: <AdminTestimonialsPage /> },
+          { path: "alertes", element: <AdminAlertsPage /> },
+          { path: "parametres", element: <AdminSettingsPage /> },
           { path: "compte", element: <AdminAccountPage /> },
         ],
       },

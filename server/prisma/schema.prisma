@@ -20,34 +20,96 @@ enum PropertyType {
   LOCATION
 }
 
+enum ProductStatus {
+  DISPONIBLE
+  VENDU
+  LOUE
+}
+
 model Product {
-  id          String       @id @default(cuid())
+  id          String         @id @default(cuid())
   title       String
-  description String?      @db.Text
+  description String?        @db.Text
   type        PropertyType
   city        String
+  // Libellé historique (texte libre). Conservé en repli d'affichage ; les filtres, le tri
+  // et le simulateur de crédit utilisent priceValue.
   price       String
+  priceValue  Int?
   surface     String?
   rooms       Int?
+  // Photo principale = première photo de `images`, tenue à jour par le serveur.
   image       String?        @db.Text
-  media       ProductMedia[]
+  status      ProductStatus  @default(DISPONIBLE)
+  isExclusive Boolean        @default(false)
+  isFeatured  Boolean        @default(false)
+  latitude    Float?
+  longitude   Float?
+  views       Int            @default(0)
+  images      ProductImage[]
+  // Vidéos de visite (fichier uploadé ou lien YouTube/Vimeo), affichées sur la fiche uniquement.
+  videos      ProductVideo[]
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
 
+  @@index([type])
+  @@index([isFeatured])
   @@map("products")
 }
 
-model ProductMedia {
-  id        String    @id @default(cuid())
+model ProductImage {
+  id        String  @id @default(cuid())
   productId String
-  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
-  type      MediaType
-  url       String    @db.Text
-  position  Int       @default(0)
-  createdAt DateTime  @default(now())
+  url       String  @db.Text
+  position  Int     @default(0)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([productId])
-  @@map("product_media")
+  @@map("product_images")
+}
+
+model ProductVideo {
+  id        String  @id @default(cuid())
+  productId String
+  url       String  @db.Text
+  position  Int     @default(0)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_videos")
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  name        String
+  city        String?
+  text        String   @db.Text
+  rating      Int      @default(5)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@map("testimonials")
+}
+
+model SiteSetting {
+  key   String @id
+  value String @db.Text
+
+  @@map("site_settings")
+}
+
+model SearchAlert {
+  id        String        @id @default(cuid())
+  name      String
+  contact   String
+  type      PropertyType?
+  city      String?
+  maxBudget Int?
+  minRooms  Int?
+  isActive  Boolean       @default(true)
+  createdAt DateTime      @default(now())
+
+  @@map("search_alerts")
 }
 
 model Service {

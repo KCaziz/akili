@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { WHATSAPP_URL } from "../../lib/constants";
+import { useSiteSettings } from "../../lib/useSiteSettings";
 
 const QUESTIONS = [
   { id: "buy", to: "/produits" },
@@ -11,13 +11,14 @@ const QUESTIONS = [
   { id: "documents", to: "/contact" },
   { id: "services", to: "/services" },
   { id: "nin" },
-  { id: "contact", href: WHATSAPP_URL },
+  { id: "contact", whatsapp: true },
 ];
 
 const TYPING_DELAY_MS = 700;
 
 export default function AssistantWidget() {
   const { t, i18n } = useTranslation();
+  const { whatsappNumber } = useSiteSettings();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [typing, setTyping] = useState(false);
@@ -54,8 +55,8 @@ export default function AssistantWidget() {
     const key = `assistant.questions.${questionId}.cta`;
     if (!i18n.exists(key)) return null;
     const label = t(key);
-    if (question.href) {
-      return <a className="assistant-cta" href={question.href} target="_blank" rel="noreferrer">{label}</a>;
+    if (question.whatsapp) {
+      return <a className="assistant-cta" href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer">{label}</a>;
     }
     return <Link className="assistant-cta" to={question.to} onClick={() => setOpen(false)}>{label}</Link>;
   }

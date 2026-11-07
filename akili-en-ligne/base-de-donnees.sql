@@ -5,7 +5,7 @@
 -- dans cPanel (« MySQL Databases »), en collant tout ce fichier dans
 -- phpMyAdmin > [votre base] > onglet SQL > Exécuter.
 --
--- Contient : la structure des 6 tables + les données de démonstration
+-- Contient : la structure complète (dont Phase 5 et la mise à jour de novembre 2026) + les données de démonstration
 -- (4 services, 6 produits, 6 photos de galerie, 1 compte admin).
 --
 -- Compte admin créé : identifiant "admin", mot de passe "akili2026"
@@ -83,18 +83,6 @@ CREATE TABLE `sell_offers` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE TABLE `product_media` (
-    `id` VARCHAR(191) NOT NULL,
-    `productId` VARCHAR(191) NOT NULL,
-    `type` ENUM('PHOTO', 'VIDEO') NOT NULL,
-    `url` TEXT NOT NULL,
-    `position` INTEGER NOT NULL DEFAULT 0,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-
-    INDEX `product_media_productId_idx`(`productId`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
 CREATE TABLE `gallery_media` (
     `id` VARCHAR(191) NOT NULL,
     `type` ENUM('PHOTO', 'VIDEO') NOT NULL,
@@ -134,7 +122,102 @@ INSERT INTO `gallery_media` (`id`, `type`, `url`, `caption`, `createdAt`) VALUES
 ('cmv0y5qp3000fq4f0d5huggqu', 'PHOTO', 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80', 'Visite d\'un bien', '2026-10-09 12:33:57.351'),
 ('cmv0y5qp3000gq4f0cmvha4b7', 'PHOTO', 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=900&q=80', 'Entrée de l\'agence', '2026-10-09 12:33:57.351');
 
-ALTER TABLE `product_media` ADD CONSTRAINT `product_media_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+-- --------------------------------------------------------------------------
 
-INSERT INTO `product_media` (`id`, `productId`, `type`, `url`, `position`)
-SELECT CONCAT('pm_', `id`), `id`, 'PHOTO', `image`, 0 FROM `products` WHERE `image` IS NOT NULL AND `image` <> '';
+-- Phase 5 (2026-11) — identique à sql/mise-a-jour-phase5.sql
+
+-- --------------------------------------------------------------------------
+
+
+-- AlterTable
+ALTER TABLE `products` ADD COLUMN `isExclusive` BOOLEAN NOT NULL DEFAULT false,
+    ADD COLUMN `isFeatured` BOOLEAN NOT NULL DEFAULT false,
+    ADD COLUMN `latitude` DOUBLE NULL,
+    ADD COLUMN `longitude` DOUBLE NULL,
+    ADD COLUMN `priceValue` INTEGER NULL,
+    ADD COLUMN `status` ENUM('DISPONIBLE', 'VENDU', 'LOUE') NOT NULL DEFAULT 'DISPONIBLE',
+    ADD COLUMN `videoUrl` TEXT NULL,
+    ADD COLUMN `views` INTEGER NOT NULL DEFAULT 0;
+
+-- CreateTable
+CREATE TABLE `product_images` (
+    `id` VARCHAR(191) NOT NULL,
+    `productId` VARCHAR(191) NOT NULL,
+    `url` TEXT NOT NULL,
+    `position` INTEGER NOT NULL DEFAULT 0,
+
+    INDEX `product_images_productId_idx`(`productId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `testimonials` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `city` VARCHAR(191) NULL,
+    `text` TEXT NOT NULL,
+    `rating` INTEGER NOT NULL DEFAULT 5,
+    `isPublished` BOOLEAN NOT NULL DEFAULT true,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `site_settings` (
+    `key` VARCHAR(191) NOT NULL,
+    `value` TEXT NOT NULL,
+
+    PRIMARY KEY (`key`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `search_alerts` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `contact` VARCHAR(191) NOT NULL,
+    `type` ENUM('VENTE', 'LOCATION') NULL,
+    `city` VARCHAR(191) NULL,
+    `maxBudget` INTEGER NULL,
+    `minRooms` INTEGER NULL,
+    `isActive` BOOLEAN NOT NULL DEFAULT true,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateIndex
+CREATE INDEX `products_type_idx` ON `products`(`type`);
+
+-- CreateIndex
+CREATE INDEX `products_isFeatured_idx` ON `products`(`isFeatured`);
+
+-- AddForeignKey
+ALTER TABLE `product_images` ADD CONSTRAINT `product_images_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Reprise des données : la photo unique de chaque bien devient sa première photo.
+INSERT INTO `product_images` (`id`, `productId`, `url`, `position`)
+SELECT UUID(), `id`, `image`, 0 FROM `products` WHERE `image` IS NOT NULL AND `image` <> '';
+
+-- Numéro WhatsApp jusqu'ici codé en dur dans le frontend.
+INSERT IGNORE INTO `site_settings` (`key`, `value`) VALUES ('whatsappNumber', '213783940376');
+
+-- --------------------------------------------------------------------------
+
+-- Mise à jour 2026-11-07 — vidéos multiples par bien (remplace products.videoUrl)
+
+-- --------------------------------------------------------------------------
+
+CREATE TABLE `product_videos` (
+    `id` VARCHAR(191) NOT NULL,
+    `productId` VARCHAR(191) NOT NULL,
+    `url` TEXT NOT NULL,
+    `position` INTEGER NOT NULL DEFAULT 0,
+
+    INDEX `product_videos_productId_idx`(`productId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE `product_videos` ADD CONSTRAINT `product_videos_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `products` DROP COLUMN `videoUrl`;

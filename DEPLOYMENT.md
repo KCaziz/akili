@@ -172,15 +172,22 @@ Un lien vers le fichier de log (souvent « Passenger log file ») est générale
 5. Si tu as modifié `prisma/schema.prisma` (nouveau champ, nouvelle table) : il faut adapter la base MySQL manuellement via phpMyAdmin (`ALTER TABLE ...` ou `CREATE TABLE ...`), puisqu'il n'y a pas de terminal pour lancer `prisma migrate`. Il faut aussi recliquer **Run NPM Install**, qui régénère le client Prisma (sans ça, le serveur ne connaît pas les nouveaux champs et plante).
 6. Clique **Restart** sur l'application.
 
-### Mise à jour de novembre 2026 (médias multiples, e-mail vendeur, nouvel admin)
+### Mise à jour de novembre 2026 (Phase 5 + vidéos multiples, e-mail vendeur, nouvel admin, assistant)
 
-Le schéma a changé (table `product_media`, colonne `email` sur les offres de vente). Ordre à respecter :
+Cette mise à jour regroupe **tout** ce qui a été fait depuis la V1 en ligne : NIN, Phase 5 (filtres, carte, badges, vedette, favoris, simulateur, alertes, avis, paramètres, statistiques), plusieurs photos **et plusieurs vidéos** par bien, e-mail sur le formulaire « Vendre », nouvel admin et assistant. Un seul script SQL remplace les anciens `mise-a-jour-phase5.sql` et `mise-a-jour-base-2026-11.sql` (ne plus utiliser ces anciennes versions).
+
+À faire **dans cet ordre** sur le site déjà en ligne :
 
 1. **Sauvegarde** : phpMyAdmin → base → onglet **Exporter** → Exécuter. Garde le fichier `.sql` obtenu.
-2. phpMyAdmin → base → onglet **SQL** : colle le contenu de `akili-en-ligne/mise-a-jour-base-2026-11.sql` → **Exécuter**. Le script peut être relancé sans risque et ne supprime aucune donnée ; l'image actuelle de chaque bien devient sa première photo.
+2. phpMyAdmin → base → onglet **SQL** : colle le contenu de `akili-en-ligne/mise-a-jour-base-2026-11.sql` → **Exécuter**. Le script fonctionne que l'ancien script Phase 5 ait déjà été passé ou non, peut être relancé sans risque et ne perd aucune donnée (la photo actuelle de chaque bien devient sa première photo ; une éventuelle vidéo Phase 5 devient sa première vidéo).
 3. File Manager → dossier de l'application : upload de `akili-en-ligne/akili-app.zip`, puis clic droit → **Extract** en écrasant les fichiers. Ce zip ne contient **pas** de `.env` : la configuration de production et le dossier `uploads/` (photos déjà envoyées) restent intacts.
-4. Setup Node.js App → **Run NPM Install** (obligatoire cette fois, voir point 5 ci-dessus).
-5. **Restart**, puis vérifier : une fiche produit, la galerie (plein écran), l'assistant en bas à droite, le formulaire « Vendre » (champ e-mail), et l'admin.
+4. Setup Node.js App → **Run NPM Install** (obligatoire : le schéma a changé, il faut régénérer le client Prisma).
+5. **Restart**. Au premier démarrage, le serveur déduit le prix numérique de chaque bien à partir du prix texte existant (log : « Prix numérique repris pour N bien(s) »).
+6. Vérifier : catalogue (filtres, carte), une fiche produit (photos plein écran, vidéos, carte, simulateur), la galerie, l'assistant et le bouton WhatsApp en bas à droite, le formulaire « Vendre » (champ e-mail), et l'admin.
+7. Dans l'admin, à compléter par l'agence :
+   - **Paramètres du site** : chiffres clés (section masquée sur l'accueil tant qu'ils sont vides) et numéro WhatsApp.
+   - **Avis clients** : uniquement de vrais témoignages (section masquée tant qu'il n'y en a aucun).
+   - **Produits** : photos et vidéos supplémentaires, position sur la carte, « En vedette » / « Exclusivité », statut « Vendu » / « Loué ».
 
 ---
 
@@ -188,5 +195,6 @@ Le schéma a changé (table `product_media`, colonne `email` sur les offres de v
 
 - **Stockage des fichiers uploadés (`server/uploads/`) sur le disque du serveur mutualisé** : fonctionne, mais si l'hébergeur change de serveur physique ou si tu migres d'offre un jour, ces fichiers ne sont pas automatiquement transférés — à sauvegarder toi-même périodiquement (via File Manager ou un export). Pour un usage sérieux à moyen terme, migrer vers un stockage objet (S3, Cloudinary...) reste recommandé, mais n'est pas nécessaire pour démarrer.
 - **Pas d'envoi d'email réel** : le formulaire Contact enregistre toujours le message en base (visible dans l'admin), aucun fournisseur d'email n'est configuré. À ajouter si besoin (SendGrid, Brevo, etc. — la plupart ont une API simple compatible avec un hébergement mutualisé).
-- **Numéro WhatsApp** : toujours un placeholder dans `client/src/pages/ContactPage.jsx` — remplace `WHATSAPP_NUMBER` par le vrai numéro avant un nouveau build.
+- **Numéro WhatsApp** : se règle dans l'admin, **Paramètres du site** (plus besoin de rebuild).
+- **Alertes visiteurs** : enregistrées en base et listées dans l'admin avec les biens correspondants, mais **aucun envoi automatique** (pas de fournisseur e-mail/SMS) — l'agence prévient le visiteur via le bouton « Prévenir » (WhatsApp ou e-mail pré-rédigé).
 - **Pas de sauvegarde automatique de la base** : vérifie si ton hébergeur fait des backups automatiques de MySQL, sinon configure un export régulier (cPanel propose généralement un outil « Backup » ou « Backup Wizard »).

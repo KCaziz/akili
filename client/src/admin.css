@@ -1335,12 +1335,13 @@
     inset-inline-start: 0;
     z-index: 60;
     transform: translateX(-100%);
-    transition: transform 0.25s ease;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
+  /* Ombre seulement à l’ouverture : fermé, elle débordait sur le bord gauche de l’écran. */
   .admin-menu-open .admin-sidebar {
     transform: none;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
   }
 
   .admin-menu-open .admin-backdrop {
@@ -1561,4 +1562,172 @@
 .mail-test .notice,
 .mail-test .error {
   margin: 0;
+}
+
+/* ---------- Paramètres du site ---------- */
+
+.settings-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px;
+  min-width: 0;
+}
+
+.settings-section-full {
+  grid-column: 1 / -1;
+}
+
+.settings-section-head {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.settings-section-head h2 {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+}
+
+.settings-section-head p {
+  margin: 0;
+  max-width: 70ch;
+}
+
+.settings-section-icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 61, 62, 0.08);
+  color: var(--color-primary);
+}
+
+.settings-icon-whatsapp {
+  background: rgba(37, 211, 102, 0.12);
+  color: #128c4b;
+}
+
+.settings-icon-mail {
+  background: rgba(227, 168, 70, 0.16);
+  color: #8a5a00;
+}
+
+.settings-figures {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.settings-field > span {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.settings-field input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-surface);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.settings-field input:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(15, 61, 62, 0.12);
+}
+
+.settings-figures input {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.settings-field small {
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.settings-form .mail-test {
+  padding-top: 16px;
+  border-top: 1px dashed var(--color-border);
+}
+
+.settings-form .mail-test .notice,
+.settings-form .mail-test .error {
+  flex-basis: 100%;
+}
+
+.settings-actions {
+  grid-column: 1 / -1;
+  position: sticky;
+  bottom: 16px;
+  z-index: 5;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 10px 30px rgba(11, 42, 43, 0.08);
+}
+
+.settings-saved {
+  color: var(--color-success);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1100px) {
+  .settings-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .settings-section {
+    padding: 18px;
+  }
+
+  .settings-figures {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-actions {
+    position: static;
+    justify-content: stretch;
+    flex-direction: column-reverse;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .settings-actions .btn {
+    width: 100%;
+  }
 }

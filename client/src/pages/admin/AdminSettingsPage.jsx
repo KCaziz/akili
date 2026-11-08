@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "../../components/ui/Button";
+import AdminIcon from "../../components/admin/AdminIcon";
 import { fetchSettings, updateSettings, sendTestEmail } from "../../lib/api";
 
 const FIELDS = [
@@ -61,53 +62,69 @@ export default function AdminSettingsPage() {
       {!form && !error && <div className="skeleton skeleton-table" />}
 
       {form && (
-        <form className="admin-card form form-wide admin-form" onSubmit={handleSubmit}>
-          <fieldset className="admin-fieldset">
-            <legend>Chiffres clés (page d'accueil)</legend>
-            <p className="muted">
-              Uniquement des chiffres réels de l'agence. Un champ laissé vide n'est pas affiché ; la section entière est masquée si
-              les trois sont vides.
-            </p>
-            <div className="form-row form-row-3">
+        <form className="settings-form" onSubmit={handleSubmit}>
+          <section className="admin-card settings-section settings-section-full">
+            <header className="settings-section-head">
+              <span className="settings-section-icon"><AdminIcon name="chart" size={20} /></span>
+              <div>
+                <h2>Chiffres clés</h2>
+                <p className="muted">
+                  Affichés sur la page d'accueil. Uniquement des chiffres réels de l'agence : un champ vide n'est pas affiché, et la
+                  section entière est masquée si les trois sont vides.
+                </p>
+              </div>
+            </header>
+            <div className="settings-figures">
               {FIELDS.map((field) => (
-                <label key={field.key}>
-                  {field.label}
-                  <input type="number" min="0" inputMode="numeric" name={field.key} value={form[field.key]} onChange={handleChange} />
+                <label key={field.key} className="settings-field">
+                  <span>{field.label}</span>
+                  <input type="number" min="0" inputMode="numeric" name={field.key} value={form[field.key]} onChange={handleChange} placeholder="—" />
                 </label>
               ))}
             </div>
-          </fieldset>
+          </section>
 
-          <fieldset className="admin-fieldset">
-            <legend>WhatsApp</legend>
-            <label>
-              Numéro WhatsApp de l'agence (format international, sans + ni espaces — ex : 213551234567)
-              <input name="whatsappNumber" value={form.whatsappNumber} onChange={handleChange} inputMode="numeric" />
+          <section className="admin-card settings-section">
+            <header className="settings-section-head">
+              <span className="settings-section-icon settings-icon-whatsapp"><AdminIcon name="phone" size={20} /></span>
+              <div>
+                <h2>WhatsApp</h2>
+                <p className="muted">Bouton flottant, page Contact et bouton « Poser une question » de chaque bien.</p>
+              </div>
+            </header>
+            <label className="settings-field">
+              <span>Numéro de l'agence</span>
+              <input name="whatsappNumber" value={form.whatsappNumber} onChange={handleChange} inputMode="numeric" placeholder="213551234567" />
+              <small className="muted">Format international, sans « + » ni espaces.</small>
             </label>
-            <p className="muted">Utilisé par le bouton flottant, la page Contact et le bouton « Poser une question » sur chaque bien.</p>
-          </fieldset>
+          </section>
 
-          <fieldset className="admin-fieldset">
-            <legend>E-mail</legend>
-            <label>
-              Adresse e-mail affichée sur le site
+          <section className="admin-card settings-section">
+            <header className="settings-section-head">
+              <span className="settings-section-icon settings-icon-mail"><AdminIcon name="mail" size={20} /></span>
+              <div>
+                <h2>E-mail</h2>
+                <p className="muted">Adresse affichée sur la page Contact et en bas de chaque page.</p>
+              </div>
+            </header>
+            <label className="settings-field">
+              <span>Adresse affichée sur le site</span>
               <input type="email" name="contactEmail" value={form.contactEmail} onChange={handleChange} placeholder="contact@akili-immobilier.com" />
+              <small className="muted">
+                L'adresse qui reçoit les notifications et envoie les accusés de réception se règle dans la configuration du serveur.
+              </small>
             </label>
-            <p className="muted">
-              Affichée sur la page Contact et en bas de chaque page. (L'adresse qui reçoit les notifications et envoie les accusés de
-              réception se règle dans la configuration du serveur.)
-            </p>
             <div className="mail-test">
               <button type="button" className="admin-btn admin-btn-outline" onClick={handleTestEmail} disabled={mailTest.status === "sending"}>
-                {mailTest.status === "sending" ? "Envoi…" : "Envoyer un e-mail de test"}
+                <AdminIcon name="mail" size={16} /> {mailTest.status === "sending" ? "Envoi…" : "Envoyer un e-mail de test"}
               </button>
-              {mailTest.message && <span className={mailTest.status === "ok" ? "notice" : "error"}>{mailTest.message}</span>}
+              {mailTest.message && <p className={mailTest.status === "ok" ? "notice" : "error"}>{mailTest.message}</p>}
             </div>
-          </fieldset>
+          </section>
 
-          <div className="admin-form-actions">
-            <Button type="submit">{status === "saving" ? "Enregistrement…" : "Enregistrer"}</Button>
-            {status === "saved" && <span className="notice" style={{ marginInlineStart: 12 }}>Paramètres enregistrés.</span>}
+          <div className="settings-actions">
+            {status === "saved" && <span className="settings-saved">Paramètres enregistrés.</span>}
+            <Button type="submit">{status === "saving" ? "Enregistrement…" : "Enregistrer les paramètres"}</Button>
           </div>
         </form>
       )}

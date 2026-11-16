@@ -218,6 +218,48 @@ L'adresse affichée sur le site (page Contact + pied de page) se modifie dans Ad
 
 ---
 
+## 12. Référencement (SEO) et Google Analytics
+
+### Ce que fait le site
+- **Une adresse par langue** : `/fr/…`, `/ar/…`, `/en/…`, `/tzm/…`. La racine `/` redirige vers la langue du navigateur (arabe si demandé, sinon français). Les anciennes adresses (`/produits/…`, `/contact`) redirigent définitivement (301) vers `/fr/…`.
+- **Adresses lisibles des biens** : `/fr/produits/appartement-f4-vue-mer-alger-<id>`.
+- **Pour chaque page, le serveur envoie** titre, description, adresse canonique, liens vers les autres langues (`hreflang`), aperçus de partage (Facebook/WhatsApp), données structurées Google (agence immobilière, annonce avec prix en DZD, fil d'Ariane) et un aperçu du contenu lisible sans JavaScript.
+- **Fichiers pour les moteurs** : `/sitemap.xml` (toutes les pages, tous les biens, toutes les langues, mis à jour tout seul) et `/robots.txt` (admin et API exclus).
+- **Erreurs propres** : un bien supprimé ou une adresse inconnue renvoie une vraie erreur 404.
+- **Vitesse** : compression, cache long des fichiers, police hébergée sur le site, code chargé page par page, photos réduites en WebP avant l'envoi depuis l'admin.
+
+### Réglages serveur obligatoires
+Dans le `.env` du serveur (ou les variables de Setup Node.js App) :
+
+| Variable | Valeur |
+|---|---|
+| `PUBLIC_URL` | `https://akili-immobilier.com` (adresse officielle, sans `/` final) |
+| `CORS_ORIGIN` | `https://akili-immobilier.com` |
+| `NODE_ENV` | `production` (active la redirection `www` → sans `www` et `http` → `https`) |
+
+Puis **Run NPM Install** (nouvelle dépendance `compression`) et **Restart**. Vérifier ensuite :
+- `https://akili-immobilier.com/robots.txt`
+- `https://akili-immobilier.com/sitemap.xml`
+
+### Google Search Console (à faire une fois)
+1. https://search.google.com/search-console → **Ajouter une propriété** → type **Domaine** → `akili-immobilier.com`.
+2. Google donne un enregistrement **TXT** : cPanel → **Zone Editor** → `akili-immobilier.com` → **Add Record** → type TXT, nom `akili-immobilier.com.`, valeur copiée → Enregistrer, puis **Valider** dans Search Console (quelques minutes à quelques heures).
+3. Search Console → **Sitemaps** → saisir `sitemap.xml` → Envoyer.
+4. Même chose sur **Bing Webmaster Tools** (https://www.bing.com/webmasters) : bouton « Importer depuis Google Search Console ».
+
+### Google Analytics 4
+1. https://analytics.google.com → **Commencer les mesures** → compte « Akili Immobilier » → propriété « akili-immobilier.com » (fuseau Algérie, devise DZD) → plateforme **Web** → URL `https://akili-immobilier.com`.
+2. Copier l'**ID de mesure** (`G-XXXXXXXXXX`).
+3. Admin du site → **Paramètres du site** → Google Analytics → coller l'ID → Enregistrer. Aucune mise à jour du code n'est nécessaire.
+4. Les visiteurs voient un bandeau « Mesure d'audience » : Google Analytics ne se charge que s'ils acceptent.
+5. Dans GA4 → Administration → **Événements clés**, marquer comme conversions : `generate_lead` (demandes, contacts, offres de vente, alertes) et `whatsapp_click`.
+
+### Référencement local (le plus rapide pour apparaître sur Google Maps)
+- Créer la fiche **Google Business Profile** (https://business.google.com) : catégorie « Agence immobilière », adresse, téléphone, horaires, photos réelles, lien vers le site. Demander des avis Google aux clients satisfaits.
+- Renseigner la **même adresse** dans Admin → Paramètres du site → Agence et réseaux sociaux, ainsi que les liens Facebook / Instagram (affichés sur le site et transmis à Google).
+
+---
+
 ## Limites connues de cette configuration (à garder en tête)
 
 - **Stockage des fichiers uploadés (`server/uploads/`) sur le disque du serveur mutualisé** : fonctionne, mais si l'hébergeur change de serveur physique ou si tu migres d'offre un jour, ces fichiers ne sont pas automatiquement transférés — à sauvegarder toi-même périodiquement (via File Manager ou un export). Pour un usage sérieux à moyen terme, migrer vers un stockage objet (S3, Cloudinary...) reste recommandé, mais n'est pas nécessaire pour démarrer.

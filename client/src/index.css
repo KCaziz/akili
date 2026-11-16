@@ -29,7 +29,7 @@ html, body {
 }
 
 body {
-  font-family: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   color: var(--color-text);
   background: var(--color-bg);
   line-height: 1.6;
@@ -69,6 +69,8 @@ img {
 
 .main-content {
   flex: 1;
+  /* Garde le pied de page sous la ligne de flottaison pendant le chargement (pas de « saut »). */
+  min-height: 100vh;
 }
 
 .container {
@@ -83,84 +85,299 @@ img {
   border-bottom: 1px solid var(--color-border);
   position: sticky;
   top: 0;
-  background: rgba(251, 250, 247, 0.92);
-  backdrop-filter: blur(8px);
+  background: rgba(251, 250, 247, 0.94);
+  backdrop-filter: saturate(1.4) blur(10px);
   z-index: 50;
+  transition: box-shadow 0.2s ease;
 }
 
+.site-header.is-scrolled {
+  box-shadow: 0 6px 24px rgba(11, 42, 43, 0.08);
+}
+
+/* Trois zones : logo | menu centré | actions. L'écart minimal entre les zones garantit
+   que le logo ne touche jamais le premier lien, quelle que soit la langue. */
 .header-inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  column-gap: 40px;
+  min-height: 76px;
 }
 
 .brand {
-  font-size: 1.5rem;
-  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   color: var(--color-dark);
   text-decoration: none;
+  white-space: nowrap;
+  border-radius: 12px;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  fill: var(--color-primary);
+  transition: transform 0.2s ease;
+}
+
+.brand:hover .brand-mark {
+  transform: rotate(-4deg) scale(1.04);
+}
+
+.brand-mark-roof,
+.brand-mark-letter {
+  fill: none;
+  stroke-width: 4;
+  stroke-linejoin: round;
+}
+
+.brand-mark-roof {
+  stroke: var(--color-accent);
+}
+
+.brand-mark-letter {
+  stroke: #fff;
+  stroke-linecap: round;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.brand-name {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .brand-sub {
-  font-weight: 500;
-  color: var(--color-accent);
+  margin-top: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  /* Doré plus foncé que l'accent : contraste suffisant sur fond clair (accessibilité). */
+  color: #9a6514;
+}
+
+/* L'arabe ne supporte ni majuscules ni espacement entre lettres (lettres liées). */
+[dir="rtl"] .brand-sub {
+  letter-spacing: 0;
+  font-size: 0.82rem;
+}
+
+.nav-wrapper {
+  justify-self: center;
+  min-width: 0;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nav-link {
+  position: relative;
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.92rem;
+  white-space: nowrap;
+  padding: 8px 12px;
+  border-radius: 999px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-primary);
+  background: var(--color-bg-alt);
+}
+
+.nav-link.active {
+  color: var(--color-primary);
+  background: rgba(15, 61, 62, 0.07);
+}
+
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-accent);
+  transform: translateX(-50%);
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.main-nav {
-  display: flex;
-  gap: 28px;
-}
-
-.nav-link {
-  text-decoration: none;
-  color: var(--color-text);
-  font-weight: 600;
-  font-size: 0.95rem;
-  padding: 6px 2px;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
-}
-
-.nav-link.active,
-.nav-link:hover {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-accent);
+  gap: 8px;
+  padding-inline-start: 16px;
+  border-inline-start: 1px solid var(--color-border);
 }
 
 .burger {
   display: none;
   flex-direction: column;
+  justify-content: center;
   gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0 10px;
   background: none;
-  border: none;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
   cursor: pointer;
-  padding: 8px;
 }
 
 .burger span {
-  width: 24px;
+  width: 100%;
   height: 2px;
+  border-radius: 2px;
   background: var(--color-dark);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.menu-open .burger span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-open .burger span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-open .burger span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .language-switcher {
-  padding: 6px 10px;
+  height: 40px;
+  padding: 0 12px;
   border-radius: 999px;
   border: 1px solid var(--color-border);
   background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+.language-switcher:hover {
+  border-color: var(--color-primary);
+}
+
+/* Le menu complet ne tient plus sur une ligne : on passe au menu déroulant. */
+@media (max-width: 1180px) {
+  .header-inner {
+    grid-template-columns: 1fr auto;
+    min-height: 68px;
+  }
+
+  .burger {
+    display: flex;
+  }
+
+  .header-actions {
+    border-inline-start: none;
+    padding-inline-start: 0;
+  }
+
+  .nav-wrapper {
+    display: none;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: stretch;
+    padding: 4px 0 16px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .nav-wrapper.open {
+    display: block;
+    animation: menu-in 0.18s ease;
+  }
+
+  .main-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    padding-top: 12px;
+  }
+
+  .nav-link {
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    white-space: normal;
+  }
+
+  .nav-link.active::after {
+    left: auto;
+    inset-inline-start: 0;
+    top: 50%;
+    bottom: auto;
+    width: 3px;
+    height: 18px;
+    transform: translateY(-50%);
+  }
+}
+
+@media (max-width: 520px) {
+  .header-inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 10px;
+  }
+
+  .main-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .brand {
+    min-width: 0;
+    gap: 9px;
+  }
+
+  .brand-text {
+    min-width: 0;
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brand-name {
+    font-size: 1.25rem;
+  }
+
+  .brand-sub {
+    letter-spacing: 0.12em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-actions {
+    gap: 4px;
+  }
+
+  .language-switcher {
+    max-width: 92px;
+    padding: 0 8px;
+  }
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 }
 
 /* ---------- Footer ---------- */
@@ -399,9 +616,14 @@ img {
   border: 1.5px solid rgba(255, 255, 255, 0.6);
 }
 
+/* Vert WhatsApp assombri : texte blanc lisible (contraste 5.4:1, accessibilité). */
 .btn-whatsapp {
-  background: #25d366;
+  background: #0f7a40;
   color: #fff;
+}
+
+.btn-whatsapp:hover {
+  background: #0b6e3a;
 }
 
 /* ---------- Gallery ---------- */
@@ -662,34 +884,6 @@ img {
 /* ---------- Responsive ---------- */
 
 @media (max-width: 860px) {
-  .burger {
-    display: flex;
-  }
-
-  .header-actions {
-    width: 100%;
-  }
-
-  .nav-wrapper {
-    display: none;
-    width: 100%;
-    order: 1;
-  }
-
-  .nav-wrapper.open {
-    display: block;
-  }
-
-  .main-nav {
-    flex-direction: column;
-    gap: 4px;
-    padding: 12px 0;
-  }
-
-  .header-inner {
-    flex-wrap: wrap;
-  }
-
   .hero {
     padding: 100px 0 70px;
   }
@@ -1549,4 +1743,163 @@ img {
     bottom: 16px;
     inset-inline-end: 16px;
   }
+}
+
+/* ---------- Accessibilité ---------- */
+
+/* Lien « Aller au contenu » : invisible jusqu'à ce qu'on navigue au clavier (Tab). */
+.skip-link {
+  position: absolute;
+  inset-inline-start: 12px;
+  top: -60px;
+  z-index: 2000;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--color-dark);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+.main-content:focus {
+  outline: none;
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.page-loading {
+  min-height: 60vh;
+}
+
+/* Contenu envoyé par le serveur pour les moteurs de recherche, remplacé par React au chargement. */
+.seo-prerender {
+  padding-block: 48px;
+}
+
+.seo-prerender ul {
+  padding-inline-start: 20px;
+}
+
+.seo-nav {
+  margin-top: 24px;
+  font-size: 0.9rem;
+}
+
+/* ---------- Pied de page : adresse, cookies ---------- */
+
+.footer-address {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.footer-link-button {
+  border: none;
+  background: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.contact-address {
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* ---------- Bandeau de consentement (mesure d'audience) ---------- */
+
+.cookie-consent {
+  position: fixed;
+  bottom: 20px;
+  inset-inline-start: 20px;
+  z-index: 1100;
+  max-width: 420px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 18px 40px rgba(11, 42, 43, 0.18);
+  animation: cookie-in 0.3s ease;
+}
+
+.cookie-consent p {
+  margin: 0 0 14px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.cookie-consent-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.cookie-consent-actions .btn {
+  padding: 9px 18px;
+  font-size: 0.88rem;
+}
+
+@keyframes cookie-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 600px) {
+  .cookie-consent {
+    inset-inline: 12px;
+    bottom: 12px;
+    max-width: none;
+  }
+
+  .cookie-consent-actions .btn {
+    flex: 1;
+  }
+}
+
+.cookie-consent-actions .btn-secondary {
+  color: var(--color-dark);
+  background: transparent;
+  border: 1px solid var(--color-border);
+}
+
+.cookie-consent-actions .btn-secondary:hover {
+  background: var(--color-bg-alt);
+}
+
+/* Liens qui contiennent un bouton : zone cliquable aussi grande que le bouton. */
+a:has(> .btn) {
+  display: inline-flex;
+}
+
+/* Titre de carte de bien : niveau h2 (ordre des titres correct) avec la taille d'un h3. */
+.product-card-title {
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+
+/* Titres des encadrés (niveau h2 pour l'ordre des titres, taille d'un h3). */
+.box-title {
+  font-size: 1.17em;
+  margin: 1em 0;
 }

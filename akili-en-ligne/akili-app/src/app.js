@@ -22,6 +22,9 @@ import testimonialsRouter from "./routes/testimonials.js";
 import settingsRouter from "./routes/settings.js";
 import alertsRouter from "./routes/alerts.js";
 import statsRouter from "./routes/stats.js";
+import compression from "compression";
+import { seoFilesRouter, seoApiRouter } from "./routes/seo.js";
+import { buildSeo, renderHtml, siteUrl, preferredLang } from "./seo/seo.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, "..", "public");
@@ -44,16 +47,41 @@ app.use(
         "media-src": ["'self'", "https:"],
         // Vidéos de visite hébergées sur YouTube/Vimeo, intégrées en iframe sur la fiche d'un bien.
         "frame-src": ["'self'", "https://www.youtube-nocookie.com", "https://player.vimeo.com"],
+        // Google Analytics 4 (chargé seulement si un identifiant est configuré et que le visiteur accepte).
+        "script-src": ["'self'", "https://www.googletagmanager.com"],
+        "connect-src": ["'self'", "https://*.google-analytics.com", "https://*.analytics.google.com", "https://*.googletagmanager.com"],
       },
     },
   }),
 );
+
+// Une seule adresse officielle pour Google : https + domaine sans « www » (celui de PUBLIC_URL).
+// Derrière l'hébergement (Passenger/Apache), le protocole d'origine arrive dans X-Forwarded-Proto.
+app.set("trust proxy", true);
+if (env.nodeEnv === "production" && process.env.PUBLIC_URL) {
+  const canonical = new URL(process.env.PUBLIC_URL);
+  app.use((req, res, next) => {
+    const host = (req.get("host") || "").toLowerCase();
+    const wrongHost = host === `www.${canonical.host}`;
+    const insecure = canonical.protocol === "https:" && req.protocol === "http" && host === canonical.host;
+    if ((wrongHost || insecure) && ["GET", "HEAD"].includes(req.method)) {
+      return res.redirect(301, `${canonical.origin}${req.originalUrl}`);
+    }
+    next();
+  });
+}
+
+app.use(compression());
 app.use(cors({ origin: env.corsOrigin, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan(env.nodeEnv === "production" ? "combined" : "dev"));
 
-app.use("/uploads", express.static(UPLOADS_DIR));
+// Les fichiers envoyés ne changent jamais (nom unique) : cache navigateur long.
+app.use("/uploads", express.static(UPLOADS_DIR, { maxAge: "1y", immutable: true }));
+
+app.use(seoFilesRouter);
+app.use("/api/seo", seoApiRouter);
 
 app.use("/api/health", healthRouter);
 app.use("/api/products", productsRouter);
@@ -74,9 +102,31 @@ app.use("/api/stats", statsRouter);
 // n'existe pas (le frontend tourne séparément via `npm run dev` sur :5173) : on ne l'active
 // que s'il est présent, donc aucun impact sur le flux de développement local.
 if (fs.existsSync(PUBLIC_DIR)) {
-  app.use(express.static(PUBLIC_DIR));
-  app.get(/^\/(?!api\/|uploads\/).*/, (req, res) => {
-    res.sendFile(path.join(PUBLIC_DIR, "index.html"));
+  // Fichiers du build avec empreinte dans le nom (assets/index-AbC123.js) : cache d'un an.
+  // index.html n'est jamais servi tel quel ici (index: false) : il passe par le rendu SEO ci-dessous.
+  app.use(
+    "/assets",
+    express.static(path.join(PUBLIC_DIR, "assets"), { maxAge: "1y", immutable: true }),
+  );
+  app.use(express.static(PUBLIC_DIR, { index: false, maxAge: "7d" }));
+
+  const indexHtml = fs.readFileSync(path.join(PUBLIC_DIR, "index.html"), "utf8");
+  app.get(/^\/(?!api\/|uploads\/).*/, async (req, res, next) => {
+    try {
+      // Pages de l'admin : pas de référencement, l'application s'occupe de tout.
+      if (req.path === "/admin" || req.path.startsWith("/admin/")) {
+        return res.set("X-Robots-Tag", "noindex").type("html").send(indexHtml);
+      }
+      const base = siteUrl(req);
+      const seo = await buildSeo({ pathname: req.path, query: req.query, base });
+      const qs = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+      if (seo.parsed?.root) return res.redirect(302, `/${preferredLang(req)}${qs}`);
+      if (seo.parsed?.redirect) return res.redirect(301, `${seo.parsed.redirect}${qs}`);
+
+      res.status(seo.status).set("Cache-Control", "no-cache").type("html").send(renderHtml(indexHtml, seo));
+    } catch (err) {
+      next(err);
+    }
   });
 }
 

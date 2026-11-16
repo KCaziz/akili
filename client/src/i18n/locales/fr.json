@@ -160,7 +160,8 @@
     "whatsappText": "Contactez directement un conseiller Akili.",
     "whatsappButton": "Ouvrir WhatsApp",
     "emailTitle": "Nous écrire par e-mail",
-    "emailText": "Une question, un document à nous transmettre ? Écrivez-nous directement."
+    "emailText": "Une question, un document à nous transmettre ? Écrivez-nous directement.",
+    "addressTitle": "Notre agence"
   },
   "notFound": {
     "title": "Page introuvable",
@@ -296,5 +297,15 @@
     "floatLabel": "Discuter avec nous sur WhatsApp",
     "message": "Bonjour Akili, j'aimerais avoir des informations.",
     "propertyMessage": "Bonjour, je suis intéressé(e) par ce bien : {{title}} — {{url}}"
+  },
+  "a11y": {
+    "skipToContent": "Aller au contenu"
+  },
+  "cookies": {
+    "title": "Mesure d'audience",
+    "text": "Nous utilisons Google Analytics pour savoir quelles pages sont consultées et améliorer le site. Aucune donnée n'est utilisée à des fins publicitaires.",
+    "accept": "Accepter",
+    "refuse": "Refuser",
+    "manage": "Cookies"
   }
 }

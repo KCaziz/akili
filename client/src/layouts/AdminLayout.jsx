@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { NavLink, Outlet, Link, Navigate, useLocation } from "react-router-dom";
 import { useAdminAuth } from "../contexts/AdminAuthContext";
 import AdminIcon from "../components/admin/AdminIcon";
@@ -112,7 +112,9 @@ export default function AdminLayout() {
         </header>
 
         <main className="admin-content" key={location.pathname}>
-          <Outlet />
+          <Suspense fallback={<div className="skeleton skeleton-table" />}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
     </div>

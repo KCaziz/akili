@@ -1,43 +1,53 @@
-import { createBrowserRouter } from "react-router-dom";
+import { lazy } from "react";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
 import AdminAuthLayout from "../layouts/AdminAuthLayout";
 import AdminLayout from "../layouts/AdminLayout";
-
-import HomePage from "../pages/HomePage";
-import ServicesPage from "../pages/ServicesPage";
-import ProductsPage from "../pages/products/ProductsPage";
-import ProductDetailPage from "../pages/products/ProductDetailPage";
-import GalleryPage from "../pages/GalleryPage";
-import ContactPage from "../pages/ContactPage";
-import SellPage from "../pages/SellPage";
-import RequestPage from "../pages/RequestPage";
 import NotFoundPage from "../pages/NotFoundPage";
-import FavoritesPage from "../pages/FavoritesPage";
-import SimulatorPage from "../pages/SimulatorPage";
+import i18n from "../i18n";
 
-import AdminLoginPage from "../pages/admin/AdminLoginPage";
-import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
-import AdminProductsPage from "../pages/admin/AdminProductsPage";
-import AdminServicesPage from "../pages/admin/AdminServicesPage";
-import AdminGalleryPage from "../pages/admin/AdminGalleryPage";
-import AdminRequestsPage from "../pages/admin/AdminRequestsPage";
-import AdminOffersPage from "../pages/admin/AdminOffersPage";
-import AdminAccountPage from "../pages/admin/AdminAccountPage";
-import AdminTestimonialsPage from "../pages/admin/AdminTestimonialsPage";
-import AdminSettingsPage from "../pages/admin/AdminSettingsPage";
-import AdminAlertsPage from "../pages/admin/AdminAlertsPage";
+// Chaque page est chargée à la demande : le visiteur ne télécharge pas le code de l'admin
+// ni des pages qu'il n'ouvre pas (premier affichage plus rapide, meilleur score mobile).
+const HomePage = lazy(() => import("../pages/HomePage"));
+const ServicesPage = lazy(() => import("../pages/ServicesPage"));
+const ProductsPage = lazy(() => import("../pages/products/ProductsPage"));
+const ProductDetailPage = lazy(() => import("../pages/products/ProductDetailPage"));
+const GalleryPage = lazy(() => import("../pages/GalleryPage"));
+const ContactPage = lazy(() => import("../pages/ContactPage"));
+const SellPage = lazy(() => import("../pages/SellPage"));
+const RequestPage = lazy(() => import("../pages/RequestPage"));
+const FavoritesPage = lazy(() => import("../pages/FavoritesPage"));
+const SimulatorPage = lazy(() => import("../pages/SimulatorPage"));
+
+const AdminLoginPage = lazy(() => import("../pages/admin/AdminLoginPage"));
+const AdminDashboardPage = lazy(() => import("../pages/admin/AdminDashboardPage"));
+const AdminProductsPage = lazy(() => import("../pages/admin/AdminProductsPage"));
+const AdminServicesPage = lazy(() => import("../pages/admin/AdminServicesPage"));
+const AdminGalleryPage = lazy(() => import("../pages/admin/AdminGalleryPage"));
+const AdminRequestsPage = lazy(() => import("../pages/admin/AdminRequestsPage"));
+const AdminOffersPage = lazy(() => import("../pages/admin/AdminOffersPage"));
+const AdminAccountPage = lazy(() => import("../pages/admin/AdminAccountPage"));
+const AdminTestimonialsPage = lazy(() => import("../pages/admin/AdminTestimonialsPage"));
+const AdminSettingsPage = lazy(() => import("../pages/admin/AdminSettingsPage"));
+const AdminAlertsPage = lazy(() => import("../pages/admin/AdminAlertsPage"));
+
+function RootRedirect() {
+  return <Navigate to={`/${i18n.language}${window.location.search}`} replace />;
+}
 
 const router = createBrowserRouter([
+  { path: "/", element: <RootRedirect /> },
   {
-    path: "/",
+    // La langue est le premier segment de l'adresse : /fr, /ar, /en, /tzm (voir MainLayout).
+    path: "/:lang",
     element: <MainLayout />,
     errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <HomePage /> },
       { path: "services", element: <ServicesPage /> },
       { path: "produits", element: <ProductsPage /> },
-      { path: "produits/:id", element: <ProductDetailPage /> },
+      { path: "produits/:slug", element: <ProductDetailPage /> },
       { path: "galerie", element: <GalleryPage /> },
       { path: "contact", element: <ContactPage /> },
       { path: "vendre", element: <SellPage /> },

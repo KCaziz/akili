@@ -55,7 +55,7 @@ export default function AdminSettingsPage() {
       <div className="admin-page-header">
         <div>
           <h1>Paramètres du site</h1>
-          <p className="muted">Chiffres clés de la page d'accueil, WhatsApp et e-mail de l'agence.</p>
+          <p className="muted">Chiffres clés, contacts, réseaux sociaux et statistiques de visite.</p>
         </div>
       </div>
       {error && <p className="error">{error}</p>}
@@ -120,6 +120,47 @@ export default function AdminSettingsPage() {
               </button>
               {mailTest.message && <p className={mailTest.status === "ok" ? "notice" : "error"}>{mailTest.message}</p>}
             </div>
+          </section>
+
+          <section className="admin-card settings-section">
+            <header className="settings-section-head">
+              <span className="settings-section-icon"><AdminIcon name="pin" size={20} /></span>
+              <div>
+                <h2>Agence et réseaux sociaux</h2>
+                <p className="muted">Affichés sur le site et transmis à Google (référencement local). Laissez vide ce que vous n'avez pas.</p>
+              </div>
+            </header>
+            <label className="settings-field">
+              <span>Adresse de l'agence</span>
+              <input name="address" value={form.address} onChange={handleChange} placeholder="ex : 12 rue Didouche Mourad, Alger" maxLength={300} />
+              <small className="muted">Écrivez-la exactement comme sur votre fiche Google Business Profile.</small>
+            </label>
+            <label className="settings-field">
+              <span>Page Facebook</span>
+              <input type="url" name="facebookUrl" value={form.facebookUrl} onChange={handleChange} placeholder="https://www.facebook.com/akili.immobilier" />
+            </label>
+            <label className="settings-field">
+              <span>Compte Instagram</span>
+              <input type="url" name="instagramUrl" value={form.instagramUrl} onChange={handleChange} placeholder="https://www.instagram.com/akili.immobilier" />
+            </label>
+          </section>
+
+          <section className="admin-card settings-section">
+            <header className="settings-section-head">
+              <span className="settings-section-icon"><AdminIcon name="chart" size={20} /></span>
+              <div>
+                <h2>Google Analytics</h2>
+                <p className="muted">Statistiques de visite : pages vues, provenance, demandes envoyées, clics WhatsApp.</p>
+              </div>
+            </header>
+            <label className="settings-field">
+              <span>Identifiant de mesure</span>
+              <input name="gaMeasurementId" value={form.gaMeasurementId} onChange={handleChange} placeholder="G-XXXXXXXXXX" />
+              <small className="muted">
+                Dans Google Analytics : Administration → Flux de données → Web → « ID de mesure ». Laissez vide pour désactiver. Les
+                visiteurs doivent accepter la mesure d'audience (bandeau) avant que Google Analytics se charge.
+              </small>
+            </label>
           </section>
 
           <div className="settings-actions">

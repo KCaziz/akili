@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Container from "../components/ui/Container";
 import Button from "../components/ui/Button";
@@ -7,6 +6,7 @@ import AnimatedCounter from "../components/ui/AnimatedCounter";
 import ProductCard from "../components/products/ProductCard";
 import { fetchProducts, fetchTestimonials } from "../lib/api";
 import { useSiteSettings } from "../lib/useSiteSettings";
+import { LocalLink } from "../components/ui/LocalLink";
 
 const FIGURES = [
   { key: "yearsExperience", label: "home.figuresYears" },
@@ -42,8 +42,11 @@ export default function HomePage() {
       <section className="hero">
         <img
           className="hero-image"
-          src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1800&q=80"
-          alt="Villa moderne"
+          src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&q=80&w=1800"
+          srcSet="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&q=80&w=800 800w, https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&q=80&w=1200 1200w, https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&q=80&w=1800 1800w"
+          sizes="100vw"
+          alt=""
+          fetchPriority="high"
         />
         <div className="hero-overlay" />
         <Container className="hero-inner">
@@ -51,8 +54,8 @@ export default function HomePage() {
           <h1 className="hero-animate">{t("home.title")}</h1>
           <p className="lead hero-animate">{t("home.lead")}</p>
           <div className="hero-actions hero-animate">
-            <Link to="/produits"><Button>{t("home.viewProducts")}</Button></Link>
-            <Link to="/vendre"><Button variant="secondary">{t("home.proposeProperty")}</Button></Link>
+            <LocalLink to="/produits"><Button>{t("home.viewProducts")}</Button></LocalLink>
+            <LocalLink to="/vendre"><Button variant="secondary">{t("home.proposeProperty")}</Button></LocalLink>
           </div>
         </Container>
       </section>
@@ -77,7 +80,9 @@ export default function HomePage() {
           <img
             className="about-image reveal"
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80"
-            alt="Intérieur moderne"
+            alt=""
+            loading="lazy"
+            decoding="async"
           />
           <div className="reveal">
             <span className="eyebrow">{t("home.aboutEyebrow")}</span>
@@ -96,7 +101,7 @@ export default function HomePage() {
                 <span className="eyebrow">{t("home.featuredEyebrow")}</span>
                 <h2>{t("home.featuredTitle")}</h2>
               </div>
-              <Link to="/produits" className="section-link">{t("home.seeAll")} →</Link>
+              <LocalLink to="/produits" className="section-link">{t("home.seeAll")} →</LocalLink>
             </div>
             <div className="card-grid">
               {featured.map((product) => (
@@ -155,13 +160,15 @@ export default function HomePage() {
         <img
           className="cta-image"
           src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80"
-          alt="Quartier résidentiel"
+          alt=""
+          loading="lazy"
+          decoding="async"
         />
         <div className="hero-overlay" />
         <Container className="cta-inner reveal">
           <h2>{t("home.ctaTitle")}</h2>
           <p>{t("home.ctaText")}</p>
-          <Link to="/contact"><Button>{t("home.ctaButton")}</Button></Link>
+          <LocalLink to="/contact"><Button>{t("home.ctaButton")}</Button></LocalLink>
         </Container>
       </section>
     </>

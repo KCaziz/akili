@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Container from "../../components/ui/Container";
 import Button from "../../components/ui/Button";
@@ -12,6 +12,8 @@ import MortgageSimulator from "../../components/products/MortgageSimulator";
 import { fetchProduct, recordProductView } from "../../lib/api";
 import { formatProductPrice, productImages } from "../../lib/format";
 import { useSiteSettings } from "../../lib/useSiteSettings";
+import { LocalLink } from "../../components/ui/LocalLink";
+import { productIdFromSegment, productPath } from "../../lib/paths";
 
 const ProductMap = lazy(() => import("../../components/maps/ProductMap"));
 
@@ -29,7 +31,9 @@ function countViewOnce(id) {
 
 export default function ProductDetailPage() {
   const { t } = useTranslation();
-  const { id } = useParams();
+  // Adresse lisible « /fr/produits/appartement-f4-alger-<id> » : l'identifiant est à la fin.
+  const { slug, lang } = useParams();
+  const id = productIdFromSegment(slug);
   const { whatsappNumber } = useSiteSettings();
   const [product, setProduct] = useState(null);
   const [status, setStatus] = useState("loading");
@@ -70,9 +74,15 @@ export default function ProductDetailPage() {
       <Container className="section">
         <h1>{t("productDetail.notFoundTitle")}</h1>
         <p>{t("productDetail.notFoundText")}</p>
-        <Link to="/produits">{t("productDetail.backToCatalog")}</Link>
+        <LocalLink to="/produits">{t("productDetail.backToCatalog")}</LocalLink>
       </Container>
     );
+  }
+
+  // Ancienne adresse (identifiant seul) ou titre modifié : on affiche l'adresse officielle du bien.
+  const canonicalPath = `/${lang}${productPath(product)}`;
+  if (product.id === id && `/${lang}/produits/${slug}` !== canonicalPath) {
+    return <Navigate to={canonicalPath} replace />;
   }
 
   const price = formatProductPrice(product, t);
@@ -82,7 +92,7 @@ export default function ProductDetailPage() {
 
   return (
     <Container className="section">
-      <Link to="/produits" className="back-link">&larr; {t("productDetail.backToCatalog")}</Link>
+      <LocalLink to="/produits" className="back-link">&larr; {t("productDetail.backToCatalog")}</LocalLink>
 
       <div className="product-detail">
         <ImageGallery key={product.id} images={productImages(product)} alt={product.title} />
@@ -103,7 +113,7 @@ export default function ProductDetailPage() {
           </ul>
           {product.description && <p className="preserve-lines" dir="auto">{product.description}</p>}
           <div className="product-actions">
-            <Link to="/demande"><Button>{t("productDetail.requestOnThis")}</Button></Link>
+            <LocalLink to="/demande"><Button>{t("productDetail.requestOnThis")}</Button></LocalLink>
             {whatsappNumber && (
               <a
                 className="btn btn-whatsapp"

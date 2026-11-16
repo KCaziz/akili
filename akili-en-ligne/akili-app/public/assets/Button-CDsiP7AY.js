@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-Dk72oS4N.js";var t=e();function n({children:e,variant:n=`primary`,type:r=`button`,onClick:i,className:a=``}){return(0,t.jsx)(`button`,{type:r,className:`btn btn-${n} ${a}`,onClick:i,children:e})}export{n as t};

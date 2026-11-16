@@ -10,7 +10,7 @@ const initialState = { name: "", nationalId: "", email: "", message: "" };
 
 export default function ContactPage() {
   const { t } = useTranslation();
-  const { whatsappNumber, contactEmail } = useSiteSettings();
+  const { whatsappNumber, contactEmail, address } = useSiteSettings();
   const [form, setForm] = useState(initialState);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState(null);
@@ -92,7 +92,7 @@ export default function ContactPage() {
 
         <div className="contact-side">
         <div className="whatsapp-box">
-          <h3>{t("contact.whatsappTitle")}</h3>
+          <h2 className="box-title">{t("contact.whatsappTitle")}</h2>
           <p>{t("contact.whatsappText")}</p>
           <a
             href={`https://wa.me/${whatsappNumber}`}
@@ -105,9 +105,17 @@ export default function ContactPage() {
         </div>
         {contactEmail && (
           <div className="whatsapp-box email-box">
-            <h3>{t("contact.emailTitle")}</h3>
+            <h2 className="box-title">{t("contact.emailTitle")}</h2>
             <p>{t("contact.emailText")}</p>
             <a href={`mailto:${contactEmail}`} className="email-link" dir="ltr">{contactEmail}</a>
+          </div>
+        )}
+        {address && (
+          <div className="whatsapp-box email-box">
+            <h2 className="box-title">{t("contact.addressTitle")}</h2>
+            <address className="contact-address">
+              <bdi>{address}</bdi>
+            </address>
           </div>
         )}
         </div>

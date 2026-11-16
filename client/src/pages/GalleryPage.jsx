@@ -43,7 +43,7 @@ export default function GalleryPage() {
             {photos.map((photo, index) => (
               <figure key={photo.id} className="gallery-item">
                 <button type="button" className="gallery-open" onClick={() => setOpenIndex(index)}>
-                  <img src={resolveMediaUrl(photo.url)} alt={photo.caption || t("gallery.photoAlt")} />
+                  <img src={resolveMediaUrl(photo.url)} alt={photo.caption || t("gallery.photoAlt")} loading="lazy" decoding="async" />
                   <span className="gallery-zoom" aria-hidden="true">⤢</span>
                 </button>
                 {photo.caption && <figcaption>{photo.caption}</figcaption>}

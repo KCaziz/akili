@@ -40,7 +40,7 @@ export default function ServicesPage() {
         <div className="card-grid">
           {services.map((service) => (
             <Card key={service.id}>
-              <h3>{service.title}</h3>
+              <h2 className="box-title">{service.title}</h2>
               <p className="preserve-lines">{service.description}</p>
             </Card>
           ))}

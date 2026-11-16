@@ -2,6 +2,8 @@
 // des ports séparés). En prod (build cPanel) : client/.env.production fixe VITE_API_URL=/api
 // (front et back servis par le même serveur Node, même origine) — voir DEPLOYMENT.md.
 import i18n from "../i18n";
+import { trackEvent } from "./analytics";
+import { compressImage } from "./imageCompression";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
 const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, "");
@@ -36,6 +38,9 @@ async function request(path, { method = "GET", body } = {}) {
   return response.json();
 }
 
+// ---- Référencement : titre/description de la page affichée ----
+export const fetchSeo = (path) => request(`/seo?path=${encodeURIComponent(path)}`);
+
 // ---- Services ----
 export const fetchServices = () => request("/services");
 export const createService = (data) => request("/services", { method: "POST", body: data });
@@ -61,12 +66,19 @@ export const deleteProduct = (id) => request(`/products/${id}`, { method: "DELET
 // La langue courante permet d'envoyer l'accusé de réception par e-mail dans la langue du visiteur.
 const withLang = (data) => ({ ...data, lang: i18n.language });
 
-export const createClientRequest = (data) => request("/requests", { method: "POST", body: withLang(data) });
+// Chaque formulaire envoyé est une « conversion » dans Google Analytics (si activé).
+const asLead = (kind) => (result) => {
+  trackEvent("generate_lead", { form: kind });
+  return result;
+};
+
+export const createClientRequest = (data) =>
+  request("/requests", { method: "POST", body: withLang(data) }).then(asLead(data.details?.startsWith("[Message de contact]") ? "contact" : "request"));
 export const fetchRequests = () => request("/requests");
 export const updateRequestStatus = (id, status) => request(`/requests/${id}`, { method: "PATCH", body: { status } });
 
 // ---- Offres de vente ----
-export const createSellOffer = (data) => request("/sell-offers", { method: "POST", body: withLang(data) });
+export const createSellOffer = (data) => request("/sell-offers", { method: "POST", body: withLang(data) }).then(asLead("sell_offer"));
 export const fetchSellOffers = () => request("/sell-offers");
 export const updateSellOfferStatus = (id, status) => request(`/sell-offers/${id}`, { method: "PATCH", body: { status } });
 
@@ -88,7 +100,7 @@ export const updateSettings = (data) => request("/settings", { method: "PUT", bo
 export const sendTestEmail = () => request("/settings/test-email", { method: "POST" });
 
 // ---- Alertes ----
-export const createAlert = (data) => request("/alerts", { method: "POST", body: withLang(data) });
+export const createAlert = (data) => request("/alerts", { method: "POST", body: withLang(data) }).then(asLead("alert"));
 export const fetchAlerts = () => request("/alerts");
 export const updateAlert = (id, isActive) => request(`/alerts/${id}`, { method: "PATCH", body: { isActive } });
 export const deleteAlert = (id) => request(`/alerts/${id}`, { method: "DELETE" });
@@ -106,7 +118,7 @@ export const changePassword = (currentPassword, newPassword) =>
 // ---- Upload de fichiers (photos/vidéos) ----
 export async function uploadFile(file) {
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append("file", await compressImage(file));
   const response = await fetch(`${API_BASE_URL}/uploads`, {
     method: "POST",
     credentials: "include",

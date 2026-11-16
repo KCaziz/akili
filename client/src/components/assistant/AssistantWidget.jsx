@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSiteSettings } from "../../lib/useSiteSettings";
+import { LocalLink } from "../../components/ui/LocalLink";
 
 const QUESTIONS = [
   { id: "buy", to: "/produits" },
@@ -58,7 +58,7 @@ export default function AssistantWidget() {
     if (question.whatsapp) {
       return <a className="assistant-cta" href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer">{label}</a>;
     }
-    return <Link className="assistant-cta" to={question.to} onClick={() => setOpen(false)}>{label}</Link>;
+    return <LocalLink className="assistant-cta" to={question.to} onClick={() => setOpen(false)}>{label}</LocalLink>;
   }
 
   return (

@@ -14,7 +14,10 @@ export const SUPPORTED_LANGUAGES = [
 
 const STORAGE_KEY = "akili_lang";
 
+// La langue de l'adresse (/ar/...) l'emporte ; sinon la dernière choisie, sinon le français.
 function getStoredLanguage() {
+  const fromUrl = window.location.pathname.split("/")[1];
+  if (SUPPORTED_LANGUAGES.some((lang) => lang.code === fromUrl)) return fromUrl;
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (SUPPORTED_LANGUAGES.some((lang) => lang.code === stored)) return stored;

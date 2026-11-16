@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import { TILE_URL, TILE_ATTRIBUTION, DEFAULT_CENTER } from "./leafletSetup";
 import { formatProductPrice, productImages } from "../../lib/format";
 import { resolveMediaUrl } from "../../lib/api";
+import { LocalLink } from "../../components/ui/LocalLink";
+import { productPath } from "../../lib/paths";
 
 function FitToMarkers({ positions }) {
   const map = useMap();
@@ -38,11 +39,11 @@ export default function CatalogMap({ products }) {
             return (
               <Marker key={product.id} position={[product.latitude, product.longitude]}>
                 <Popup>
-                  <Link to={`/produits/${product.id}`} className="map-popup">
-                    {cover && <img src={resolveMediaUrl(cover)} alt="" />}
+                  <LocalLink to={productPath(product)} className="map-popup">
+                    {cover && <img src={resolveMediaUrl(cover)} alt="" loading="lazy" />}
                     <strong>{product.title}</strong>
                     <span>{formatProductPrice(product, t)}</span>
-                  </Link>
+                  </LocalLink>
                 </Popup>
               </Marker>
             );

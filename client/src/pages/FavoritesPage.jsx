@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Container from "../components/ui/Container";
 import Button from "../components/ui/Button";
 import ProductCard from "../components/products/ProductCard";
 import { fetchProducts } from "../lib/api";
 import { useFavorites } from "../lib/favorites";
+import { LocalLink } from "../components/ui/LocalLink";
 
 export default function FavoritesPage() {
   const { t } = useTranslation();
@@ -44,7 +44,7 @@ export default function FavoritesPage() {
       {(!idsKey || (status === "ready" && visible.length === 0)) && (
         <div className="empty-state">
           <p>{t("favorites.empty")}</p>
-          <Link to="/produits"><Button>{t("favorites.browse")}</Button></Link>
+          <LocalLink to="/produits"><Button>{t("favorites.browse")}</Button></LocalLink>
         </div>
       )}
 

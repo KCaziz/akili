@@ -8,6 +8,25 @@ const SETTINGS = {
   clientsServed: /^\d{0,7}$/,
   whatsappNumber: /^(\d{8,15})?$/,
   contactEmail: /^([^\s@]+@[^\s@]+\.[^\s@]+)?$/,
+  // Adresse de l'agence (référencement local : Google, données structurées, page Contact).
+  address: /^[^<>]{0,300}$/,
+  facebookUrl: /^(https:\/\/(www\.|m\.|web\.)?facebook\.com\/\S{1,200})?$/,
+  instagramUrl: /^(https:\/\/(www\.)?instagram\.com\/\S{1,200})?$/,
+  // Identifiant de mesure Google Analytics 4 (« G-XXXXXXXXXX »).
+  gaMeasurementId: /^(G-[A-Z0-9]{4,15})?$/,
+};
+
+// Libellés des erreurs affichées dans l'admin.
+const LABELS = {
+  yearsExperience: "années d'expérience (nombre)",
+  propertiesSold: "biens vendus (nombre)",
+  clientsServed: "clients accompagnés (nombre)",
+  whatsappNumber: "numéro WhatsApp (8 à 15 chiffres, ex. 213551234567)",
+  contactEmail: "adresse e-mail",
+  address: "adresse de l'agence (300 caractères maximum)",
+  facebookUrl: "page Facebook (lien https://www.facebook.com/…)",
+  instagramUrl: "compte Instagram (lien https://www.instagram.com/…)",
+  gaMeasurementId: "identifiant Google Analytics (format G-XXXXXXXXXX)",
 };
 
 // Valeur utilisée tant que la clé n’a jamais été enregistrée (une valeur vide enregistrée reste vide).
@@ -16,7 +35,7 @@ const DEFAULTS = { contactEmail: "contact@akili-immobilier.com" };
 // Clés numériques : on retire espaces et « + » saisis par confort (« +213 55… »).
 const NUMERIC_KEYS = new Set(["yearsExperience", "propertiesSold", "clientsServed", "whatsappNumber"]);
 
-async function readSettings() {
+export async function readSettings() {
   const rows = await prisma.siteSetting.findMany({ where: { key: { in: Object.keys(SETTINGS) } } });
   const settings = Object.fromEntries(Object.keys(SETTINGS).map((key) => [key, DEFAULTS[key] ?? ""]));
   for (const row of rows) settings[row.key] = row.value;
@@ -37,9 +56,10 @@ export async function updateSettings(req, res, next) {
     for (const [key, pattern] of Object.entries(SETTINGS)) {
       if (!(key in (req.body ?? {}))) continue;
       const raw = String(req.body[key] ?? "");
-      const value = NUMERIC_KEYS.has(key) ? raw.replace(/[\s+]/g, "") : raw.trim();
+      let value = NUMERIC_KEYS.has(key) ? raw.replace(/[\s+]/g, "") : raw.trim();
+      if (key === "gaMeasurementId") value = value.toUpperCase();
       if (!pattern.test(value)) {
-        return res.status(400).json({ error: `Valeur invalide pour « ${key} »` });
+        return res.status(400).json({ error: `Valeur invalide : ${LABELS[key] || key}` });
       }
       updates.push(prisma.siteSetting.upsert({ where: { key }, update: { value }, create: { key, value } }));
     }

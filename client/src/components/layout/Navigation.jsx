@@ -1,5 +1,5 @@
-import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { LocalNavLink } from "../../components/ui/LocalLink";
 
 const links = [
   { to: "/", key: "presentation" },
@@ -18,14 +18,15 @@ export default function Navigation({ onNavigate }) {
   return (
     <nav className="main-nav">
       {links.map((link) => (
-        <NavLink
+        <LocalNavLink
           key={link.to}
           to={link.to}
+          end={link.to === "/"}
           onClick={onNavigate}
           className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
         >
           {t(`nav.${link.key}`)}
-        </NavLink>
+        </LocalNavLink>
       ))}
     </nav>
   );

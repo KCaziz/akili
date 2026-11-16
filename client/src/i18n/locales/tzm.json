@@ -160,7 +160,8 @@
     "whatsappText": "Nermes srid amsawal n Akili.",
     "whatsappButton": "Ldi WhatsApp",
     "emailTitle": "Aru-yaɣ-d s imayl",
-    "emailText": "Ɣur-k asteqsi neɣ arrat ara aɣ-d-tazneḍ? Aru-yaɣ-d srid."
+    "emailText": "Ɣur-k asteqsi neɣ arrat ara aɣ-d-tazneḍ? Aru-yaɣ-d srid.",
+    "addressTitle": "Tasnaɣt-nneɣ"
   },
   "notFound": {
     "title": "Asebter ulac-it",
@@ -296,5 +297,15 @@
     "floatLabel": "Mmeslay yid-neɣ deg WhatsApp",
     "message": "Azul Akili, bɣiɣ ad ẓreɣ kra n talɣut.",
     "propertyMessage": "Azul, ccah-iyi usaɣur-agi: {{title}} — {{url}}"
+  },
+  "a11y": {
+    "skipToContent": "Ddu ɣer ugbur"
+  },
+  "cookies": {
+    "title": "Aktal n yinerzafen",
+    "text": "Nesseqdac Google Analytics akken ad nẓer isebtar yettwarzan, ad nesseɣti asmel. Ulac isefka i yettwasqedcen i udellel.",
+    "accept": "Qbel",
+    "refuse": "Agi",
+    "manage": "Cookies"
   }
 }

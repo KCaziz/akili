@@ -437,7 +437,7 @@ Tests effectués :
 
 # PHASE 5 — AMÉLIORATIONS DEMANDÉES PAR LE CLIENT (2026-11-04)
 
-Contexte : après la mise en ligne de la V1 (`deltasign.ay-web.com`), le client a validé une liste de 13 améliorations. Elles dépassent le périmètre de l'offre de service initiale (60 000 DZD) — **à couvrir par un avenant** (règle #8 de ce fichier).
+Contexte : après la mise en ligne de la V1, le client a validé une liste de 13 améliorations. Elles dépassent le périmètre de l'offre de service initiale (60 000 DZD) — **à couvrir par un avenant** (règle #8 de ce fichier).
 
 Contraintes qui s'appliquent à toute la phase :
 - Le site public est en **4 langues** (fr, ar, en, tzm — `client/src/i18n/locales/`) : tout nouveau texte visible côté public doit être ajouté dans les 4 fichiers. L'admin reste en français.

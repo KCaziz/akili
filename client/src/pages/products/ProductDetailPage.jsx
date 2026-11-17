@@ -15,6 +15,9 @@ import { useSiteSettings } from "../../lib/useSiteSettings";
 import { LocalLink } from "../../components/ui/LocalLink";
 import { productIdFromSegment, productPath } from "../../lib/paths";
 
+// Règles d’urbanisme, renseignées seulement pour un terrain.
+const LAND_FIELDS = ["ces", "gabarit", "reculMax"];
+
 const ProductMap = lazy(() => import("../../components/maps/ProductMap"));
 
 // Une consultation comptée par bien et par session de navigation.
@@ -107,9 +110,14 @@ export default function ProductDetailPage() {
               sens de lecture dans l'interface arabe. */}
           <ul className="product-meta">
             <li><strong>{t("productDetail.type")}</strong> {product.type === "VENTE" ? t("products.sale") : t("products.rent")}</li>
+            {product.category && <li><strong>{t("productDetail.category")}</strong> {t(`categories.${product.category}`)}</li>}
             <li><strong>{t("productDetail.city")}</strong> <bdi>{product.city}</bdi></li>
+            {product.address && <li><strong>{t("productDetail.address")}</strong> <bdi>{product.address}</bdi></li>}
             {product.rooms && <li><strong>{t("productDetail.rooms")}</strong> {product.rooms}</li>}
             {product.surface && <li><strong>{t("productDetail.surface")}</strong> <bdi>{product.surface}</bdi></li>}
+            {LAND_FIELDS.filter((key) => product[key]).map((key) => (
+              <li key={key}><strong>{t(`productDetail.${key}`)}</strong> <bdi>{product[key]}</bdi></li>
+            ))}
           </ul>
           {product.description && <p className="preserve-lines" dir="auto">{product.description}</p>}
           <div className="product-actions">

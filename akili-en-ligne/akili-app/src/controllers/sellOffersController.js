@@ -2,9 +2,18 @@ import { prisma } from "../config/prisma.js";
 import { isNonEmptyString, isValidNationalId, isValidAlgerianPhone, isValidEmail } from "../utils/validators.js";
 import { onNewSellOffer } from "../services/notifications.js";
 
+// Nombre de pièces facultatif (entier de 1 à 50), ignoré s’il est invalide.
+function toRooms(value) {
+  const rooms = Number(value);
+  return Number.isInteger(rooms) && rooms >= 1 && rooms <= 50 ? rooms : null;
+}
+
 export async function createSellOffer(req, res, next) {
   try {
     const { name, nationalId, phone, email, propertyType, city, surface, price, description } = req.body ?? {};
+    // CES, gabarit et recul maximal : seulement pour un terrain, texte court libre (ex. « 60 % », « R+4 », « 5 m »).
+    const isLand = propertyType === "Terrain";
+    const landRule = (value) => (isLand && typeof value === "string" && value.trim() ? value.trim().slice(0, 50) : null);
     if (!isNonEmptyString(name, { maxLength: 191 })) {
       return res.status(400).json({ error: "Le nom complet est requis" });
     }
@@ -30,6 +39,10 @@ export async function createSellOffer(req, res, next) {
         city: city.trim(),
         surface: surface || null,
         price: price || null,
+        rooms: toRooms(req.body.rooms),
+        ces: landRule(req.body.ces),
+        gabarit: landRule(req.body.gabarit),
+        reculMax: landRule(req.body.reculMax),
         description: description || null,
       },
     });

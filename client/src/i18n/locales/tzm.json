@@ -94,7 +94,12 @@
     "openFullscreen": "Sken ɣef ugdil aččuran",
     "video": "Tavidyut n tirza",
     "location": "Adig",
-    "askOnWhatsapp": "Seqsi deg WhatsApp"
+    "askOnWhatsapp": "Seqsi deg WhatsApp",
+    "category": "Anaw n wayla:",
+    "address": "Tansa:",
+    "ces": "CES (amaṭṭaf n wakal):",
+    "gabarit": "Taɣessa tafellayt:",
+    "reculMax": "Tuɣalin tafellayt:"
   },
   "gallery": {
     "eyebrow": "Tabziqt n tugniwin",
@@ -126,7 +131,18 @@
     "submit": "Azen tasumra-inu",
     "submitting": "Azen…",
     "success": "Tasumra-k tettwazen akken iwata. Amsawal n Akili ad ak-d-yerr azekka-agi.",
-    "email": "Imayl"
+    "email": "Imayl",
+    "landRules": "Ilugan n usfari n wakal",
+    "landRulesHint": "Aru ayen yellan deg ugatu n usfari, ma tessneḍ-t.",
+    "ces": "CES (amaṭṭaf n wakal)",
+    "cesPlaceholder": "Amedya: 60 %",
+    "gabarit": "Gabarit (taɣessa yettwasirgen)",
+    "gabaritPlaceholder": "Amedya: R+4",
+    "reculMax": "Tuɣalin tafellayt",
+    "reculMaxPlaceholder": "Amedya: 5 m",
+    "propertyHouse": "Axxam",
+    "rooms": "Amḍan n texxamin",
+    "roomsPlaceholder": "Amedya: 4 (F4)"
   },
   "request": {
     "title": "Sker asuter",
@@ -263,7 +279,9 @@
     "sort": "Smizzwer s",
     "sortNewest": "Imaynuten",
     "sortPriceAsc": "Azal yettalin",
-    "sortPriceDesc": "Azal yettrusun"
+    "sortPriceDesc": "Azal yettrusun",
+    "category": "Anaw n wayla",
+    "allCategories": "Akk inawen"
   },
   "share": {
     "label": "Bḍu:",
@@ -280,7 +298,33 @@
     "loanAmount": "Ttelq",
     "totalInterest": "Azal n tfayda",
     "totalCost": "Akk ayen ara d-terreḍ",
-    "disclaimer": "Asimulatur d amatar kan, war aḍman d yiṣuḍaf. Afmiḍi n tidet d lbanka i t-yettṣeggiden."
+    "disclaimer": "Asimulatur d amatar kan, war aḍman d yiṣuḍaf. Afmiḍi n tidet d lbanka i t-yettṣeggiden.",
+    "banks": {
+      "title": "Isumar n ttelq n tbankin n Lezzayer",
+      "lead": "Iswiren n tezmert ttwajemɛen deg {{date}} seg isallen izayezen. Sit ɣef « Seqdec » akken ad tesqedceḍ afmiḍi deg usimulatur.",
+      "bank": "Tabanka",
+      "rate": "Afmiḍi n useggas",
+      "duration": "Tanzagt tafellayt",
+      "downPayment": "Attekki adday",
+      "note": "Ilaq ad teẓreḍ",
+      "useRate": "Seqdec afmiḍi-a",
+      "useRateValue": "Seqdec {{rate}}",
+      "years_one": "{{count}} n useggas",
+      "years_other": "{{count}} n iseggasen",
+      "murabaha": "Murabaha (tamnaḍt tusbiḍt)",
+      "subsidized": "Ttelq yettwaɛawnen (Tanemhalt)",
+      "notes": {
+        "cnep": "Tabanka n uxxam; s waṭas d ifmiḍen imeẓyanen. Ilaq ad yili lexlaṣ deg CNEP.",
+        "bna": "Afmiḍi yelha ma yella lexlaṣ deg BNA. Yella usumer islami.",
+        "cpa": "Ttelq i uɣ, i lebni neɣ i uheggi n uxxam.",
+        "bdl": "Yettmuwel aɣ n uxxam amaynut neɣ aqdim.",
+        "bea": "Tiwtilin almend n umerḍil.",
+        "islamic": "Tadrimt tislamit: ulac lfayda, s ssuma yettwammen uqbel.",
+        "subsidized1": "Axxam amenzu amaynut, lexlaṣ n twacult alamma 6 tikkal SNMG.",
+        "subsidized3": "Axxam amenzu amaynut, lexlaṣ gar 6 d 12 tikkal SNMG."
+      },
+      "disclaimer": "Izwilen-a d imesten u zemren ad beddlen: d tabanka-k kan i izemren ad ak-d-tefk asumer aneggaru. Ur ttettu ara ssuma n ufaylu d tyaḍmint."
+    }
   },
   "alert": {
     "title": "Ṭṭef alɣu ɣef yismal imaynuten",
@@ -307,5 +351,19 @@
     "accept": "Qbel",
     "refuse": "Agi",
     "manage": "Cookies"
+  },
+  "categories": {
+    "APPARTEMENT": "Taxxamt",
+    "VILLA": "Villa",
+    "TERRAIN": "Akal",
+    "LOCAL_COMMERCIAL": "Tahanut",
+    "MAISON": "Axxam"
+  },
+  "errorPage": {
+    "title": "Yella-d wugur",
+    "text": "Asebter-a ur d-yettban ara. Ales asali-ines; ma yella ugur, nermes-aɣ-d.",
+    "updateTitle": "Aleqqem n usmel",
+    "updateText": "Lqem amaynut n usmel yettwasufeɣ tura. Ales asali n usebter akken ad tkemmleḍ.",
+    "reload": "Ales asali n usebter"
   }
 }

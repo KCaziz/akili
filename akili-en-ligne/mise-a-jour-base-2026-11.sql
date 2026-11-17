@@ -11,6 +11,9 @@
 --     paramètres du site, alertes visiteurs
 --   - e-mail sur les offres de vente
 --   - plusieurs vidéos par bien (table product_videos, remplace videoUrl)
+--   - CES, gabarit et recul maximal sur les offres de vente de terrain (17/11/2026)
+--   - biens : nature (appartement, villa, terrain, local), adresse exacte, règles
+--     d’urbanisme des terrains (17/11/2026)
 --
 -- Il peut être lancé sur une base V1, sur une base où l'ancien script
 -- « mise-a-jour-phase5.sql » a déjà été passé, et même relancé : chaque étape
@@ -122,3 +125,21 @@ FROM `products`
 WHERE `videoUrl` IS NOT NULL AND `videoUrl` <> '';
 
 ALTER TABLE `products` DROP COLUMN IF EXISTS `videoUrl`;
+
+-- Offres de vente de terrain : CES (coefficient d’emprise au sol), gabarit et
+-- recul maximal (ajout du 17/11/2026).
+ALTER TABLE `sell_offers` ADD COLUMN IF NOT EXISTS `ces` VARCHAR(50) NULL AFTER `price`;
+ALTER TABLE `sell_offers` ADD COLUMN IF NOT EXISTS `gabarit` VARCHAR(50) NULL AFTER `ces`;
+ALTER TABLE `sell_offers` ADD COLUMN IF NOT EXISTS `reculMax` VARCHAR(50) NULL AFTER `gabarit`;
+
+-- Biens : nature du bien, adresse exacte et règles d’urbanisme des terrains
+-- (ajout du 17/11/2026).
+ALTER TABLE `products` ADD COLUMN IF NOT EXISTS `category` VARCHAR(30) NULL AFTER `type`;
+ALTER TABLE `products` ADD COLUMN IF NOT EXISTS `address` VARCHAR(300) NULL AFTER `city`;
+ALTER TABLE `products` ADD COLUMN IF NOT EXISTS `ces` VARCHAR(50) NULL AFTER `rooms`;
+ALTER TABLE `products` ADD COLUMN IF NOT EXISTS `gabarit` VARCHAR(50) NULL AFTER `ces`;
+ALTER TABLE `products` ADD COLUMN IF NOT EXISTS `reculMax` VARCHAR(50) NULL AFTER `gabarit`;
+CREATE INDEX IF NOT EXISTS `products_category_idx` ON `products`(`category`);
+
+-- Offres de vente : nombre de pièces (ajout du 17/11/2026).
+ALTER TABLE `sell_offers` ADD COLUMN IF NOT EXISTS `rooms` INT NULL AFTER `price`;

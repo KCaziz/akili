@@ -5,7 +5,10 @@ import Button from "../components/ui/Button";
 import { createSellOffer } from "../lib/api";
 import { validateRequired, validateNationalId, validateAlgerianPhone, validateEmail, runValidators } from "../lib/validation";
 
-const initialState = { name: "", nationalId: "", phone: "", email: "", propertyType: "", city: "", surface: "", price: "", description: "" };
+const initialState = { name: "", nationalId: "", phone: "", email: "", propertyType: "", city: "", surface: "", price: "", rooms: "", ces: "", gabarit: "", reculMax: "", description: "" };
+const LAND_FIELDS = ["ces", "gabarit", "reculMax"];
+// Types de bien pour lesquels on demande le nombre de pièces.
+const WITH_ROOMS = ["Appartement", "Maison", "Villa"];
 
 export default function SellPage() {
   const { t } = useTranslation();
@@ -16,8 +19,17 @@ export default function SellPage() {
 
   function handleChange(event) {
     const { name, value } = event.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm((prev) => {
+      const next = { ...prev, [name]: value };
+      // Les règles d’urbanisme ne concernent que les terrains : on les vide si le type change.
+      if (name === "propertyType" && value !== "Terrain") LAND_FIELDS.forEach((key) => (next[key] = ""));
+      if (name === "propertyType" && !WITH_ROOMS.includes(value)) next.rooms = "";
+      return next;
+    });
   }
+
+  const isLand = form.propertyType === "Terrain";
+  const hasRooms = WITH_ROOMS.includes(form.propertyType);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -89,6 +101,7 @@ export default function SellPage() {
           <select name="propertyType" value={form.propertyType} onChange={handleChange} required>
             <option value="" disabled>{t("sell.choosePropertyType")}</option>
             <option value="Appartement">{t("sell.propertyApartment")}</option>
+            <option value="Maison">{t("sell.propertyHouse")}</option>
             <option value="Villa">{t("sell.propertyVilla")}</option>
             <option value="Terrain">{t("sell.propertyLand")}</option>
             <option value="Local commercial">{t("sell.propertyCommercial")}</option>
@@ -107,6 +120,35 @@ export default function SellPage() {
             <input type="text" name="surface" value={form.surface} onChange={handleChange} />
           </label>
         </div>
+
+        {hasRooms && (
+          <label>
+            {t("sell.rooms")}
+            <input type="number" min="1" max="50" inputMode="numeric" name="rooms" value={form.rooms} onChange={handleChange} placeholder={t("sell.roomsPlaceholder")} />
+          </label>
+        )}
+
+        {isLand && (
+          <fieldset className="land-rules">
+            <legend>{t("sell.landRules")}</legend>
+            <p className="land-rules-hint">{t("sell.landRulesHint")}</p>
+            <div className="form-row form-row-3">
+              {LAND_FIELDS.map((key) => (
+                <label key={key}>
+                  {t(`sell.${key}`)}
+                  <input
+                    type="text"
+                    name={key}
+                    value={form[key]}
+                    onChange={handleChange}
+                    placeholder={t(`sell.${key}Placeholder`)}
+                    maxLength={50}
+                  />
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        )}
 
         <label>
           {t("sell.price")}

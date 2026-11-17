@@ -27,6 +27,7 @@ export default function ProductCard({ product }) {
         </div>
         <h2 className="product-card-title" dir="auto">{product.title}</h2>
         <p className="muted">
+          {product.category && <>{t(`categories.${product.category}`)} · </>}
           <bdi>{product.city}</bdi> · {product.type === "VENTE" ? t("products.sale") : t("products.rent")}
           {product.rooms ? ` · ${t("products.roomsShort", { count: product.rooms })}` : ""}
           {product.surface && <> · <bdi>{product.surface}</bdi></>}

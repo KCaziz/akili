@@ -76,6 +76,10 @@ CREATE TABLE `sell_offers` (
     `city` VARCHAR(191) NOT NULL,
     `surface` VARCHAR(191) NULL,
     `price` VARCHAR(191) NULL,
+    `rooms` INTEGER NULL,
+    `ces` VARCHAR(50) NULL,
+    `gabarit` VARCHAR(50) NULL,
+    `reculMax` VARCHAR(50) NULL,
     `description` TEXT NULL,
     `status` ENUM('EN_ATTENTE', 'TRAITE') NOT NULL DEFAULT 'EN_ATTENTE',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -191,6 +195,14 @@ CREATE INDEX `products_type_idx` ON `products`(`type`);
 
 -- CreateIndex
 CREATE INDEX `products_isFeatured_idx` ON `products`(`isFeatured`);
+
+-- Nature du bien, adresse exacte et règles d’urbanisme des terrains (17/11/2026)
+ALTER TABLE `products` ADD COLUMN `category` VARCHAR(30) NULL AFTER `type`,
+    ADD COLUMN `address` VARCHAR(300) NULL AFTER `city`,
+    ADD COLUMN `ces` VARCHAR(50) NULL AFTER `rooms`,
+    ADD COLUMN `gabarit` VARCHAR(50) NULL AFTER `ces`,
+    ADD COLUMN `reculMax` VARCHAR(50) NULL AFTER `gabarit`;
+CREATE INDEX `products_category_idx` ON `products`(`category`);
 
 -- AddForeignKey
 ALTER TABLE `product_images` ADD CONSTRAINT `product_images_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

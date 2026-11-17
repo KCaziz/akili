@@ -23,6 +23,7 @@ function toPositiveInt(value) {
 function buildListQuery(query) {
   const where = {};
   if (["VENTE", "LOCATION"].includes(query.type)) where.type = query.type;
+  if (CATEGORIES.includes(query.category)) where.category = query.category;
   if (typeof query.city === "string" && query.city.trim()) where.city = { contains: query.city.trim() };
 
   const minPrice = toPositiveInt(query.minPrice);
@@ -94,8 +95,17 @@ function toOptionalNumber(value) {
   return Number.isFinite(number) ? number : NaN;
 }
 
+export const CATEGORIES = ["APPARTEMENT", "MAISON", "VILLA", "TERRAIN", "LOCAL_COMMERCIAL"];
+
+function optionalText(value, maxLength) {
+  return typeof value === "string" && value.trim() ? value.trim().slice(0, maxLength) : null;
+}
+
 function parseProductPayload(body) {
   const { title, description, type, city, surface, rooms, status } = body ?? {};
+  const category = body?.category || null;
+  if (category !== null && !CATEGORIES.includes(category)) return { error: "Nature du bien invalide" };
+  const isLand = category === "TERRAIN";
 
   if (!isNonEmptyString(title, { maxLength: 191 })) return { error: "Le titre est requis" };
   if (!["VENTE", "LOCATION"].includes(type)) return { error: "Type de bien invalide" };
@@ -131,11 +141,17 @@ function parseProductPayload(body) {
       title: title.trim(),
       description: typeof description === "string" ? description : null,
       type,
+      category,
       city: city.trim(),
+      address: optionalText(body.address, 300),
       priceValue,
       price: formatPriceLabel(priceValue, type),
       surface: typeof surface === "string" && surface.trim() ? surface.trim() : null,
-      rooms: roomCount,
+      // Un terrain n’a pas de pièces ; à l’inverse, CES, gabarit et recul ne concernent que les terrains.
+      rooms: isLand ? null : roomCount,
+      ces: isLand ? optionalText(body.ces, 50) : null,
+      gabarit: isLand ? optionalText(body.gabarit, 50) : null,
+      reculMax: isLand ? optionalText(body.reculMax, 50) : null,
       status: finalStatus,
       isExclusive: Boolean(body.isExclusive),
       isFeatured: Boolean(body.isFeatured),

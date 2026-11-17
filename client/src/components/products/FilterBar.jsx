@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Button from "../ui/Button";
 
-import { FILTER_KEYS } from "../../lib/catalog";
+import { CATEGORIES, FILTER_KEYS } from "../../lib/catalog";
 
 export default function FilterBar({ values, cities, onApply }) {
   const { t } = useTranslation();
@@ -36,6 +36,17 @@ export default function FilterBar({ values, cities, onApply }) {
         </select>
       </label>
       <label>
+        {t("filters.category")}
+        <select name="category" value={form.category ?? ""} onChange={handleChange}>
+          <option value="">{t("filters.allCategories")}</option>
+          {CATEGORIES.map((category) => (
+            <option key={category} value={category}>
+              {t(`categories.${category}`)}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label>
         {t("filters.city")}
         <select name="city" value={form.city} onChange={handleChange}>
           <option value="">{t("filters.allCities")}</option>
@@ -48,11 +59,11 @@ export default function FilterBar({ values, cities, onApply }) {
       </label>
       <label>
         {t("filters.minPrice")}
-        <input type="number" min="0" step="100000" inputMode="numeric" name="minPrice" value={form.minPrice} onChange={handleChange} placeholder="0" />
+        <input type="number" min="0" step="any" inputMode="numeric" name="minPrice" value={form.minPrice} onChange={handleChange} placeholder="0" />
       </label>
       <label>
         {t("filters.maxPrice")}
-        <input type="number" min="0" step="100000" inputMode="numeric" name="maxPrice" value={form.maxPrice} onChange={handleChange} placeholder="∞" />
+        <input type="number" min="0" step="any" inputMode="numeric" name="maxPrice" value={form.maxPrice} onChange={handleChange} placeholder="∞" />
       </label>
       <label>
         {t("filters.minRooms")}

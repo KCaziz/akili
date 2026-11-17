@@ -5,6 +5,7 @@ import MainLayout from "../layouts/MainLayout";
 import AdminAuthLayout from "../layouts/AdminAuthLayout";
 import AdminLayout from "../layouts/AdminLayout";
 import NotFoundPage from "../pages/NotFoundPage";
+import RouteError from "../components/layout/RouteError";
 import i18n from "../i18n";
 
 // Chaque page est chargée à la demande : le visiteur ne télécharge pas le code de l'admin
@@ -37,12 +38,12 @@ function RootRedirect() {
 }
 
 const router = createBrowserRouter([
-  { path: "/", element: <RootRedirect /> },
+  { path: "/", element: <RootRedirect />, errorElement: <RouteError /> },
   {
     // La langue est le premier segment de l'adresse : /fr, /ar, /en, /tzm (voir MainLayout).
     path: "/:lang",
     element: <MainLayout />,
-    errorElement: <NotFoundPage />,
+    errorElement: <RouteError />,
     children: [
       { index: true, element: <HomePage /> },
       { path: "services", element: <ServicesPage /> },
@@ -59,11 +60,13 @@ const router = createBrowserRouter([
   },
   {
     element: <AdminAuthLayout />,
+    errorElement: <RouteError admin />,
     children: [
       { path: "/admin/connexion", element: <AdminLoginPage /> },
       {
         path: "/admin",
         element: <AdminLayout />,
+        errorElement: <RouteError admin />,
         children: [
           { index: true, element: <AdminDashboardPage /> },
           { path: "produits", element: <AdminProductsPage /> },

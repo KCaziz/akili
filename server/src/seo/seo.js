@@ -288,6 +288,18 @@ export async function buildSeo({ pathname, query = {}, base }) {
         url: seo.canonical,
         datePosted: product.createdAt.toISOString(),
         image: images,
+        contentLocation: {
+          "@type": "Place",
+          address: {
+            "@type": "PostalAddress",
+            ...(product.address ? { streetAddress: product.address } : {}),
+            addressLocality: product.city,
+            addressCountry: "DZ",
+          },
+          ...(product.latitude != null && product.longitude != null
+            ? { geo: { "@type": "GeoCoordinates", latitude: product.latitude, longitude: product.longitude } }
+            : {}),
+        },
         ...(product.priceValue
           ? {
               offers: {

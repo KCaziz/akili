@@ -14,12 +14,15 @@ function monthlyPayment(principal, annualRate, years) {
 
 const toNumber = (value) => Math.max(0, Number(value) || 0);
 
-export default function MortgageSimulator({ initialPrice = "" }) {
+// `rate` / `onRateChange` (facultatifs) : taux piloté par la page (ex. bouton « Utiliser ce taux »).
+export default function MortgageSimulator({ initialPrice = "", rate: controlledRate, onRateChange }) {
   const { t } = useTranslation();
   const [price, setPrice] = useState(String(initialPrice || ""));
   const [downPayment, setDownPayment] = useState(initialPrice ? String(Math.round(initialPrice * 0.2)) : "");
   const [years, setYears] = useState("20");
-  const [rate, setRate] = useState(String(DEFAULT_RATE));
+  const [ownRate, setOwnRate] = useState(String(DEFAULT_RATE));
+  const rate = controlledRate ?? ownRate;
+  const setRate = onRateChange ?? setOwnRate;
 
   const loan = Math.max(0, toNumber(price) - toNumber(downPayment));
   const monthly = monthlyPayment(loan, toNumber(rate), toNumber(years));

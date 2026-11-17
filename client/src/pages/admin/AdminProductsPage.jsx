@@ -8,16 +8,27 @@ import { productImages } from "../../lib/format";
 const LocationPicker = lazy(() => import("../../components/maps/LocationPicker"));
 
 const STATUS_LABELS = { DISPONIBLE: "Disponible", VENDU: "Vendu", LOUE: "Loué" };
+const CATEGORY_LABELS = { APPARTEMENT: "Appartement", MAISON: "Maison", VILLA: "Villa", TERRAIN: "Terrain", LOCAL_COMMERCIAL: "Local commercial" };
+const LAND_FIELDS = [
+  { name: "ces", label: "CES (emprise au sol)", placeholder: "ex : 60 %" },
+  { name: "gabarit", label: "Gabarit (hauteur max.)", placeholder: "ex : R+4" },
+  { name: "reculMax", label: "Recul maximal", placeholder: "ex : 5 m" },
+];
 const STATUS_BADGES = { DISPONIBLE: "badge-done", VENDU: "badge-muted", LOUE: "badge-muted" };
 
 const emptyForm = {
   title: "",
   description: "",
   type: "VENTE",
+  category: "",
   city: "",
+  address: "",
   priceValue: "",
   surface: "",
   rooms: "",
+  ces: "",
+  gabarit: "",
+  reculMax: "",
   images: [],
   videos: [],
   status: "DISPONIBLE",
@@ -32,10 +43,15 @@ function toForm(product) {
     title: product.title,
     description: product.description || "",
     type: product.type,
+    category: product.category || "",
     city: product.city,
+    address: product.address || "",
     priceValue: product.priceValue ?? "",
     surface: product.surface || "",
     rooms: product.rooms ?? "",
+    ces: product.ces || "",
+    gabarit: product.gabarit || "",
+    reculMax: product.reculMax || "",
     images: productImages(product),
     videos: (product.videos || []).map((video) => video.url),
     status: product.status,
@@ -93,6 +109,8 @@ export default function AdminProductsPage() {
     setForm((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
   }
 
+  const isLand = form.category === "TERRAIN";
+
   async function handleSubmit(event) {
     event.preventDefault();
     setError(null);
@@ -141,24 +159,54 @@ export default function AdminProductsPage() {
 
           <div className="form-row">
             <label>Titre<input name="title" value={form.title} onChange={handleChange} required /></label>
-            <label>Type
+            <label>Nature du bien
+              <select name="category" value={form.category} onChange={handleChange} required>
+                <option value="" disabled>Choisir…</option>
+                {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
+                  <option key={value} value={value}>{label}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className="form-row">
+            <label>Transaction
               <select name="type" value={form.type} onChange={handleChange}>
                 <option value="VENTE">Vente</option>
                 <option value="LOCATION">Location</option>
               </select>
             </label>
-          </div>
-          <div className="form-row">
-            <label>Ville<input name="city" value={form.city} onChange={handleChange} required /></label>
             <label>
               Prix en DZD {form.type === "LOCATION" && "(par mois)"}
               <input type="number" min="1" step="1" inputMode="numeric" name="priceValue" value={form.priceValue} onChange={handleChange} required />
             </label>
           </div>
           <div className="form-row">
-            <label>Surface<input name="surface" value={form.surface} onChange={handleChange} placeholder="ex : 120 m²" /></label>
-            <label>Pièces<input type="number" min="0" name="rooms" value={form.rooms} onChange={handleChange} /></label>
+            <label>Ville
+              <input name="city" value={form.city} onChange={handleChange} placeholder="ex : Oran" required />
+              <span className="field-hint">Nom de la ville seul : il sert aux filtres et à la recherche.</span>
+            </label>
+            <label>Adresse exacte (facultatif)
+              <input name="address" value={form.address} onChange={handleChange} maxLength={300} placeholder="ex : 12 rue Larbi Ben M’hidi, Hai El Badr" />
+              <span className="field-hint">Affichée sur la fiche du bien.</span>
+            </label>
           </div>
+          <div className="form-row">
+            <label>Surface<input name="surface" value={form.surface} onChange={handleChange} placeholder="ex : 120 m²" /></label>
+            {isLand ? <span /> : <label>Pièces<input type="number" min="0" name="rooms" value={form.rooms} onChange={handleChange} /></label>}
+          </div>
+
+          {isLand && (
+            <fieldset className="admin-fieldset">
+              <legend>Règles d’urbanisme du terrain</legend>
+              <div className="form-row form-row-3">
+                {LAND_FIELDS.map((field) => (
+                  <label key={field.name}>{field.label}
+                    <input name={field.name} value={form[field.name]} onChange={handleChange} maxLength={50} placeholder={field.placeholder} />
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          )}
           <label>Description<textarea name="description" rows={4} value={form.description} onChange={handleChange} /></label>
 
           <fieldset className="admin-fieldset">
@@ -246,7 +294,9 @@ export default function AdminProductsPage() {
                         )}
                         <div>
                           <strong className="cell-title">{product.title}</strong>
-                          <span className="cell-sub">{product.city}</span>
+                          <span className="cell-sub">
+                            {[CATEGORY_LABELS[product.category], product.city].filter(Boolean).join(" · ")}
+                          </span>
                           {(product.isFeatured || product.isExclusive) && (
                             <span className="admin-flags">
                               {product.isFeatured && <span className="flag-pill flag-featured">Vedette</span>}

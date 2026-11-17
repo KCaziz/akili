@@ -81,7 +81,7 @@
     "notFoundTitle": "Bien introuvable",
     "notFoundText": "Ce bien n'existe pas ou n'est plus disponible.",
     "backToCatalog": "Retour au catalogue",
-    "type": "Type :",
+    "type": "Transaction :",
     "city": "Ville :",
     "rooms": "Pièces :",
     "surface": "Surface :",
@@ -94,7 +94,12 @@
     "openFullscreen": "Afficher en plein écran",
     "video": "Vidéo de visite",
     "location": "Emplacement",
-    "askOnWhatsapp": "Poser une question sur WhatsApp"
+    "askOnWhatsapp": "Poser une question sur WhatsApp",
+    "category": "Type de bien :",
+    "address": "Adresse :",
+    "ces": "CES (emprise au sol) :",
+    "gabarit": "Gabarit :",
+    "reculMax": "Recul maximal :"
   },
   "gallery": {
     "eyebrow": "Galerie",
@@ -126,7 +131,18 @@
     "submit": "Envoyer mon offre",
     "submitting": "Envoi…",
     "success": "Votre offre a bien été envoyée. Un conseiller Akili vous recontactera prochainement.",
-    "email": "E-mail"
+    "email": "E-mail",
+    "landRules": "Règles d’urbanisme du terrain",
+    "landRulesHint": "Indiquez ce que prévoit votre certificat d’urbanisme, si vous le connaissez.",
+    "ces": "CES (emprise au sol)",
+    "cesPlaceholder": "Ex : 60 %",
+    "gabarit": "Gabarit (hauteur max.)",
+    "gabaritPlaceholder": "Ex : R+4",
+    "reculMax": "Recul maximal",
+    "reculMaxPlaceholder": "Ex : 5 m",
+    "propertyHouse": "Maison",
+    "rooms": "Nombre de pièces",
+    "roomsPlaceholder": "Ex : 4 (F4)"
   },
   "request": {
     "title": "Formuler une demande",
@@ -263,7 +279,9 @@
     "sort": "Trier par",
     "sortNewest": "Plus récents",
     "sortPriceAsc": "Prix croissant",
-    "sortPriceDesc": "Prix décroissant"
+    "sortPriceDesc": "Prix décroissant",
+    "category": "Type de bien",
+    "allCategories": "Tous les types"
   },
   "share": {
     "label": "Partager :",
@@ -280,7 +298,33 @@
     "loanAmount": "Montant emprunté",
     "totalInterest": "Coût des intérêts",
     "totalCost": "Total remboursé",
-    "disclaimer": "Simulation indicative, hors assurance et frais de dossier. Le taux réel dépend de votre banque."
+    "disclaimer": "Simulation indicative, hors assurance et frais de dossier. Le taux réel dépend de votre banque.",
+    "banks": {
+      "title": "Offres de crédit des banques algériennes",
+      "lead": "Fourchettes indicatives relevées en {{date}} à partir d’informations publiques. Cliquez sur « Utiliser » pour reprendre un taux dans le simulateur.",
+      "bank": "Banque",
+      "rate": "Taux annuel",
+      "duration": "Durée max.",
+      "downPayment": "Apport min.",
+      "note": "À savoir",
+      "useRate": "Utiliser ce taux",
+      "useRateValue": "Utiliser {{rate}}",
+      "years_one": "{{count}} an",
+      "years_other": "{{count}} ans",
+      "murabaha": "Mourabaha (marge fixe)",
+      "subsidized": "Crédit bonifié (État)",
+      "notes": {
+        "cnep": "Banque spécialisée dans l’habitat ; souvent les taux les plus bas. Salaire domicilié à la CNEP.",
+        "bna": "Taux plus avantageux si le salaire est domicilié à la BNA. Offre islamique disponible.",
+        "cpa": "Crédit pour l’achat, la construction ou l’aménagement d’un logement.",
+        "bdl": "Finance l’achat d’un logement neuf ou ancien.",
+        "bea": "Conditions selon le profil de l’emprunteur.",
+        "islamic": "Finance islamique : pas d’intérêt, un prix de revente convenu à l’avance.",
+        "subsidized1": "Premier logement neuf, revenus du ménage jusqu’à 6 fois le SNMG.",
+        "subsidized3": "Premier logement neuf, revenus entre 6 et 12 fois le SNMG."
+      },
+      "disclaimer": "Ces chiffres sont indicatifs et peuvent avoir changé : seule votre banque peut vous donner une offre ferme. Pensez aussi aux frais de dossier et à l’assurance."
+    }
   },
   "alert": {
     "title": "Être alerté des nouveaux biens",
@@ -307,5 +351,19 @@
     "accept": "Accepter",
     "refuse": "Refuser",
     "manage": "Cookies"
+  },
+  "categories": {
+    "APPARTEMENT": "Appartement",
+    "VILLA": "Villa",
+    "TERRAIN": "Terrain",
+    "LOCAL_COMMERCIAL": "Local commercial",
+    "MAISON": "Maison"
+  },
+  "errorPage": {
+    "title": "Une erreur est survenue",
+    "text": "Cette page n’a pas pu s’afficher. Rechargez la page ; si le problème continue, contactez-nous.",
+    "updateTitle": "Mise à jour du site",
+    "updateText": "Une nouvelle version du site vient d’être mise en ligne. Rechargez la page pour continuer.",
+    "reload": "Recharger la page"
   }
 }

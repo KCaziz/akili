@@ -40,6 +40,9 @@ const app = express();
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
+    // OpenStreetMap refuse les tuiles de carte sans en-tête Referer (« Access blocked ») : on envoie
+    // l’origine du site aux autres domaines, jamais le chemin complet de la page.
+    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
     contentSecurityPolicy: {
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
@@ -71,7 +74,25 @@ if (env.nodeEnv === "production" && process.env.PUBLIC_URL) {
   });
 }
 
+// Journal des requêtes lentes (visible dans stderr.log du dossier de l’application sur cPanel) :
+// permet de repérer une base de données qui traîne ou un redémarrage de l’application.
+app.use((req, res, next) => {
+  const start = process.hrtime.bigint();
+  res.on("finish", () => {
+    const ms = Number(process.hrtime.bigint() - start) / 1e6;
+    if (ms > 1500) console.error(`[lent] ${req.method} ${req.originalUrl} ${res.statusCode} ${Math.round(ms)} ms (pid ${process.pid})`);
+  });
+  next();
+});
+
 app.use(compression());
+
+// Les réponses de l’API ne doivent jamais être mises en cache (navigateur ou serveur intermédiaire) :
+// une modification faite dans l’admin doit apparaître immédiatement sur le site.
+app.use("/api", (req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
 app.use(cors({ origin: env.corsOrigin, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());

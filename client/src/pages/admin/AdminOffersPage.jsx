@@ -92,7 +92,11 @@ export default function AdminOffersPage() {
                           { label: "Type de bien", value: offer.propertyType },
                           { label: "Ville", value: offer.city },
                           { label: "Surface", value: offer.surface },
+                          { label: "Pièces", value: offer.rooms },
                           { label: "Prix souhaité", value: offer.price },
+                          { label: "CES", value: offer.ces },
+                          { label: "Gabarit", value: offer.gabarit },
+                          { label: "Recul maximal", value: offer.reculMax },
                         ]}
                       />
                     </td>

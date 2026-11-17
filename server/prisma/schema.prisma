@@ -31,13 +31,21 @@ model Product {
   title       String
   description String?        @db.Text
   type        PropertyType
+  // Nature du bien : APPARTEMENT, MAISON, VILLA, TERRAIN ou LOCAL_COMMERCIAL (vide pour les biens créés avant).
+  category    String?        @db.VarChar(30)
+  // Ville seule (filtres, titres, référencement) ; l’adresse exacte est dans `address`.
   city        String
+  address     String?        @db.VarChar(300)
   // Libellé historique (texte libre). Conservé en repli d'affichage ; les filtres, le tri
   // et le simulateur de crédit utilisent priceValue.
   price       String
   priceValue  Int?
   surface     String?
   rooms       Int?
+  // Règles d’urbanisme, seulement pour un terrain.
+  ces         String?        @db.VarChar(50)
+  gabarit     String?        @db.VarChar(50)
+  reculMax    String?        @db.VarChar(50)
   // Photo principale = première photo de `images`, tenue à jour par le serveur.
   image       String?        @db.Text
   status      ProductStatus  @default(DISPONIBLE)
@@ -53,6 +61,7 @@ model Product {
   updatedAt   DateTime       @updatedAt
 
   @@index([type])
+  @@index([category])
   @@index([isFeatured])
   @@map("products")
 }
@@ -155,6 +164,11 @@ model SellOffer {
   city         String
   surface      String?
   price        String?
+  rooms        Int?
+  // Règles d’urbanisme, renseignées seulement pour un terrain.
+  ces          String?       @db.VarChar(50)
+  gabarit      String?       @db.VarChar(50)
+  reculMax     String?       @db.VarChar(50)
   description  String?       @db.Text
   status       RequestStatus @default(EN_ATTENTE)
   createdAt    DateTime      @default(now())
